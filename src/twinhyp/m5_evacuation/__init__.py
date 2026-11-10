@@ -8,7 +8,9 @@ Algorithme 1 de [Pang] : à chaque pas de temps,
      - stratégie 1 : route vers la sortie la plus proche sur le graphe STATIQUE (plan d'évacuation) ;
      - stratégie 2 : Dijkstra sur le graphe privé des espaces dangereux (contrainte dure F8) ;
        aucune route -> route = null et action de repli.
-     La route que donnerait la pénalité de 1 000 m de Pang est jointe pour comparaison.
+     La route que donnerait la pénalité de 1 000 m de Pang est jointe pour comparaison, ainsi que la
+     variante « détour réactif » de la stratégie 1 et la liste des espaces dangereux SANS caméra
+     (personnes éventuellement bloquées sans être comptées : risque signalé).
 
 Le graphe de routage (distances orientées de M1) est extrait de kg.ttl par SPARQL.
 """
@@ -105,6 +107,11 @@ WHERE { ?s a bot:Space ; ssi:hasStatus ?etat . OPTIONAL { ?s ssi:statusTime ?anc
 DANGEREUX = """PREFIX ssi: <https://ligm.univ-eiffel.fr/twinhypervisor/ssi#>
 SELECT ?gid WHERE { ?s ssi:hasStatus ssi:Dangerous ; ssi:ifcGlobalId ?gid }"""
 
+SANS_COMPTAGE = """PREFIX ssi: <https://ligm.univ-eiffel.fr/twinhypervisor/ssi#>
+PREFIX sosa: <http://www.w3.org/ns/sosa/>
+SELECT ?gid WHERE { ?s ssi:hasStatus ssi:Dangerous ; ssi:occupiable true ; ssi:ifcGlobalId ?gid .
+  FILTER NOT EXISTS { ?o sosa:hasFeatureOfInterest ?s ; sosa:observedProperty ssi:Occupancy } }"""
+
 OCCUPES = """PREFIX ssi: <https://ligm.univ-eiffel.fr/twinhypervisor/ssi#>
 SELECT ?gid ?n WHERE { ?s ssi:peopleCount ?n ; ssi:ifcGlobalId ?gid . FILTER (?n > 0) }"""
 
@@ -117,6 +124,11 @@ def mettre_a_jour(g: Graph, t: int, horodatage: str, s: dict) -> None:
 
 def dangereux(g: Graph) -> set[str]:
     return {str(l[0]) for l in g.query(DANGEREUX)}
+
+
+def dangereux_sans_comptage(g: Graph) -> list[str]:
+    """Risque : espaces dangereux sans caméra, où des personnes peuvent être bloquées sans être vues."""
+    return sorted(str(l[0]) for l in g.query(SANS_COMPTAGE))
 
 
 def occupes(g: Graph) -> dict[str, int]:
@@ -163,6 +175,28 @@ def route_penalite(G: nx.DiGraph, depart: str, interdits: set[str], penalite: fl
     return r
 
 
+def route_detour(G: nx.DiGraph, statique: dict | None, interdits: set[str]) -> dict | None:
+    """Variante réactive de la stratégie 1 ([Pang] tableau 7) : l'occupant suit le plan statique,
+    découvre le premier espace dangereux en y arrivant, s'arrête dans le dernier espace sûr et
+    repart de là par la meilleure route sûre. S'il n'y en a pas, il est BLOQUÉ en chemin."""
+    if statique is None:
+        return None
+    route = statique["route"]
+    k = next((i for i, n in enumerate(route) if n in interdits), None)
+    if k is None:
+        return {**statique, "detour": False, "bloque_dans": None}
+    if k == 0:
+        return {"route": None, "sortie_globalId": None, "distance_m": None, "detour": False, "bloque_dans": route[0]}
+    parcouru = route[:k]
+    longueur = sum(G[u][v]["weight"] for u, v in zip(parcouru, parcouru[1:]))
+    suite = route_sure(G, parcouru[-1], interdits)
+    if suite is None:
+        return {"route": None, "sortie_globalId": None, "distance_m": None, "detour": True,
+                "bloque_dans": parcouru[-1], "parcouru": parcouru, "distance_parcourue_m": round(longueur, 3)}
+    return {"route": parcouru + suite["route"][1:], "sortie_globalId": suite["sortie_globalId"],
+            "distance_m": round(longueur + suite["distance_m"], 3), "detour": True, "bloque_dans": None}
+
+
 def action(strategie: int, route: dict | None, depart: str, interdits: set[str], alarme: bool) -> str:
     if not alarme:
         return "Pas d'alarme : aucune évacuation déclenchée."
@@ -188,7 +222,7 @@ def rejouer(g: Graph, observations: dict[int, list[dict]], s: dict) -> list[dict
         if alarme is None and any(o["type"] == "SmokeAlarm" and o["valeur"] > s["seuil_alarme_obscurcissement_par_m"]
                                   for o in obs):
             alarme = t
-        danger, presents = dangereux(g), occupes(g)
+        danger, presents, inconnus = dangereux(g), occupes(g), dangereux_sans_comptage(g)
         for espace in sorted(presents):
             if espace not in statique:
                 statique[espace] = route_sure(G, espace, set())
@@ -199,6 +233,7 @@ def rejouer(g: Graph, observations: dict[int, list[dict]], s: dict) -> list[dict
                            "distance_m": r1["distance_m"] if r1 else None,
                            "espaces_dangereux": sorted(n for n in (r1["route"] if r1 else []) if n in danger),
                            "personnes": presents[espace],
+                           "route_detour_reactif": route_detour(G, r1, danger),
                            "action_recommandee": action(1, r1, espace, danger, alarme is not None)})
             r2 = route_sure(G, espace, danger)
             lignes.append({"t_s": t, "espace_globalId": espace, "strategie": 2,
@@ -208,6 +243,7 @@ def rejouer(g: Graph, observations: dict[int, list[dict]], s: dict) -> list[dict
                            "espaces_dangereux": sorted(danger),
                            "personnes": presents[espace],
                            "route_penalite_pang": route_penalite(G, espace, danger, s["penalite_pang_m"]),
+                           "espaces_dangereux_sans_comptage": inconnus,
                            "action_recommandee": action(2, r2, espace, danger, alarme is not None)})
     if alarme is not None:
         for b in g.subjects(RDF.type, BOT.Building):

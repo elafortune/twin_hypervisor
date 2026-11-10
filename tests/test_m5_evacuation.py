@@ -111,3 +111,23 @@ def test_graphe_final_conforme_f8(scenario, tmp_path):
     ok, texte = rapport_shacl(kg, [DONNEES / "ontologie" / "formes_publiques.ttl", FORMES_MAISON], onto,
                               FORMES_EQUIPEMENTS)
     assert ok, texte[:3000]
+
+
+def test_detour_reactif(mini):
+    from twinhyp.m5_evacuation import route_detour
+    statique = route_sure(mini, "A", set())  # A -> D -> sortie (20 m)
+    assert statique["route"] == ["A", "D"]
+    d = route_detour(mini, statique, {"D"})
+    assert d["route"] == ["A", "S"] and d["detour"]  # s'arrête en A, repart par S
+    assert route_detour(mini, statique, {"D", "S"})["bloque_dans"] == "A"
+
+
+@pytest.mark.integration
+def test_detour_bloque_dans_la_cage_et_espaces_sans_camera(scenario):
+    """À 180 s, l'occupant de A202 qui suit le plan est bloqué dans la cage A105 (pire que le confinement)."""
+    g, lignes = scenario
+    a202, a105 = R.espace(g, "A202")[0], R.espace(g, "A105")[0]
+    l1 = next(x for x in lignes if x["t_s"] == 180 and x["espace_globalId"] == a202 and x["strategie"] == 1)
+    assert l1["route_detour_reactif"]["bloque_dans"] == a105
+    l2 = next(x for x in lignes if x["t_s"] == 300 and x["espace_globalId"] == a202 and x["strategie"] == 2)
+    assert a105 in l2["espaces_dangereux_sans_comptage"]
