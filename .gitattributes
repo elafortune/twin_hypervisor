@@ -1,0 +1,4 @@
+# Code et docs : LF dans le dépôt
+* text=auto eol=lf
+# Données du kit conservées à l'octet près (pas de conversion des fins de ligne)
+data/** -text
