@@ -2,7 +2,7 @@
 
 Survol d'un espace : nom, nom long, GlobalId, surfaces, hauteur, occupable.
 Menu déroulant : choix du niveau. Légende cliquable : couches (espaces, portes,
-sorties, escaliers, liaisons par type, anomalies).
+sorties, escaliers, liaisons par type, distances d'évacuation, anomalies).
 """
 
 from __future__ import annotations
@@ -45,9 +45,14 @@ def figure_plan(geometrie: dict) -> go.Figure:
 
     fig = go.Figure()
     traces_du_niveau = defaultdict(list)
+    masquees = set()  # couches affichées seulement sur clic dans la légende
 
-    def ajouter(trace, niveau_gid):
+    def ajouter(trace, niveau_gid, cachee=False):
         traces_du_niveau[niveau_gid].append(len(fig.data))
+        if cachee:
+            masquees.add(len(fig.data))
+            if trace.visible:
+                trace.visible = "legendonly"
         fig.add_trace(trace)
 
     for ngid in affiches:
@@ -93,6 +98,23 @@ def figure_plan(geometrie: dict) -> go.Figure:
                                name=f"Liaison {t}", legendgroup=f"l_{t}", text=txt, hoverinfo="text",
                                visible=visible), ngid)
 
+        # Distances d'évacuation (étape 3) : chemin du point le plus défavorable au passage
+        chemins = [d for d in geometrie.get("distances", []) + geometrie.get("distances_sortie", [])
+                   if espaces.get(d["de"], {}).get("niveau_globalId") == ngid]
+        xs, ys, txt = [], [], []
+        for d in chemins:
+            vers = espaces[d["vers"]]["nom"] if d.get("vers") in espaces else "extérieur"
+            info = (f"<b>{espaces[d['de']]['nom']} → {vers}</b> ({d.get('type', 'sortie')})<br>"
+                    f"distance {d['distance_m']} m (dans l'espace {d['distance_plan_m']} m)<br>"
+                    f"Pang : {d['distance_pang_m']} m")
+            xs += [p[0] for p in d["chemin_xy"]] + [None]
+            ys += [p[1] for p in d["chemin_xy"]] + [None]
+            txt += [info] * (len(d["chemin_xy"]) + 1)
+        if chemins:
+            ajouter(go.Scatter(x=xs, y=ys, mode="lines+markers", line=dict(color="#0d9488", width=1.5, dash="dash"),
+                               marker=dict(size=5, color="#0d9488"), name="Distances (pire point)",
+                               legendgroup="distances", text=txt, hoverinfo="text", visible=visible), ngid, cachee=True)
+
         # Escaliers ---------------------------------------------------------
         z_niveau = niveaux[ngid]["altitude_m"]
         for j, s in enumerate(geometrie.get("escaliers", [])):
@@ -132,7 +154,7 @@ def figure_plan(geometrie: dict) -> go.Figure:
     for ngid in affiches:
         masque = [False] * n
         for i in traces_du_niveau[ngid]:
-            masque[i] = True
+            masque[i] = "legendonly" if i in masquees else True
         nv = niveaux[ngid]
         boutons.append(dict(label=f"{nv['nom']} ({nv['altitude_m']} m)", method="update",
                             args=[{"visible": masque}, {"title.text": f"Plan – {nv['nom']}"}]))
