@@ -92,6 +92,22 @@
 | 4.13 | Anomalies dans le graphe | non · **oui (`ssi:ModelAnomaly`)** | 🟡 Incluses avec règle, description, traitement, éléments concernés | L'agent M6 peut les citer | une forme cachée les gêne |
 | 4.14 | État initial | aucun · **`hasStatus Normal`** | 🟡 Normal sur tous les espaces | État initial de Pang ; mis à jour par M5 | — |
 
+## Étape 5 – Évacuation dynamique
+
+| # | Question | Options envisagées | Choix final | Pourquoi | Revenir dessus si… |
+|---|---|---|---|---|---|
+| 5.1 | Architecture du rejeu | calcul en mémoire puis écriture · **mise à jour du graphe RDF à chaque pas** | Observations insérées en SOSA, état mis à jour par SPARQL UPDATE, graphe de routage extrait par SPARQL | Fidèle à l'algorithme 1 de Pang ; le graphe reste la source de vérité | durée (17 s ici) trop longue sur un gros scénario |
+| 5.2 | Persistance de l'état Dangerous | réversible · hystérésis · **verrouillé** | 🟡 Verrouillé (`ssi:dangerSince`) | Prudence : un espace passé à 60 °C reste suspect ; dans ce scénario les valeurs ne redescendent pas, donc sans effet | scénario où la température redescend |
+| 5.3 | Seuils (0,0328 /m, 60 °C, 1 000 ppm) | en dur · **valeurs de l'énoncé surchargeables par `parametres.json`** | Constantes nommées + clés optionnelles (`seuil_danger_temperature_degC`…) | Règle « jamais en dur » ; le kit ne les fournit pas dans les paramètres | — |
+| 5.4 | Lignes du JSONL | à partir de l'alarme · **à chaque pas** | Chaque pas (61), chaque espace occupé (caméra > 0), 2 stratégies : 410 lignes | Le schéma demande « une ligne par pas » ; avant l'alarme, action « pas d'évacuation » | — |
+| 5.5 | Stratégie 1 | détour réactif (tableau 7 de Pang) · **route statique pure** | 🟡 Route statique calculée une fois ; espaces dangereux traversés signalés | Comparaison la plus lisible avec la stratégie 2 | le jury attend le détour de Pang |
+| 5.6 | Danger : pénalité ou contrainte dure | pénalité 1 000 m (Pang) · **contrainte dure (F8)** | Espaces dangereux retirés ; route = `null` sinon ; la route « pénalité » est jointe à chaque ligne pour comparaison | La pénalité renvoie une route qui traverse le feu (1 026 m à t = 180 s) | — |
+| 5.7 | Occupants dans un espace dangereux | exclure le départ du contrôle · **route = null + secours prioritaire** | 🟡 null (F8 interdit `routeFor` un espace dangereux) | Respect strict de F8 | — |
+| 5.8 | Action sans route sûre | **confinement + signalement** · espace sûr le plus éloigné | Confinement porte fermée, signalement aux secours avec position et nombre | Consigne classique en l'absence d'issue | — |
+| 5.9 | Routes dans `kg.ttl` | toutes · **seulement celles du dernier pas** | Routes courantes (état final) ; historique dans le JSONL | F8 s'applique à l'état final : une route ancienne traverserait un espace devenu dangereux | — |
+| 5.10 | Capteurs du scénario | `ssi:SmokeDetector` · **`sosa:Sensor` seul** | 🟡 `sosa:Sensor` | Ne pas confondre capteurs du scénario et équipements placés par M4 (sinon F3/F6 faussés) | M4 doit réutiliser ces capteurs |
+| 5.11 | Q15–Q19 | JSONL · **SPARQL sur le graphe + planificateur** | Q15, Q16, Q19 en SPARQL pur ; Q17, Q18 : état par SPARQL + Dijkstra ; recoupés avec le JSONL dans les tests | Exigence « par SPARQL » ; prépare les outils de M6 | — |
+
 ## Points ouverts à trancher
 
 | Sujet | Options | Échéance |

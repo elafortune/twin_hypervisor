@@ -11,8 +11,8 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | `python -m twinhyp visualiser --out sorties` | Crée `sorties/figures/plan_2d.html` et `vue_3d.html` (double-clic pour ouvrir) ; cliquer « Distances (pire point) » dans la légende du plan pour voir les distances |
 | `python -m twinhyp visualiser --out sorties --sans-3d` | Plan 2D seul (1 s au lieu de 15 s) |
 | `python -m twinhyp valider --out sorties` | Revérifie que les sorties respectent schémas et formes SHACL |
-| `python -m twinhyp questions --out sorties` | Affiche les réponses Q01–Q14 obtenues par SPARQL sur `kg.ttl` (`--sparql` : montre les requêtes) |
-| `pytest` | Lance tous les tests (~60 s) |
+| `python -m twinhyp questions --out sorties` | Affiche les réponses Q01–Q19 obtenues par SPARQL sur `kg.ttl` (`--sparql` : montre les requêtes) |
+| `pytest` | Lance tous les tests (~3 min) |
 | `pytest -m "not integration"` | Tests rapides seulement |
 
 ## Résultats par phase
@@ -31,6 +31,8 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 3 – Réponses préliminaires | Q07 = 0,864 m (A202 → A201 → A105 → A101 → entrée) · Q08 confirmée = B201, B105, B101. |
 | 4 – Graphe de connaissances | `ontology.ttl` (socle + extension alignée BOT/SAREF4BLDG) et `kg.ttl` (~880 triplets) conformes aux formes publiques F1, F2, F7, F8 et à 9 formes maison ; F3–F6 attendent les équipements de M4. |
 | 4 – Réponses par SPARQL | Les 14 questions statiques sont obtenues par requêtes sur le graphe, identiques aux réponses calculées en Python ; Q11 = A102, B102 (séjours). |
+| 5 – Évacuation dynamique | Feu en cuisine A103 : alarme à 70 s, A101 dangereux à 180 s ; dès lors les chambres A202/A203 n'ont plus de route sûre (confinement), alors que la pénalité de Pang leur propose une route de 1 026 m à travers le feu ; le logement B évacue normalement. |
+| 5 – Réponses | Q15 = 70 s · Q16 = A101, A102, A103, A105, A201 · Q17 = A202, A201, A105, A101 · Q18 = 180 s · Q19 = A202, A203. |
 
 ## Écarts de la maquette à présenter au jury
 

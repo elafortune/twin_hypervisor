@@ -138,3 +138,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > Q13 n'a pas l'air d'une question piège dans le sens où ça serait logique après que l'escalier A105 permette de monter au level 2 qu'il y ait une porte pour le logement A et une pour le logement B. vérifie cela afin de savoir s'il y a pas une erreur de connectivité qui fait que ta requete a renvoyé l'ensemble vide
 
 **Résultat :** B105 n'est pas au-dessus de A105 : c'est la cage symétrique du logement B, base au Level 1 → Q01 inchangée. Q13 = ∅ confirmée par 4 voies (murs mitoyens sans ouverture, limites IFC, portes, géométrie) ; test ajouté ; doutes Q-1 et Q-8 levés.
+
+---
+
+## 16 — 2026-11-10 — Étape 5
+
+> passe à l'étape 5
+
+**Résultat :** étape 5 réalisée : observations SOSA, état par SPARQL UPDATE, stratégies 1 et 2, contrainte dure contre pénalité, `evacuation_dynamique.jsonl` (410 lignes), Q15–Q19 par SPARQL ; `choix.md` (5.1–5.11), `doutes.md` (V-1 à V-7), `main.md` et carnet complétés.
