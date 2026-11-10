@@ -88,4 +88,4 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 
 > j'ai vérifié,le double B202 et le B105 classé en stairway a la place de room note ces éléments de décalages dans main.md je suppose que ce seront des éléments dont je parlerai avec le jury. tout correspond, passons à l'étape 2
 
-**Résultat :** section « Écarts de la maquette à présenter au jury » dans `main.md`, grille BIMvision cochée, étape 2 (connectivité) réalisée.
+**Résultat :** section « Écarts de la maquette à présenter au jury » dans `main.md`, grille BIMvision cochée ; étape 2 réalisée (`connectivite.py` : vote à 3 sources pour les portes, ouvertures par limites virtuelles + contact géométrique, escaliers, contrôle d'évacuabilité), 5 nouvelles anomalies, 54 tests verts, plan 2D avec liaisons.

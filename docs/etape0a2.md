@@ -38,13 +38,15 @@
 | DV.2 | **Plan 2D** construit depuis `geometry.json` uniquement | Montre ce que la chaîne a compris (pas ce que dit l'IFC) |
 | DV.3 | **Vue 3D** construite depuis l'IFC, + superpositions issues des sorties (portes, sorties, puis équipements de `devices.json`) | Indispensable pour M3/M4 (hauteurs, caméras, voxels) |
 
-### Étape 2 – Connectivité (à réaliser)
+### Étape 2 – Connectivité (réalisée le 10/11)
 | # | Décision | Raison |
 |---|---|---|
 | D2.1 | Connectivité recoupée sur **3 sources** : `IfcRelSpaceBoundary`, chaîne mur → ouverture → porte (Pang), géométrie | Un désaccord entre sources = anomalie ; robustesse sur un IFC sans limites d'espace |
 | D2.2 | Liaisons « ouverture » = **limites virtuelles** entre espaces | Les 12 ouvertures sans porte sont des trous de meubles / de toit, pas des passages |
 | D2.3 | Sortie = porte bordant **un seul** espace intérieur ; `IsExternal` en recoupement ; `IsFireExit` ignoré | `IsFireExit` est une valeur fictive |
-| D2.4 | Escaliers : décision après analyse ; piste foyer ↔ espace escalier (x105) ↔ couloir (x201) | Q09 attend les espaces de liaison verticale |
+| D2.4 | Escalier = liaison **cage (x105) ↔ espace d'arrivée (x201)** ; le foyer rejoint la cage par une ouverture. Si une paire est reliée à la fois par un escalier et une limite virtuelle, seule la liaison « escalier » est gardée | La volée est entièrement dans la cage double hauteur ; Q09 = espaces de liaison verticale |
+| D2.6 | **Vote à la majorité** (≥ 2 sources sur 3) pour les espaces d'une porte ; seul un désaccord impliquant la source IFC est une anomalie de maquette | Une citation isolée de la géométrie ou de la chaîne de Pang est une imprécision de méthode, pas une erreur du modèle |
+| D2.7 | Ouverture libre = contours qui se touchent (< 2 cm), **sans chevauchement**, sur ≥ 0,60 m, confirmée par des limites virtuelles IFC | Deux espaces séparés par un mur sont à ≥ 12 cm ; un chevauchement est une erreur de contour |
 | D2.5 | Pas de graphe de connaissances, pas de Dijkstra, pas de ML à l'étape 2 (BFS de contrôle seulement) | KG à l'étape 4, Dijkstra aux étapes 3 et 5 |
 
 ## 2. Résultats principaux (étape 1)
@@ -79,6 +81,40 @@ Extraction en **1,4 s** ; `geometry.json` conforme.
 | Q10 – surface totale de Level 2 | **134,53 m²** |
 | Q12 – salles de bains de Level 2 | A204, B204 |
 | Q14 – portes < 0,80 m | 4 portes de 0,762 m : `1aj$VJZFn2TxepZUBcKp$i`, `1aj$VJZFn2TxepZUBcKpac`, `1hOSvn6df7F8_7GcBWlS8Z`, `1hOSvn6df7F8_7GcBWlS9F` |
+
+## 2 bis. Résultats principaux (étape 2)
+
+Connectivité calculée en **0,6 s** de plus (M1 complet : 1,9 s). 20 liaisons :
+
+| Type | Liaisons |
+|---|---|
+| porte (10) | A101–A104, A201–A202, A201–A203, A201–A204, **A204–A205**, et leurs symétriques dans B ; les 3 sources concordent sauf pour A204–A205 |
+| ouverture (8) | A101–A102, A101–A103, A102–A103, A101–A105 et symétriques B (IFC + géométrie concordent) |
+| escalier (2) | A105 → A201, B105 → B201 |
+| sorties (4) | entrées A101, B101 ; portes vitrées A102, B102 (géométrie et `IsExternal` concordent) |
+
+Tous les espaces occupables atteignent une sortie. **Aucune liaison entre les logements A et B.**
+
+**Nouvelles anomalies (5 constats)**
+
+| Règle | Constat | Traitement |
+|---|---|---|
+| porte_sources_concordantes | La porte `1aj$VJZFn2TxepZUBcKpac` (A204–A205) a aussi une limite IFC vers A201, contredite par la chaîne de Pang et la géométrie (sa symétrique dans B n'en a pas) | Relation vers A201 écartée par le vote |
+| chevauchement_espaces | Les cages A105 / B105 empiètent de 0,15 m² sur les chambres A203 / B202 (« Bedroom 2 ») au niveau 2 | Pas de liaison ; signalé |
+| limite_bien_placee | Les limites virtuelles de A201 et B201 sont à 6 à 10 m de leur espace : placement local de ces espaces modifié sans mettre à jour leurs limites | Connectivité par contact géométrique |
+| limite_type_coherent | 12 limites virtuelles typées EXTERNAL font face à un autre espace (foyers, cuisines, cages) | Traitées comme internes |
+
+**Réponses préliminaires** (à confirmer par SPARQL à l'étape 4) :
+
+| Question | Résultat |
+|---|---|
+| Q02 – portes vers l'extérieur | 4 : `1hOSvn6df7F8_7GcBWlRGQ`, `…RH8`, `1s1jVhK8z0pgKYcr9jt781`, `…7AB` |
+| Q03 – accès direct à une sortie | A101, A102, B101, B102 |
+| Q04 – communiquent avec A101 sans porte | A102, A103, A105 |
+| Q06 – une seule porte au Level 2 | A202, A203, A205, B202 (×2), B205 |
+| Q08 – de B « Bedroom 2 » à l'entrée B | B201, B105, B101 |
+| Q09 – liaison verticale | A105, B105 |
+| Q13 – passage direct A ↔ B | **aucun** (ensemble vide) |
 
 ## 3. Mode d'emploi
 

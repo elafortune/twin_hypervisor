@@ -70,3 +70,12 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Visualisation contrôlée à l'œil (plan Level 1, Level 2, vue 3D) : contours, portes et escaliers aux bons endroits.
 - **À faire à la main** : vérifier Q01, Q05, Q10, Q12, Q14 dans BIMvision.
 - **[vérifié à la main]** 10/11 : dans BIMvision, surfaces GSA BIM Area, espaces de Level 2, salles de bains, largeurs de portes et anomalies (double `B202`, B105 catégorie « Stairway ») conformes à la chaîne (Q01, Q05, Q10, Q12, Q14).
+
+## 2026-11-10 – Étape 2 : connectivité
+
+- Exploration : les limites virtuelles sont des `IfcSurfaceOfLinearExtrusion` de polylignes ; décodées en segments monde. Celles de A201/B201 tombent à 6–10 m de leur espace : leur `ObjectPlacement` (6,42 ; −11,55 ; 3,12) n'est pas nul contrairement aux autres espaces, alors que les coordonnées des limites restent absolues.
+- **Impasse** : `ifcopenshell.geom.create_shape` échoue sur ces surfaces d'extrusion → décodage manuel de la polyligne + placement.
+- **Impasse** : la chaîne de Pang (porte → ouverture → mur → espaces du mur) renvoie tous les espaces qui longent un mur (jusqu'à 5) ; il faut la restreindre aux espaces proches de la porte.
+- Premier essai : toute citation minoritaire signalée → 2 fausses anomalies (A105/B105 cités par la seule chaîne de Pang, à cause du chevauchement cage/chambre). Décision : seule une citation minoritaire **de la source IFC** est une anomalie de la maquette.
+- Escaliers : la volée est entièrement dans la cage (x105, double hauteur) ; arrivée détectée dans x201. Liaison A105 → A201 ; la limite virtuelle A201/A105 est l'arrivée de l'escalier (pas une ouverture distincte).
+- Résultats et réponses préliminaires : `etape0a2.md` §2 bis. 54 tests verts.
