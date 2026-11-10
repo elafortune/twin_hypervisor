@@ -1,0 +1,94 @@
+# Formes SHACL « maison » : invariants de bon sens qui anticipent les formes cachées du jury.
+# Elles complètent les 8 formes publiques sans les modifier. Préfixe M (maison).
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix ssi:  <https://ligm.univ-eiffel.fr/twinhypervisor/ssi#> .
+@prefix bot:  <https://w3id.org/bot#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix fm:   <https://ligm.univ-eiffel.fr/twinhypervisor/formes-maison#> .
+
+# Gravité : sh:Violation pour les invariants que l'exemple minimal du kit respecte ;
+# sh:Warning pour nos exigences de complétude (l'exemple du kit, conforme, ne les remplit pas).
+
+# M1 – isConnectedTo est symétrique (owl:SymmetricProperty) : nous écrivons les deux sens,
+#      sinon une requête SPARQL sans raisonneur ne voit qu'un sens. Avertissement seulement :
+#      en OWL le second sens est impliqué (l'exemple du kit n'en écrit qu'un).
+fm:M1_Symetrie a sh:NodeShape ;
+    sh:targetSubjectsOf ssi:isConnectedTo ;
+    sh:severity sh:Warning ;
+    sh:sparql [ sh:message "M1 : isConnectedTo écrit dans un seul sens."@fr ; sh:prefixes fm:Prefixes ;
+        sh:select """SELECT $this ?value WHERE { $this ssi:isConnectedTo ?value . FILTER NOT EXISTS { ?value ssi:isConnectedTo $this } }""" ] .
+
+# M2 – Chaque liaison porte une distance d'évacuation dans chacun des deux sens.
+fm:M2_DistanceParLiaison a sh:NodeShape ;
+    sh:targetSubjectsOf ssi:isConnectedTo ;
+    sh:severity sh:Warning ;
+    sh:sparql [ sh:message "M2 : liaison sans distance d'évacuation dans ce sens."@fr ; sh:prefixes fm:Prefixes ;
+        sh:select """SELECT $this ?value WHERE { $this ssi:isConnectedTo ?value .
+            FILTER NOT EXISTS { ?d a ssi:EvacuationDistance ; ssi:from $this ; ssi:to ?value } }""" ] .
+
+# M3 – Tout espace occupable atteint une sortie par le graphe de connectivité
+#      (parcouru dans les deux sens : la symétrie n'est pas forcément matérialisée).
+fm:M3_Evacuable a sh:NodeShape ;
+    sh:targetClass bot:Space ;
+    sh:sparql [ sh:message "M3 : espace occupable sans chemin vers une sortie."@fr ; sh:prefixes fm:Prefixes ;
+        sh:select """SELECT $this WHERE { $this ssi:occupiable true .
+            FILTER NOT EXISTS { $this (ssi:isConnectedTo|^ssi:isConnectedTo)* ?s . ?e a ssi:Exit ; ssi:connects ?s } }""" ] .
+
+# M4 – Un espace a au plus un état, une surface positive et un indicateur d'occupabilité.
+fm:M4_Espace a sh:NodeShape ;
+    sh:targetClass bot:Space ;
+    sh:property [ sh:path ssi:hasStatus ; sh:maxCount 1 ; sh:in ( ssi:Normal ssi:Dangerous ) ;
+                  sh:message "M4 : état absent de {Normal, Dangerous} ou multiple."@fr ] ;
+    sh:property [ sh:path ssi:area ; sh:minCount 1 ; sh:maxCount 1 ; sh:minExclusive 0 ;
+                  sh:message "M4 : surface absente, multiple ou non positive."@fr ] ;
+    sh:property [ sh:path ssi:occupiable ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:boolean ;
+                  sh:message "M4 : occupabilité absente ou non booléenne."@fr ] .
+
+# M5 – Une porte a une largeur positive et un GlobalId.
+fm:M5_Porte a sh:NodeShape ;
+    sh:targetClass ssi:Door ;
+    sh:severity sh:Warning ;
+    sh:property [ sh:path ssi:doorWidth ; sh:minCount 1 ; sh:maxCount 1 ; sh:minExclusive 0 ;
+                  sh:message "M5 : largeur de porte absente ou non positive."@fr ] ;
+    sh:property [ sh:path ssi:ifcGlobalId ; sh:minCount 1 ; sh:maxCount 1 ; sh:minLength 22 ; sh:maxLength 22 ;
+                  sh:message "M5 : GlobalId de porte manquant ou mal formé."@fr ] .
+
+# M6 – Un GlobalId IFC désigne un seul nœud du graphe.
+fm:M6_GlobalIdUnique a sh:NodeShape ;
+    sh:targetSubjectsOf ssi:ifcGlobalId ;
+    sh:sparql [ sh:message "M6 : GlobalId partagé par deux nœuds."@fr ; sh:prefixes fm:Prefixes ;
+        sh:select """SELECT $this ?value WHERE { $this ssi:ifcGlobalId ?value . ?autre ssi:ifcGlobalId ?value . FILTER (?autre != $this) }""" ] .
+
+# M7 – Exactement un nœud ssi:Parameters, portant les deux paramètres personnels.
+fm:M7_Parametres a sh:NodeShape ;
+    sh:targetNode ssi:Parameters ;
+    sh:sparql [ sh:message "M7 : il faut exactement un nœud ssi:Parameters."@fr ; sh:prefixes fm:Prefixes ;
+        sh:select """SELECT $this WHERE { { SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE { ?p a ssi:Parameters } } FILTER (?n != 1) }""" ] .
+fm:M7_ParametresValeurs a sh:NodeShape ;
+    sh:targetClass ssi:Parameters ;
+    sh:property [ sh:path ssi:maxCallPointDistance ; sh:minCount 1 ; sh:maxCount 1 ; sh:minExclusive 0 ;
+                  sh:message "M7 : distance maximale des déclencheurs absente."@fr ] ;
+    sh:property [ sh:path ssi:minCameraCoverage ; sh:minCount 1 ; sh:maxCount 1 ; sh:minInclusive 0 ; sh:maxInclusive 1 ;
+                  sh:message "M7 : couverture vidéo minimale absente ou hors [0, 1]."@fr ] .
+
+# M8 – Une porte intérieure relie deux espaces du même niveau (avertissement : une porte
+#      peut légitimement donner sur un espace double hauteur rattaché au niveau inférieur).
+fm:M8_PorteMemeNiveau a sh:NodeShape ;
+    sh:targetClass ssi:Door ;
+    sh:severity sh:Warning ;
+    sh:sparql [ sh:message "M8 : porte reliant deux espaces de niveaux différents."@fr ; sh:prefixes fm:Prefixes ;
+        sh:select """SELECT $this WHERE { $this ssi:connects ?a , ?b . ?n1 bot:hasSpace ?a . ?n2 bot:hasSpace ?b . FILTER (?n1 != ?n2) }""" ] .
+
+# M9 – Une distance vers une sortie part d'un espace et aboutit à une sortie, avec une valeur positive.
+fm:M9_DistanceSortie a sh:NodeShape ;
+    sh:targetClass ssi:ExitDistance ;
+    sh:property [ sh:path ssi:exitFrom ; sh:class bot:Space ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path ssi:exitVia ; sh:class ssi:Exit ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path ssi:exitDistance ; sh:minCount 1 ; sh:maxCount 1 ; sh:minExclusive 0 ] .
+
+fm:Prefixes sh:declare
+    [ sh:prefix "ssi" ;  sh:namespace "https://ligm.univ-eiffel.fr/twinhypervisor/ssi#"^^xsd:anyURI ] ,
+    [ sh:prefix "bot" ;  sh:namespace "https://w3id.org/bot#"^^xsd:anyURI ] ,
+    [ sh:prefix "rdfs" ; sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ] .

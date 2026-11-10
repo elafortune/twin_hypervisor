@@ -86,21 +86,52 @@ def erreurs_sortie_json(chemin: Path, dossier_schemas: Path) -> list[str]:
 
 
 # Validation SHACL ------------------------------------------------------------
-def rapport_shacl(chemin_kg: Path, formes: Path, ontologie: Path) -> tuple[bool, str]:
+# Formes portant sur les équipements SSI : sans objet tant que M4 n'a pas placé d'équipement.
+FORMES_EQUIPEMENTS = ("F3_Detection", "F4_Declencheur", "F5_Video", "F6_Zone", "F6_ZoneNiveau")
+
+
+def formes_differees(dossier_sorties: Path) -> tuple[str, ...]:
+    """F3–F6 sont différées si devices.json est absent ou non calculé (chaîne lancée avant M4)."""
+    devices = dossier_sorties / "devices.json"
+    if not devices.is_file():
+        return FORMES_EQUIPEMENTS
+    statut = json.loads(devices.read_text(encoding="utf-8")).get("objectif", {}).get("statut_solveur")
+    return FORMES_EQUIPEMENTS if statut == "non_calcule" else ()
+
+
+def graphe_formes(formes: Path | list[Path], differees: Iterable[str] = ()):
+    """Charge les formes ; une forme différée perd sa cible (elle ne s'applique alors à rien)."""
+    from rdflib import Graph, URIRef
+    from rdflib.namespace import SH
+
+    g = Graph()
+    for f in ([formes] if isinstance(formes, Path) else formes):
+        g.parse(f, format="turtle")
+    noms = set(differees)
+    for forme in set(g.subjects()):
+        if isinstance(forme, URIRef) and forme.split("#")[-1] in noms:
+            for cible in (SH.targetClass, SH.targetNode, SH.targetSubjectsOf, SH.targetObjectsOf):
+                g.remove((forme, cible, None))
+    return g
+
+
+def rapport_shacl(chemin_kg: Path, formes: Path | list[Path], ontologie: Path,
+                  differees: Iterable[str] = ()) -> tuple[bool, str]:
     from pyshacl import validate
 
     conforme, _, texte = validate(
         data_graph=str(chemin_kg),
-        shacl_graph=str(formes),
+        shacl_graph=graphe_formes(formes, differees),
         ont_graph=str(ontologie),
         inference="rdfs",
         abort_on_first=False,
+        allow_warnings=True,
     )
     return bool(conforme), texte
 
 
 # Point d'entrée commun -------------------------------------------------------
-def verifier_sortie(chemin: Path, dossier_schemas: Path, formes: Path | None = None,
+def verifier_sortie(chemin: Path, dossier_schemas: Path, formes: Path | list[Path] | None = None,
                     ontologie: Path | None = None) -> None:
     """Lève `SortieNonConforme` si la sortie viole son contrat."""
     if not chemin.is_file():
@@ -110,6 +141,8 @@ def verifier_sortie(chemin: Path, dossier_schemas: Path, formes: Path | None = N
         if erreurs:
             raise SortieNonConforme(f"{chemin.name} :\n  " + "\n  ".join(erreurs[:20]))
     elif chemin.name == "kg.ttl" and formes is not None and ontologie is not None:
-        conforme, texte = rapport_shacl(chemin, formes, ontologie)
+        differees = formes_differees(chemin.parent)
+        conforme, texte = rapport_shacl(chemin, formes, ontologie, differees)
         if not conforme:
-            raise SortieNonConforme(f"kg.ttl ne respecte pas les formes SHACL :\n{texte}")
+            note = " (F3–F6 différées : M4 non calculé)" if differees else ""
+            raise SortieNonConforme(f"kg.ttl ne respecte pas les formes SHACL{note} :\n{texte}")

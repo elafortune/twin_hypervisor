@@ -71,6 +71,11 @@ class Contexte:
         return self.donnees / "ontologie" / "formes_publiques.ttl"
 
     @property
+    def formes(self) -> list[Path]:
+        """Formes publiques du kit + formes maison (src/twinhyp/m2_graphe/formes_maison.ttl)."""
+        return [self.formes_publiques, Path(__file__).parent / "m2_graphe" / "formes_maison.ttl"]
+
+    @property
     def figures(self) -> Path:
         chemin = self.sortie / "figures"
         chemin.mkdir(exist_ok=True)

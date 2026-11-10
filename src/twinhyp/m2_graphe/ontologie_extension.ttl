@@ -1,0 +1,68 @@
+# Extension de l'ontologie socle SSI (étape 4).
+# Règles suivies : ne jamais renommer ni contredire le socle ; aligner par subsomption
+# (rdfs:subClassOf) plutôt que par équivalence ; ne réutiliser une propriété du socle que si
+# son rdfs:domain convient (le domaine est une règle d'INFÉRENCE : mal employé, il ajoute des
+# types et casse des formes SHACL, ex. ssi:hasDistance sur une distance vers une sortie).
+@prefix ssi:    <https://ligm.univ-eiffel.fr/twinhypervisor/ssi#> .
+@prefix bot:    <https://w3id.org/bot#> .
+@prefix s4bldg: <https://saref.etsi.org/saref4bldg/> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+<https://ligm.univ-eiffel.fr/twinhypervisor/ssi/extension> a owl:Ontology ;
+    rdfs:label "Extension TwinHypervisor du socle SSI"@fr ;
+    owl:imports <https://ligm.univ-eiffel.fr/twinhypervisor/ssi> , <https://saref.etsi.org/saref4bldg/> .
+
+# ---------- Alignement SAREF4BLDG (calqué sur IFC) ----------
+ssi:Door  rdfs:subClassOf s4bldg:Door .
+ssi:Stair rdfs:subClassOf s4bldg:Stair .
+
+# ---------- Classes ajoutées ----------
+ssi:Dwelling a owl:Class ; rdfs:subClassOf bot:Zone ;
+    rdfs:label "Logement"@fr ;
+    rdfs:comment "Ensemble d'espaces reliés entre eux (composante connexe du graphe de connectivité contenant une sortie). Relié aux espaces par ssi:inDwelling et non par bot:hasSpace : F1 impose qu'un espace ait exactement un « parent » bot:hasSpace, son niveau."@fr .
+
+ssi:ExitDistance a owl:Class ;
+    rdfs:label "Distance d'un espace à une sortie"@fr ;
+    rdfs:comment "Distance du point le plus défavorable de l'espace à la porte de sortie. Classe distincte de ssi:EvacuationDistance : l'extérieur n'est pas un bot:Space (F7)."@fr .
+
+ssi:ModelAnomaly a owl:Class ;
+    rdfs:label "Incohérence de la maquette IFC"@fr ;
+    rdfs:comment "Constat d'une règle de contrôle (M1) et traitement appliqué par la chaîne."@fr .
+
+# ---------- Propriétés descriptives ----------
+ssi:longName       a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "nom long IFC (LongName)"@fr .
+ssi:elevation      a owl:DatatypeProperty ; rdfs:domain bot:Storey ; rdfs:range xsd:decimal ; rdfs:label "altitude du niveau (m)"@fr .
+ssi:height         a owl:DatatypeProperty ; rdfs:domain bot:Space ; rdfs:range xsd:decimal ; rdfs:label "hauteur de l'espace (m)"@fr .
+ssi:geometricArea  a owl:DatatypeProperty ; rdfs:domain bot:Space ; rdfs:range xsd:decimal ; rdfs:label "surface de l'empreinte géométrique (m²)"@fr .
+ssi:areaSource     a owl:DatatypeProperty ; rdfs:domain bot:Space ; rdfs:range xsd:string ; rdfs:label "origine de ssi:area (propriété IFC ou géométrie)"@fr .
+ssi:doorWidth      a owl:DatatypeProperty ; rdfs:domain ssi:Door ; rdfs:range xsd:decimal ; rdfs:label "largeur de passage (m)"@fr .
+ssi:flightLength   a owl:DatatypeProperty ; rdfs:domain ssi:Stair ; rdfs:range xsd:decimal ; rdfs:label "longueur de la volée √(course² + dénivelé²) (m)"@fr .
+ssi:inDwelling     a owl:ObjectProperty ; rdfs:domain bot:Space ; rdfs:range ssi:Dwelling ; rdfs:label "appartient au logement"@fr .
+ssi:linksSpace     a owl:ObjectProperty ; rdfs:domain ssi:Stair ; rdfs:range bot:Space ; rdfs:label "escalier desservant l'espace"@fr ;
+    rdfs:comment "Pendant de ssi:connects pour les escaliers : ssi:connects a pour domaine ssi:Door, l'employer ferait inférer qu'un escalier est une porte."@fr .
+ssi:viaElement     a owl:ObjectProperty ; rdfs:domain ssi:EvacuationDistance ; rdfs:range bot:Element ; rdfs:label "porte ou escalier franchi"@fr .
+ssi:pangDistance   a owl:DatatypeProperty ; rdfs:domain ssi:EvacuationDistance ; rdfs:range xsd:decimal ;
+    rdfs:label "distance selon la formule de Pang (un seul sommet intermédiaire), pour comparaison"@fr .
+
+# ---------- Distance vers une sortie ----------
+ssi:exitFrom       a owl:ObjectProperty ; rdfs:domain ssi:ExitDistance ; rdfs:range bot:Space .
+ssi:exitVia        a owl:ObjectProperty ; rdfs:domain ssi:ExitDistance ; rdfs:range ssi:Exit .
+ssi:exitDistance   a owl:DatatypeProperty ; rdfs:domain ssi:ExitDistance ; rdfs:range xsd:decimal ; rdfs:label "distance (m), point le plus défavorable"@fr .
+
+# ---------- Anomalies ----------
+ssi:rule           a owl:DatatypeProperty ; rdfs:domain ssi:ModelAnomaly ; rdfs:range xsd:string .
+ssi:treatment      a owl:DatatypeProperty ; rdfs:domain ssi:ModelAnomaly ; rdfs:range xsd:string .
+ssi:concerns       a owl:ObjectProperty ; rdfs:domain ssi:ModelAnomaly ; rdfs:label "élément du graphe concerné"@fr .
+ssi:concernsGlobalId a owl:DatatypeProperty ; rdfs:domain ssi:ModelAnomaly ; rdfs:range xsd:string ;
+    rdfs:label "GlobalId IFC concerné (l'élément peut ne pas être dans le graphe : mur, limite…)"@fr .
+
+# ---------- Paramètres personnels (en plus de ceux du socle) ----------
+ssi:gridStep               a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ; rdfs:range xsd:decimal .
+ssi:cameraHorizontalFov    a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ; rdfs:range xsd:decimal .
+ssi:cameraVerticalFov      a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ; rdfs:range xsd:decimal .
+ssi:cameraRange            a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ; rdfs:range xsd:decimal .
+ssi:cameraMountHeight      a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ; rdfs:range xsd:decimal .
+ssi:detectorRadius         a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ; rdfs:range xsd:decimal .
+ssi:fireOrigin             a owl:ObjectProperty ; rdfs:domain ssi:Parameters ; rdfs:range bot:Space .

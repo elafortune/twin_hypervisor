@@ -38,7 +38,7 @@ PAQUETS_TRACES = ["ifcopenshell", "numpy", "shapely", "networkx", "rdflib", "pys
 def verifier(ctx: Contexte, cles: list[str]) -> None:
     for cle in cles:
         verifier_sortie(ctx.chemin_sortie(cle), ctx.schemas,
-                        formes=ctx.formes_publiques, ontologie=ctx.chemin_sortie("ontology"))
+                        formes=ctx.formes, ontologie=ctx.chemin_sortie("ontology"))
 
 
 def machine() -> dict:
