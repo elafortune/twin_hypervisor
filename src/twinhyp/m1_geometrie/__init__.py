@@ -1,13 +1,35 @@
-"""M1 – Jumeau géométrique : IFC -> geometry.json (+ voxels à l'étape 6).
+"""M1 – Jumeau géométrique : IFC -> geometry.json.
 
-Squelette (étape 0) : écrit un geometry.json vide mais conforme.
+Étape 1 : niveaux, espaces, portes, escaliers, anomalies d'attributs.
+Étape 2 (à venir) : liaisons recoupées sur 3 sources, sorties, anomalies de connectivité.
 """
 
 from twinhyp.contexte import Contexte
 from twinhyp.io_schemas import ecrire_json
+from twinhyp.m1_geometrie import anomalies, extraction
+from twinhyp.m1_geometrie import ifc_outils as io
+
+
+def construire_geometrie(chemin_ifc, params: dict | None = None) -> dict:
+    params = params or {}
+    f = io.ouvrir(chemin_ifc)
+    mots_cles = tuple(params.get("mots_cles_non_occupable", extraction.MOTS_CLES_NON_OCCUPABLE))
+    niveaux = extraction.en_dicts(extraction.extraire_niveaux(f))
+    espaces = extraction.en_dicts(extraction.extraire_espaces(f, mots_cles))
+    portes = extraction.en_dicts(extraction.extraire_portes(f))
+    escaliers = extraction.en_dicts(extraction.extraire_escaliers(f))
+    return {
+        "source": {"ifc": str(chemin_ifc), "schema_ifc": f.schema,
+                   "echelle_longueur_m": io.echelle_longueur(f)},
+        "niveaux": niveaux,
+        "espaces": espaces,
+        "portes": portes,
+        "escaliers": escaliers,
+        "liaisons": [],
+        "anomalies": anomalies.detecter(f, niveaux, espaces, escaliers),
+    }
 
 
 def executer(ctx: Contexte) -> list[str]:
-    geometrie = {"niveaux": [], "espaces": [], "portes": [], "liaisons": [], "anomalies": []}
-    ecrire_json(ctx.chemin_sortie("geometry"), geometrie)
+    ecrire_json(ctx.chemin_sortie("geometry"), construire_geometrie(ctx.ifc, ctx.params))
     return ["geometry"]
