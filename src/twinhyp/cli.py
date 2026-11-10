@@ -48,6 +48,10 @@ def construire_parseur() -> argparse.ArgumentParser:
     sen.add_argument("--params", type=Path, default=DONNEES_PAR_DEFAUT / "parametres.json")
     sen.add_argument("--facteurs", default="1,2,5,10,20,50")
 
+    cmp_ = sous.add_parser("campagne", help="IWCMC : campagne complète d'expériences (comparaison.md)")
+    cmp_.add_argument("--out", required=True, type=Path)
+    cmp_.add_argument("--rapide", action="store_true", help="2 graines au lieu de 5")
+
     qst = sous.add_parser("questions", help="réponses Q01–Q14 obtenues par SPARQL sur <out>/kg.ttl")
     qst.add_argument("--out", required=True, type=Path)
     qst.add_argument("--sparql", action="store_true", help="afficher aussi les requêtes")
@@ -122,7 +126,7 @@ def commande_questions(args: argparse.Namespace) -> int:
 def commande_visualiser(args: argparse.Namespace) -> int:
     import json
 
-    from twinhyp.visualisation import iwcmc, plan2d, voxels, vue3d
+    from twinhyp.visualisation import comparaison, iwcmc, plan2d, voxels, vue3d
 
     geo = args.out / SORTIES["geometry"]
     if not geo.is_file():
@@ -135,6 +139,9 @@ def commande_visualiser(args: argparse.Namespace) -> int:
     chemin_iwcmc = iwcmc.generer(args.out, dossier)
     if chemin_iwcmc:
         print(f"IWCMC   : {chemin_iwcmc.resolve()}")
+    chemin_cmp = comparaison.generer(args.out, dossier)
+    if chemin_cmp:
+        print(f"Campagne: {chemin_cmp.resolve()}")
     if not args.sans_3d:
         ifc = args.ifc or Path(json.loads(geo.read_text(encoding="utf-8"))["source"]["ifc"])
         chemin = vue3d.generer(ifc, dossier, geo, args.out / SORTIES["devices"])
@@ -184,6 +191,11 @@ def main(argv: list[str] | None = None) -> int:
             return commande_questions(args)
         if args.commande == "sensibilite":
             return commande_sensibilite(args)
+        if args.commande == "campagne":
+            from twinhyp.m3_iwcmc.campagne import campagne
+            campagne(args.out, args.rapide)
+            print(f"Résultats : {(args.out / 'iwcmc' / 'campagne' / 'resultats.json').resolve()}")
+            return 0
         return commande_valider(args)
     except (FileNotFoundError, SortieNonConforme, ValueError) as exc:
         print(f"Erreur : {exc}", file=sys.stderr)
