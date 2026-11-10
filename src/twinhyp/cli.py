@@ -94,13 +94,16 @@ def commande_questions(args: argparse.Namespace) -> int:
 def commande_visualiser(args: argparse.Namespace) -> int:
     import json
 
-    from twinhyp.visualisation import plan2d, vue3d
+    from twinhyp.visualisation import plan2d, voxels, vue3d
 
     geo = args.out / SORTIES["geometry"]
     if not geo.is_file():
         raise FileNotFoundError(f"{geo} absent : lancer d'abord `run --etapes m1`")
     dossier = args.out / "figures"
     print(f"Plan 2D : {plan2d.generer(geo, dossier).resolve()}")
+    npz = args.out / "grille_voxels.npz"
+    if npz.is_file():
+        print(f"Voxels  : {voxels.generer(npz, dossier).resolve()}")
     if not args.sans_3d:
         ifc = args.ifc or Path(json.loads(geo.read_text(encoding="utf-8"))["source"]["ifc"])
         chemin = vue3d.generer(ifc, dossier, geo, args.out / SORTIES["devices"])
