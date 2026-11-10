@@ -89,3 +89,4 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Distances extrêmes : foyer A101 → entrée 8,35 m ; A201 → cage (descente) 4,11 m + 4,85 m.
 - Itinéraire A202 → entrée A101 : A202, A201, A105, A101 ; portes franchies 0,864 m (chambre) et entrée → **Q07 = 0,864 m**. Q08 confirmée (B201, B105, B101).
 - 62 tests verts.
+- Vérification Q07 dans BIMvision : la porte A202–A201 n'est pas nommée par ses espaces ; repérage par le numéro Revit 159834 / Mark A202. **Recoupement** : la porte de « Bedroom 2 » (B202 en double) porte la marque `B203`, ce qui confirme que l'espace s'appelait B203 à l'origine.

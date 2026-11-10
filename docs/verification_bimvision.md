@@ -60,3 +60,26 @@ Q14 : portes de moins de 0,80 m = les **4 portes de 0,762 m**.
 | ☑ | B105 nommé « Room », catégorie OmniClass « Stairway » |
 | ☑ | Dans l'arbre, un escalier rangé sous **Roof** |
 | ☑ | Propriétés d'une porte : `IsFireExit` = « IsFireExit » |
+
+## Identifier une porte dans BIMvision
+
+Les portes ne portent pas le nom des espaces qu'elles relient. Leur nom IFC est du type `M_Single-Flush:0864 x 2032mm:0864 x 2032mm:159834` (famille : largeur x hauteur : numéro Revit). La propriété **Mark** (groupe `Identity Data`) donne la pièce desservie.
+
+| Liaison (chaîne) | Nom IFC (fin) | Mark | GlobalId | Largeur |
+|---|---|---|---|---|
+| A202 – A201 (Q07) | `0864 x 2032mm:159834` | A202 | `2OBrcmyk58NupXoVOHUvVV` | 0,864 |
+| A203 – A201 | `0864 x 2032mm:150478` | A203 | `1hOSvn6df7F8_7GcBWlSDm` | 0,864 |
+| A204 – A201 | `0864 x 2032mm:160208` | A204 | `2OBrcmyk58NupXoVOHUvPL` | 0,864 |
+| A204 – A205 | `0762 x 2032mm:204034` | A205 | `1aj$VJZFn2TxepZUBcKpac` | 0,762 |
+| B202 – B201 | `0864 x 2032mm:159734` | B202 | `2OBrcmyk58NupXoVOHUuXp` | 0,864 |
+| B202 « Bedroom 2 » – B201 | `0864 x 2032mm:150378` | **B203** | `1hOSvn6df7F8_7GcBWlSFK` | 0,864 |
+| B204 – B201 | `0864 x 2032mm:160065` | B204 | `2OBrcmyk58NupXoVOHUvR4` | 0,864 |
+| B204 – B205 | `0762 x 2032mm:203720` | B205 | `1aj$VJZFn2TxepZUBcKp$i` | 0,762 |
+| A101 – A104 | `0762 x 2032mm:150173` | A104 | `1hOSvn6df7F8_7GcBWlS8Z` | 0,762 |
+| B101 – B104 | `0762 x 2032mm:150257` | B104 | `1hOSvn6df7F8_7GcBWlS9F` | 0,762 |
+| A101 → extérieur | `1250mm x 2010mm:146596` | A101 | `1hOSvn6df7F8_7GcBWlRGQ` | 1,25 |
+| B101 → extérieur | `1250mm x 2010mm:146678` | B101 | `1hOSvn6df7F8_7GcBWlRH8` | 1,25 |
+| A102 → extérieur | `Single-Glass 1:0813 x 2420mm:171975` | A102 | `1s1jVhK8z0pgKYcr9jt7AB` | 0,813 |
+| B102 → extérieur | `Single-Glass 1:0813 x 2420mm:171853` | B102 | `1s1jVhK8z0pgKYcr9jt781` | 0,813 |
+
+☐ Q07 : porte `…159834` (Mark A202) de largeur 0,864 m ; porte d'entrée `…146596` de 1,25 m → minimum 0,864 m.

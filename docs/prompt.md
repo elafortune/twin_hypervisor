@@ -105,3 +105,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > je valide ce plan crée aussi un fichier choix.md qui décris tous les choix qui ont du etre fait à chaque étape , les différentes propositions pertinentes et le choix final réalisé cela me permet de pouvoir garder une vision d'ensemble des choix faits et potentiellement de revenir sur certains choix réalisés par la suite avec une meilleure compréhension, tu peux continuer
 
 **Résultat :** `choix.md` (toutes les décisions des étapes 0 à 3 : options, choix final, raison, quand y revenir) ; étape 3 réalisée (`distances.py` : graphe de visibilité + Dijkstra, formule de Pang en comparaison, longueur de volée, itinéraires), couche « Distances » dans le plan 2D, Q07 = 0,864 m, 62 tests verts.
+
+---
+
+## 12 — 2026-11-10 — Porte A202–A201 introuvable dans BIMvision
+
+> je ne trouve pas de porte A202-201 à l'étahe level 2 dans BIMvision
+
+**Résultat :** la porte existe (`2OBrcmyk58NupXoVOHUvVV`, nom IFC « M_Single-Flush:0864 x 2032mm:0864 x 2032mm:159834 », marque Revit `A202`) ; table d'identification des 14 portes ajoutée dans `docs/verification_bimvision.md`.
