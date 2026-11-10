@@ -306,10 +306,15 @@ def plus_de_route_sure(g: Graph, depart: str) -> tuple[int | None, list[str]]:
     return None, [INSTANTS]
 
 
+FICHIER_KG_AVANT_AGENT = "kg_avant_agent.ttl"
+
+
 def executer(ctx: Contexte) -> list[str]:
     g = Graph().parse(ctx.chemin_sortie("kg"), format="turtle")
     lignes = rejouer(g, lire_observations(ctx.obs), seuils(ctx.params))
     ecrire_routes(g, lignes)
     ecrire_jsonl(ctx.chemin_sortie("evacuation"), lignes)
     g.serialize(ctx.chemin_sortie("kg"), format="turtle", encoding="utf-8")
+    # instantané lu par M6 : relancer l'agent repart toujours de l'état après M5 (pas de double application)
+    g.serialize(ctx.sortie / FICHIER_KG_AVANT_AGENT, format="turtle", encoding="utf-8")
     return ["evacuation", "kg"]
