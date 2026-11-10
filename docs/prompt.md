@@ -72,3 +72,12 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > réalise 2D +3D dès maintenant qui sera utile pour la suite, je valide tes propositions que tu vas consigner dans etape0a2.md et tu vas m'indiquer les résultats principaux et quels scriptes lancers pour les visualiser / où les visualiser
 
 **Résultat :** `docs/etape0a2.md` (décisions validées, résultats, mode d'emploi) ; extraction M1 (`extraction.py`, `ifc_outils.py`, `anomalies.py`) ; commande `visualiser` produisant `plan_2d.html` et `vue_3d.html` (plotly) ; 42 tests verts.
+
+---
+
+## 8 — 2026-11-10 — Mémo des commandes et vérification dans BIMvision
+
+> tu peux créer un fichier simpliste main.md qui va noter les différentes commandes de lancement et les résultats importants de chaque phase en une phrase, c'est un fichier simpliste qui résume tout les éléments importants les commandes (à quoi elles servent) et les résultats sans devoir parcourir beaucoup de texte.
+> j'ai bimvision et j'ai ouvert le duplex ifc mais je ne vois pas comment vérifier la surface et les différentes questions. dis moi comment faire cela ensuite on passe à la prochaine étape
+
+**Résultat :** `main.md` (mémo commandes + résultat de chaque phase en une phrase) et `docs/verification_bimvision.md` (grille de contrôle des valeurs à lire dans BIMvision) ; mode opératoire BIMvision donné dans le terminal.
