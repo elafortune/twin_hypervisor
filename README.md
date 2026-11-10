@@ -23,6 +23,8 @@ Options : `--etapes m1,m2` (relancer une partie de la chaîne à partir des sort
 
 Revalider des sorties existantes : `python -m twinhyp valider --out sorties/`.
 
+Visualiser : `python -m twinhyp visualiser --out sorties/` produit `sorties/figures/plan_2d.html` (plan par niveau) et `sorties/figures/vue_3d.html` (maquette 3D, vue de dessus), consultables hors ligne.
+
 Chaque exécution écrit `sorties/execution.json` : versions des paquets, machine, graine et durée de chaque étape.
 
 ## Sorties
@@ -47,6 +49,7 @@ src/twinhyp/
   contexte.py     chemins + paramètres lus depuis parametres.json (aucune valeur en dur)
   io_schemas.py   écriture JSON/JSONL, validation JSON Schema et SHACL
   m1_geometrie/ … m6_agent/   un paquet par module ; chacun expose executer(ctx)
+  visualisation/  plan 2D (depuis geometry.json) et vue 3D (depuis l'IFC), plotly
 ```
 
 Les modules ne communiquent que **par les fichiers de sortie** : M2 lit `geometry.json`, pas l'IFC. Chaque module se teste et se relance seul.

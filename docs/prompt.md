@@ -64,3 +64,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > je valide tous les éléments et le processus que tu as proposé : trois niveau de test, méthode de lancement des scriptes, architectures avec les modules communiquant ayant chacun leur sortie pour faciliter les tests, tracé 2D mais avec une librairie plus qualitative que matplotlib, calcule à quel point avoir le visualiseur 3D avec vue 2D est plus complexe par rapport à l'ajout sur la visualisation et la compréhension de l'architecture,je valide les choix et critères et l'utilisation des 3 source de connectivité pour vérifier la présence d'anomalies. tu peux commencer
 
 **Résultat :** dépôt cloné dans `C:\Users\emeri\twin_hypervisor`, environnement conda `twinhyp` (Python 3.11), squelette de l'étape 0 (CLI, orchestrateur, validation des sorties, 17 tests), choix de plotly et estimation 2D / 3D dans `carnet_de_bord.md`. À partir de cette entrée, la copie de référence de ce fichier est `docs/prompt.md` dans le dépôt.
+
+---
+
+## 7 — 2026-11-10 — Visualisation 2D + 3D et extraction (étape 1)
+
+> réalise 2D +3D dès maintenant qui sera utile pour la suite, je valide tes propositions que tu vas consigner dans etape0a2.md et tu vas m'indiquer les résultats principaux et quels scriptes lancers pour les visualiser / où les visualiser
+
+**Résultat :** `docs/etape0a2.md` (décisions validées, résultats, mode d'emploi) ; extraction M1 (`extraction.py`, `ifc_outils.py`, `anomalies.py`) ; commande `visualiser` produisant `plan_2d.html` et `vue_3d.html` (plotly) ; 42 tests verts.

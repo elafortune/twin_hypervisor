@@ -58,3 +58,14 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
   6. `RiserHeight` = 0,6357 et `TreadLength` = 0,8202 : ce sont des **pieds** (0,194 m et 0,25 m) dans un fichier en mètres.
 - Escaliers : chaque volée touche le foyer, l'espace escalier (x105, double hauteur 0–5,7 m), le couloir x201 et une chambre du niveau 2.
 - Q13 (passage direct A ↔ B) : aucune porte ni limite virtuelle ne relie les deux logements dans les relations IFC. À confirmer par la géométrie : la réponse attendue est peut-être l'ensemble vide.
+
+## 2026-11-10 – Étape 1 : extraction et visualisation
+
+- Décisions validées et résultats consignés dans `etape0a2.md`.
+- Extraction M1 : 4 niveaux, 21 espaces, 14 portes, 2 escaliers en 1,4 s ; 10 lignes d'anomalies (7 constats) par 6 règles génériques.
+- **Découverte** : l'espace `…dl_39` nommé `B202` a pour numéro Revit `B203` (`PSet_Revit_Identity Data.Number`) : le nom IFC a été modifié. La règle « nom IFC ≠ copies du nom dans les propriétés » le détecte sans connaître le duplex.
+- B105 « Room » détecté par la règle des jumeaux géométriques (même surface, hauteur et niveau que A105) combinée à la catégorie OmniClass « Stairway ». Bedroom 1 / Bedroom 2 ne déclenchent pas la règle (numéro final ignoré).
+- Règle « occupable » : la proposition « niveau le plus haut » a été abandonnée au profit des seuls mots-clés (un dernier étage est en général occupé).
+- Impasse : export PNG des figures pour vérification nécessitant `kaleido` (installé dans l'environnement pour le contrôle, non requis par la chaîne).
+- Visualisation contrôlée à l'œil (plan Level 1, Level 2, vue 3D) : contours, portes et escaliers aux bons endroits.
+- **À faire à la main** : vérifier Q01, Q05, Q10, Q12, Q14 dans BIMvision.
