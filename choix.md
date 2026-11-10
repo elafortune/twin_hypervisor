@@ -111,6 +111,19 @@
 | 5.12 | Q18 « plus aucune route sûre » | instant où la route est coupée · instant où la chambre devient dangereuse | ✅ Route coupée (180 s) | Validé 10/11 : l'accent est mis sur les routes vers les sorties | — |
 | 5.13 | Espaces sans caméra | ignorer · **signaler** | ✅ Chaque ligne liste les espaces dangereux occupables sans comptage | Validé 10/11 : risque de personnes bloquées non vues | M4 : placer des caméras / compteurs |
 
+## Étape 6 – Voxels, matériaux, positions autorisées
+
+| # | Question | Options envisagées | Choix final | Pourquoi | Revenir dessus si… |
+|---|---|---|---|---|---|
+| 6.1 | Outil de lancer de rayons | trimesh (+ embree) · Open3D · **rayons verticaux en numpy** | 🟡 Rayons verticaux uniquement, barycentriques en XY (Möller–Trumbore avec direction (0, 0, 1)) | Voxelisation (parité) et plafonds n'ont besoin que de rayons verticaux ; aucune dépendance ajoutée | M3 a besoin de rayons obliques (on écrira alors une traversée de voxels DDA) |
+| 6.2 | Domaine de la grille | boîte du bâtiment · **emprise des espaces occupables** | xy = emprise des espaces (→ 16 × 34 voxels de 0,5 m, exactement l'IWCMC) ; z = plancher du Level 1 au sommet du Level 2 | Reproduit le domaine de l'article | — |
+| 6.3 | Pas vertical | 0,5 m · **0,25 m** | `pas_grille_vertical_m` (défaut : la moitié du pas horizontal = 0,25 m, texte de l'IWCMC) → 24 couches | L'article annonce 50 × 50 × 25 cm mais « n = 10 » (soit 2,5 m seulement) : incohérence notée | le jury tranche autrement |
+| 6.4 | Quand un voxel est-il un obstacle ? | centre du voxel dans l'élément · **toute occupation > 0** (échantillonnage 5 × 5 colonnes par voxel) | Obstacle dès qu'un élément l'occupe ; fraction occupée conservée | Le test au centre « perd » les cloisons de 12 cm (murs troués) | sur-épaississement gênant (voir doute X-2) |
+| 6.5 | Éléments obstacles | **murs, dalles, toit, plafonds (IWCMC) + portes** · + fenêtres · + mobilier | Murs, dalles, toit, faux plafonds, portes ; fenêtres, mobilier, escaliers exclus | Liste de l'IWCMC ; les portes ont leur colonne dans le tableau I | — |
+| 6.6 | Matériau d'un élément multicouche | couche par couche · **catégorie dominante (épaisseur des couches significatives)** + composition conservée | Table déclarative nom IFC → catégorie (plâtre, béton, mur porteur, bois) ; air, isolant, ossature métal ignorés | Résolution 0,5 m ≫ épaisseur des couches ; la composition reste disponible pour M3 | M3 veut sommer les couches |
+| 6.7 | Positions autorisées A | sol · **plafond** | Rayon vers le haut depuis plancher + 0,5 m, premier impact sur couverture / dalle / toit, au-dessus d'un espace occupable du niveau | Fidèle à l'IWCMC (« surfaces labeled as roof ») | — |
+| 6.8 | Stockage | JSON · **`.npz` + résumé dans `geometry.json`** | `sorties/grille_voxels.npz` (uint8 / float16) ; `geometry.json` : résumé `voxels` + liste `positions_autorisees` | Taille (13 056 voxels) et lecture rapide par M3/M4 | — |
+
 ## Points ouverts à trancher
 
 | Sujet | Options | Échéance |

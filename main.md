@@ -8,7 +8,7 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 |---|---|
 | `python -m twinhyp run --ifc data/duplex_TwinHypervisor.ifc --params data/parametres.json --obs data/observations.csv --out sorties` | Rejoue toute la chaîne M1 → M6 et écrit les 8 sorties dans `sorties/` |
 | `… run … --etapes m1` | Relance seulement certains modules (ex. `m1,m2`) |
-| `python -m twinhyp visualiser --out sorties` | Crée `sorties/figures/plan_2d.html` et `vue_3d.html` (double-clic pour ouvrir) ; cliquer « Distances (pire point) » dans la légende du plan pour voir les distances |
+| `python -m twinhyp visualiser --out sorties` | Crée `sorties/figures/plan_2d.html`, `voxels.html` (coupes de la grille par altitude) et `vue_3d.html` (double-clic pour ouvrir) ; cliquer « Distances (pire point) » dans la légende du plan pour voir les distances |
 | `python -m twinhyp visualiser --out sorties --sans-3d` | Plan 2D seul (1 s au lieu de 15 s) |
 | `python -m twinhyp valider --out sorties` | Revérifie que les sorties respectent schémas et formes SHACL |
 | `python -m twinhyp questions --out sorties` | Affiche les réponses Q01–Q19 obtenues par SPARQL sur `kg.ttl` (`--sparql` : montre les requêtes) |
@@ -34,6 +34,8 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 5 – Évacuation dynamique | Feu en cuisine A103 : alarme à 70 s, A101 dangereux à 180 s ; dès lors les chambres A202/A203 n'ont plus de route sûre (confinement), alors que la pénalité de Pang leur propose une route de 1 026 m à travers le feu ; le logement B évacue normalement. |
 | 5 – Réponses | Q15 = 70 s · Q16 = A101, A102, A103, A105, A201 · Q17 = A202, A201, A105, A101 · Q18 = 180 s · Q19 = A202, A203. |
 | 5 – Détour réactif | Sans guidage dynamique, l'occupant de A202 qui suit le plan à t = 180 s est bloqué dans la cage A105 après 15 m (dangereuse à 250 s) : pire que le confinement recommandé par la stratégie 2. |
+| 6 – Voxels | Grille 16 × 34 × 24 (pas 0,5 × 0,5 × 0,25 m, comme l'IWCMC), 38 % d'obstacles colorés par matériau ; plaque de plâtre = 47 % des voxels obstacles (8 % en volume réel) contre 18 % annoncés par l'IWCMC : écart à discuter. |
+| 6 – Positions autorisées | 932 positions au plafond (518 au Level 1 à 2,60 m, 414 au Level 2 à 5,70 m), uniquement au-dessus des espaces occupables. |
 
 ## Écarts de la maquette à présenter au jury
 

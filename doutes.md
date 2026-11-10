@@ -60,6 +60,16 @@
 | V-6 | 🟠 | Stratégie 1 sans détour réactif (Pang, tableau 7, fait se détourner les occupants) | Route statique pure | Relire [Pang] §5.3 | ☑ 10/11 : variante « détour réactif » ajoutée pour comparaison |
 | V-7 | 🟢 | Le capteur `CAM_B203` observe l'espace B202 « Bedroom 2 » : nouvel indice du renommage B203 → B202 | Noté | — | ☐ |
 
+## Voxels (étape 6)
+
+| # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |
+|---|---|---|---|---|---|
+| X-1 | 🔴 | **Part de plaque de plâtre** : 47 % des voxels obstacles (catégorie dominante) contre **18 %** annoncés par l'IWCMC ; en volume réel de matière, 8 %. Les 18 % ne se retrouvent avec aucune méthode simple | Les deux mesures sont calculées et expliquées | Question au jury : comment l'IWCMC a-t-il compté (volume, voxels, éléments) ? | ☐ |
+| X-2 | 🟠 | Un élément mince (finition de sol 1,6 cm, faux plafond 5,7 cm) rend obstacle toute une couche de 25 cm : la couche 0–0,25 m est entièrement « obstacle » | Occupation > 0 = obstacle | Seuil d'occupation ? Rendrait les cloisons discontinues | ☐ |
+| X-3 | 🟠 | Domaine vertical : l'IWCMC annonce 10 couches de 25 cm (2,5 m), insuffisant pour un duplex de 6 m | 24 couches (0 → 6 m) | Relire l'article / demander | ☐ |
+| X-4 | 🟠 | Fenêtres considérées comme libres (non listées par l'IWCMC) | Exclues des obstacles | Le verre atténue peu à 2,4 GHz, mais pas zéro | ☐ |
+| X-5 | 🟢 | 3 positions A à 2,795 m au Level 1 (dalle sans faux plafond au-dessus) | Gardées | Vérifier dans la vue voxels | ☐ |
+
 ## Énoncé
 
 | # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |

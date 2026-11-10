@@ -155,3 +155,5 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > le fait qu'il n'y ait pas de comptage dans les espaces sans caméras et qu'il pourrait y avoir des personnes bbloquées à des zones sans caméra est un risque de sécurité important à mentionner, voit le cout de rajouter une autre stratégie avec détour réactif pour comparer les résultats avec et sans détours je crois que l'énoncé différent les capteurs de dangers des équipements de sécurités pures comme les alarmes incendie etc tu peux continuer si tu n'as pas d'autres questions
 
 **Résultat :** Q18 = 180 s validé ; risque des espaces dangereux sans caméra signalé (JSONL, `main.md`) ; variante « détour réactif » de la stratégie 1 ajoutée (bloqué dans la cage A105 à 180 s) ; choix 5.5, 5.10, 5.12, 5.13 et doutes V-1, V-3, V-6 mis à jour.
+
+**Suite (étape 6) :** grille de voxels 16 × 34 × 24 avec matériau, 932 positions au plafond, figure `voxels.html` ; `choix.md` (6.1–6.8), `doutes.md` (X-1 à X-5) ; écart sur la part de plaque de plâtre (47 % / 8 % contre 18 %).

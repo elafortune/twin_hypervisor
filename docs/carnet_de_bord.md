@@ -116,3 +116,12 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - **Exemple chiffré** : à 180 s, A202 → pénalité : A202, A201, A105, A101 à 1 026 m (traverse A101 dangereux) ; contrainte dure : null + confinement. À 300 s : 3 026 m (trois espaces dangereux traversés).
 - Q15 = 70 · Q16 = A101, A102, A103, A105, A201 · Q17 = A202, A201, A105, A101 · Q18 = 180 · Q19 = A202, A203 ; obtenues par SPARQL et recoupées avec le JSONL. 86 tests verts (≈ 3 min ; `-m "not integration"` pour les rapides).
 - **Décisions du 10/11** : Q18 = 180 s (route coupée) ; capteurs du scénario ≠ équipements de sécurité (validé) ; risque « espaces dangereux sans caméra » signalé à chaque pas ; variante « détour réactif » ajoutée (coût ≈ 30 lignes, champ du JSONL car le schéma limite `strategie` à 1 ou 2). Résultat : à 180 s, l'occupant de A202 qui suit le plan s'arrête dans la cage A105 (15 m parcourus) sans issue ; à 250 s, il serait bloqué dès le couloir A201. Dans ce duplex, le détour ne trouve jamais d'autre route (un seul chemin par logement) ; il prendra son sens sur un bâtiment plus grand.
+
+## 2026-11-10 – Étape 6 : voxels, matériaux, positions autorisées
+
+- Lecture de l'IWCMC §III.A et §V.B : domaine 16 × 34 × 10, voxels de 50 × 50 × 25 cm, obstacles = murs, toits, plafonds ; positions = impacts de rayons vers le haut sur les « roofs » ; 18 % des obstacles dans le matériau le plus absorbant (plaque de plâtre à 2,4 GHz). Incohérence : 10 couches de 25 cm = 2,5 m, pas la hauteur du duplex.
+- Matériaux IFC : cloisons = plâtre + ossature métal ; murs extérieurs = brique + parpaing + isolant + plâtre ; mur mitoyen = 2 parpaings ; dalles = bois ou béton ; faux plafonds = plâtre ; portes sans matériau (→ bois).
+- `m1_geometrie/voxels.py` : une seule primitive, le rayon vertical (barycentriques XY). Voxelisation par parité sur 5 × 5 colonnes par voxel ; positions A par premier impact sur couverture / dalle / toit. Pas de nouvelle dépendance. 9 s.
+- Résultats : grille 16 × 34 × 24 — les 16 × 34 de l'IWCMC retrouvés en prenant l'emprise des espaces ; 4 956 obstacles sur 13 056 ; plafonds à 2,60 m et 5,70 m ; cages d'escalier libres à travers le plancher ; 932 positions.
+- **Écart** : plaque de plâtre = 47 % des voxels obstacles (catégorie dominante), 8 % en volume réel de matière, contre 18 % dans l'article. Aucune méthode simple ne donne 18 % : à présenter comme écart documenté.
+- Outil : `pypdf` installé dans l'environnement pour lire l'article (non requis par la chaîne).

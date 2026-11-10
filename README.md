@@ -25,6 +25,8 @@ Revalider des sorties existantes : `python -m twinhyp valider --out sorties/`.
 
 Visualiser : `python -m twinhyp visualiser --out sorties/` produit `sorties/figures/plan_2d.html` (plan par niveau) et `sorties/figures/vue_3d.html` (maquette 3D, vue de dessus), consultables hors ligne.
 
+Voxels : `visualiser` produit aussi `sorties/figures/voxels.html` (coupe de la grille par altitude, couleur = matériau, positions autorisées au plafond) ; la grille complète est dans `sorties/grille_voxels.npz`.
+
 Questions statiques : `python -m twinhyp questions --out sorties/` affiche les réponses Q01–Q19 obtenues par SPARQL sur `kg.ttl`. Les formes F3–F6 (équipements) sont différées tant que M4 n'a pas été calculé.
 
 Chaque exécution écrit `sorties/execution.json` : versions des paquets, machine, graine et durée de chaque étape.
