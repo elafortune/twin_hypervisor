@@ -119,3 +119,24 @@ def test_equipements_conformes_au_schema(deploiement):
                                                          "temps_s": 1, "mode": "3D"},
            "equipements": [{k: x for k, x in e.items() if k != "cellules_vues"} for e in eqs]}
     assert not erreurs_document(v, doc)
+
+
+@pytest.mark.integration
+def test_un_declencheur_par_sortie_par_defaut(deploiement):
+    geo, _, eqs, *_ = deploiement
+    sorties = [p["globalId"] for p in geo["portes"] if p["sortie"]]
+    dm = [e for e in eqs if e["type"] == "ManualCallPoint"]
+    assert len(dm) == len(sorties) and all(len(e["sorties_servies"]) == 1 for e in dm)
+
+
+@pytest.mark.integration
+def test_full_view_max_min_avec_une_camera_de_plus(deploiement):
+    # à N* caméras le minimum par chemin est 0 (prouvé par le MILP) ; une caméra de plus suffit à le rendre > 0
+    from twinhyp.m4_deploiement import placement
+    geo, params, _, _, _, sous, dossier = deploiement
+    env = Environnement.charger(dossier / FICHIER_VOXELS)
+    chem = placement.chemins(geo, env, float(params["pas_grille_m"]) / 2)
+    eqs, res, par = placement.cameras(geo, {**params, "cameras_supplementaires_full_view": 1}, env, chem)
+    assert len(eqs) == sous["cameras"]["valeur"] + 1
+    assert res["full_view_min_par_chemin"] > 0 and min(c["full_view"] for c in par.values()) > 0
+    assert all(c["couverture"] >= params["couverture_video_min"] for c in par.values())

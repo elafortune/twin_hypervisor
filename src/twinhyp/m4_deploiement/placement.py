@@ -132,6 +132,11 @@ def declencheurs(geometrie: dict, params: dict) -> tuple[list[dict], dict]:
                 cible = cible_dans(plateau[s] if c["espace"] != s else _poly(espaces[s]), p["position_xyz"][:2])
                 zone = plateau[s] if c["espace"] != s else _poly(espaces[s])
                 dist[i, k] = geodesique(zone, c["xy"], (cible.x, cible.y))
+    # `declencheur_un_par_sortie` (défaut : vrai, usage NF S 61-970) : chaque sortie a SON déclencheur ;
+    # faux : minimum de déclencheurs couvrant toutes les sorties (un DM peut en servir plusieurs).
+    par_sortie = bool(params.get("declencheur_un_par_sortie", True))
+    if par_sortie:
+        dist = np.where(np.eye(len(sorties), dtype=bool), dist, math.inf)
     couvrants = [list(np.flatnonzero(dist[:, k] <= dmax)) for k in range(len(sorties))]
     non_servies = [sorties[k]["globalId"] for k, N in enumerate(couvrants) if not N]  # F4 violée : signalé
     sol = couverture_ensemble(len(candidats), [N for N in couvrants if N])
@@ -144,7 +149,7 @@ def declencheurs(geometrie: dict, params: dict) -> tuple[list[dict], dict]:
                     "sortie_servie_globalId": min(servies, key=lambda s: s[1])[0], "sorties_servies": servies})
     return eqs, {"variables": len(candidats), "contraintes": len(sorties), "valeur": sol.objectif,
                  "statut": sol.statut, "gap_relatif": sol.gap_relatif, "temps_s": sol.temps_s,
-                 "distance_max_m": dmax, "sorties_non_servies": non_servies}
+                 "distance_max_m": dmax, "un_par_sortie": par_sortie, "sorties_non_servies": non_servies}
 
 
 # Chemins d'évacuation --------------------------------------------------------------------------
@@ -283,10 +288,27 @@ def cameras(geometrie: dict, params: dict, env: Environnement, chem: list[dict])
     for j, s in enumerate(voit_fv):
         for i in s:
             fv_voyeurs[i].append(j)
-    couts2 = np.r_[np.zeros(n_cand), np.zeros(n_cell), np.ones(n_cell)]
-    lignes2 = list(lignes) + [(list(range(n_cand)), [1.0] * n_cand, None, n_star)]
+    # Variables : x (caméras), y (cellules vues), z (cellules vues de face), t (full-view minimal par chemin).
+    # 2a : maximiser t (équité : aucun chemin sacrifié au profit des longs) ; 2b : à t ≥ t*, maximiser Σ z.
+    # Un chemin dont aucune cellule ne peut être vue de face est exclu du minimum (signalé).
+    zt = n_cand + 2 * n_cell
+    n_budget = n_star + int(params.get("cameras_supplementaires_full_view", 0))
+    lignes2 = list(lignes) + [(list(range(n_cand)), [1.0] * n_cand, None, n_budget)]
     lignes2 += [(fv_voyeurs[i] + [n_cand + n_cell + i], [1.0] * len(fv_voyeurs[i]) + [-1.0], 0, None) for i in range(n_cell)]
-    s2 = resoudre(couts2, lignes2, maximiser=True)
+    sans_fv_possible = []
+    for c in chem:
+        idx = sorted({index[k] for k in c["cellules"]})
+        if not any(fv_voyeurs[i] for i in idx):
+            sans_fv_possible.append(c["espace"])
+            continue
+        lignes2.append(([n_cand + n_cell + i for i in idx] + [zt], [1.0] * len(idx) + [-float(len(idx))], 0, None))
+    couts2a = np.r_[np.zeros(zt), 1.0]
+    s2a = resoudre(couts2a, lignes2, maximiser=True, continues=[zt])
+    t_star = float(s2a.brut[zt]) if s2a.statut == "Optimal" else 0.0
+    couts2b = np.r_[np.zeros(n_cand + n_cell), np.ones(n_cell), 0.0]
+    lignes2b = lignes2 + [([zt], [1.0], max(t_star - 1e-6, 0.0), None)]
+    s2 = resoudre(couts2b, lignes2b, maximiser=True, continues=[zt])
+    s2.temps_s += s2a.temps_s
     x = s2.x[:n_cand] if s2.statut == "Optimal" else s1.x[:n_cand]
     choisis = list(np.flatnonzero(x))
     vues = set().union(*(voit[j] for j in choisis)) if choisis else set()
@@ -307,5 +329,6 @@ def cameras(geometrie: dict, params: dict, env: Environnement, chem: list[dict])
               "valeur": float(len(choisis)), "statut": s1.statut, "gap_relatif": s1.gap_relatif,
               "temps_s": round(s1.temps_s + s2.temps_s, 3), "statut_full_view": s2.statut,
               "full_view_global": round(len(vues_fv) / max(n_cell, 1), 4),
+              "full_view_min_par_chemin": round(t_star, 4), "chemins_sans_full_view_possible": sans_fv_possible,
               "couverture_globale": round(len(vues) / max(n_cell, 1), 4)}
     return eqs, resume, par_chemin

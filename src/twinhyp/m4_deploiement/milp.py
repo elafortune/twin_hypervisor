@@ -21,8 +21,9 @@ class Solution:
     temps_s: float
 
 
-def resoudre(couts, lignes, maximiser: bool = False, limite_s: float = 120.0) -> Solution:
-    """couts : (n,) ; lignes : liste de (indices, coefficients, borne_inf, borne_sup) ; x ∈ {0, 1}^n."""
+def resoudre(couts, lignes, maximiser: bool = False, limite_s: float = 120.0, continues=()) -> Solution:
+    """couts : (n,) ; lignes : liste de (indices, coefficients, borne_inf, borne_sup) ; x ∈ {0, 1}^n,
+    sauf les indices `continues` (x ∈ [0, 1] réel, ex. un ratio minimal à maximiser)."""
     n = len(couts)
     h = highspy.Highs()
     h.setOptionValue("output_flag", False)
@@ -31,7 +32,9 @@ def resoudre(couts, lignes, maximiser: bool = False, limite_s: float = 120.0) ->
     inf = highspy.kHighsInf
     h.addVars(n, np.zeros(n), np.ones(n))
     h.changeColsCost(n, np.arange(n, dtype=np.int32), np.asarray(couts, float))
-    h.changeColsIntegrality(n, np.arange(n, dtype=np.int32), np.array([highspy.HighsVarType.kInteger] * n))
+    reels = set(continues)
+    types = [highspy.HighsVarType.kContinuous if j in reels else highspy.HighsVarType.kInteger for j in range(n)]
+    h.changeColsIntegrality(n, np.arange(n, dtype=np.int32), np.array(types))
     if maximiser:
         h.changeObjectiveSense(highspy.ObjSense.kMaximize)
     for idx, coef, lo, hi in lignes:
@@ -43,9 +46,12 @@ def resoudre(couts, lignes, maximiser: bool = False, limite_s: float = 120.0) ->
     duree = time.perf_counter() - t0
     statut = h.modelStatusToString(h.getModelStatus())
     info = h.getInfo()
-    x = np.round(np.asarray(h.getSolution().col_value[:n])) if n else np.zeros(0)
+    brut = np.asarray(h.getSolution().col_value[:n]) if n else np.zeros(0)
+    x = np.round(brut)
     gap = float(info.mip_gap) if np.isfinite(info.mip_gap) else 0.0
-    return Solution(x.astype(int), float(info.objective_function_value), statut, gap, round(duree, 3))
+    sol = Solution(x.astype(int), float(info.objective_function_value), statut, gap, round(duree, 3))
+    sol.brut = brut
+    return sol
 
 
 def couverture_ensemble(n_candidats: int, couvrants: list[list[int]], couts=None, **k) -> Solution:
