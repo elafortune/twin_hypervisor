@@ -39,6 +39,7 @@ def figure_plan(geometrie: dict) -> go.Figure:
     for a in geometrie.get("anomalies", []):
         for gid in a.get("elements_concernes", [a["element_globalId"]]):
             anomalies_de[gid].append(a)
+    position_porte = {p["globalId"]: p["position_xyz"] for p in geometrie["portes"] if p["position_xyz"]}
     # niveaux affichés : ceux qui portent des espaces, du bas vers le haut
     affiches = [gid for gid in niveaux if any(e["niveau_globalId"] == gid for e in espaces.values())]
 
@@ -78,9 +79,14 @@ def figure_plan(geometrie: dict) -> go.Figure:
             if not a or not b or ngid not in (a["niveau_globalId"], b["niveau_globalId"]):
                 continue
             xs, ys, txt = par_type[l["type"]]
-            xs += [a["centre_xy"][0], b["centre_xy"][0], None]
-            ys += [a["centre_xy"][1], b["centre_xy"][1], None]
-            txt += [f"{l['type']} : {a['nom']} ↔ {b['nom']}"] * 3
+            # une liaison par porte passe par la porte : le tracé suit le passage réel
+            porte = position_porte.get(l.get("element_globalId"))
+            milieu = [porte[:2]] if porte else []
+            points = [a["centre_xy"], *milieu, b["centre_xy"]]
+            xs += [p[0] for p in points] + [None]
+            ys += [p[1] for p in points] + [None]
+            largeur = f" · {l['largeur_m']} m" if l.get("largeur_m") else ""
+            txt += [f"{l['type']} : {a['nom']} ↔ {b['nom']}{largeur}"] * (len(points) + 1)
         for t, (xs, ys, txt) in sorted(par_type.items()):
             ajouter(go.Scatter(x=xs, y=ys, mode="lines", line=dict(color=PALETTE_LIAISONS.get(t, "#000"),
                                                                     width=2, dash="dot" if t == "escalier" else "solid"),
