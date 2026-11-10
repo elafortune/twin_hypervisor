@@ -100,13 +100,16 @@
 | 5.2 | Persistance de l'état Dangerous | réversible · hystérésis · **verrouillé** | 🟡 Verrouillé (`ssi:dangerSince`) | Prudence : un espace passé à 60 °C reste suspect ; dans ce scénario les valeurs ne redescendent pas, donc sans effet | scénario où la température redescend |
 | 5.3 | Seuils (0,0328 /m, 60 °C, 1 000 ppm) | en dur · **valeurs de l'énoncé surchargeables par `parametres.json`** | Constantes nommées + clés optionnelles (`seuil_danger_temperature_degC`…) | Règle « jamais en dur » ; le kit ne les fournit pas dans les paramètres | — |
 | 5.4 | Lignes du JSONL | à partir de l'alarme · **à chaque pas** | Chaque pas (61), chaque espace occupé (caméra > 0), 2 stratégies : 410 lignes | Le schéma demande « une ligne par pas » ; avant l'alarme, action « pas d'évacuation » | — |
-| 5.5 | Stratégie 1 | détour réactif (tableau 7 de Pang) · **route statique pure** | 🟡 Route statique calculée une fois ; espaces dangereux traversés signalés | Comparaison la plus lisible avec la stratégie 2 | le jury attend le détour de Pang |
+| 5.5 | Stratégie 1 | détour réactif (tableau 7 de Pang) · route statique pure · **les deux** | ↩ Route statique (champ `route`) + variante « détour réactif » (champ `route_detour_reactif`) : l'occupant suit le plan, s'arrête dans le dernier espace sûr avant le premier espace dangereux et repart de là ; sinon il est bloqué en chemin | Comparer avec et sans détour (demande du 10/11) ; coût ≈ 30 lignes ; le schéma n'autorise que les stratégies 1 et 2, d'où un champ et non une stratégie 3 | — |
 | 5.6 | Danger : pénalité ou contrainte dure | pénalité 1 000 m (Pang) · **contrainte dure (F8)** | Espaces dangereux retirés ; route = `null` sinon ; la route « pénalité » est jointe à chaque ligne pour comparaison | La pénalité renvoie une route qui traverse le feu (1 026 m à t = 180 s) | — |
 | 5.7 | Occupants dans un espace dangereux | exclure le départ du contrôle · **route = null + secours prioritaire** | 🟡 null (F8 interdit `routeFor` un espace dangereux) | Respect strict de F8 | — |
 | 5.8 | Action sans route sûre | **confinement + signalement** · espace sûr le plus éloigné | Confinement porte fermée, signalement aux secours avec position et nombre | Consigne classique en l'absence d'issue | — |
 | 5.9 | Routes dans `kg.ttl` | toutes · **seulement celles du dernier pas** | Routes courantes (état final) ; historique dans le JSONL | F8 s'applique à l'état final : une route ancienne traverserait un espace devenu dangereux | — |
-| 5.10 | Capteurs du scénario | `ssi:SmokeDetector` · **`sosa:Sensor` seul** | 🟡 `sosa:Sensor` | Ne pas confondre capteurs du scénario et équipements placés par M4 (sinon F3/F6 faussés) | M4 doit réutiliser ces capteurs |
+| 5.10 | Capteurs du scénario | `ssi:SmokeDetector` · **`sosa:Sensor` seul** | ✅ `sosa:Sensor` (validé 10/11 : l'énoncé distingue capteurs de danger et équipements de sécurité) | Ne pas confondre capteurs du scénario et équipements placés par M4 (sinon F3/F6 faussés) | M4 doit réutiliser ces capteurs |
 | 5.11 | Q15–Q19 | JSONL · **SPARQL sur le graphe + planificateur** | Q15, Q16, Q19 en SPARQL pur ; Q17, Q18 : état par SPARQL + Dijkstra ; recoupés avec le JSONL dans les tests | Exigence « par SPARQL » ; prépare les outils de M6 | — |
+
+| 5.12 | Q18 « plus aucune route sûre » | instant où la route est coupée · instant où la chambre devient dangereuse | ✅ Route coupée (180 s) | Validé 10/11 : l'accent est mis sur les routes vers les sorties | — |
+| 5.13 | Espaces sans caméra | ignorer · **signaler** | ✅ Chaque ligne liste les espaces dangereux occupables sans comptage | Validé 10/11 : risque de personnes bloquées non vues | M4 : placer des caméras / compteurs |
 
 ## Points ouverts à trancher
 

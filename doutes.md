@@ -52,12 +52,12 @@
 
 | # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |
 |---|---|---|---|---|---|
-| V-1 | 🟠 | **Q18** : « plus aucune route sûre » commence-t-il quand la route est coupée (A101 dangereux, 180 s) ou quand la chambre elle-même devient dangereuse (460 s) ? | 180 s : route coupée | Ton avis ; avec la pénalité de Pang il y aurait toujours une route | ☐ |
+| V-1 | 🟠 | **Q18** : « plus aucune route sûre » commence-t-il quand la route est coupée (A101 dangereux, 180 s) ou quand la chambre elle-même devient dangereuse (460 s) ? | 180 s : route coupée | Ton avis ; avec la pénalité de Pang il y aurait toujours une route | ☑ 10/11 : 180 s, l'accent est mis sur les routes vers les sorties |
 | V-2 | 🟠 | **Q16** : état verrouillé ou instantané ? Ici identique (valeurs jamais redescendues sous les seuils) | Verrouillé | Sans effet sur ce scénario | ☐ |
-| V-3 | 🟠 | **Q19** : seuls les espaces avec caméra ont un comptage ; un espace sans caméra pourrait abriter des personnes | A202, A203 (comptages caméra) | Énoncé : « les comptages font foi » | ☐ |
+| V-3 | 🟠 | **Q19** : seuls les espaces avec caméra ont un comptage ; un espace sans caméra pourrait abriter des personnes | A202, A203 (comptages caméra) | Énoncé : « les comptages font foi » | ☑ 10/11 : **risque de sécurité à présenter** ; chaque ligne du JSONL liste les espaces dangereux sans caméra (6 à t = 600 s : A101, A103, A104, A105, A201, A204) |
 | V-4 | 🟠 | **Q17** : « à l'instant de l'alarme » = 70 s (premier dépassement de 0,0328 /m, dans A103) | Route calculée avec l'état à 70 s (aucun espace dangereux) | — | ☐ |
 | V-5 | 🟢 | Les comptages tombent à 0 (A102 à 130 s, B à 130–220 s) sans que la chaîne déplace les personnes : je suppose qu'elles sont sorties | Les comptages font foi | — | ☐ |
-| V-6 | 🟠 | Stratégie 1 sans détour réactif (Pang, tableau 7, fait se détourner les occupants) | Route statique pure | Relire [Pang] §5.3 | ☐ |
+| V-6 | 🟠 | Stratégie 1 sans détour réactif (Pang, tableau 7, fait se détourner les occupants) | Route statique pure | Relire [Pang] §5.3 | ☑ 10/11 : variante « détour réactif » ajoutée pour comparaison |
 | V-7 | 🟢 | Le capteur `CAM_B203` observe l'espace B202 « Bedroom 2 » : nouvel indice du renommage B203 → B202 | Noté | — | ☐ |
 
 ## Énoncé

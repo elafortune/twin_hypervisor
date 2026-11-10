@@ -33,6 +33,7 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 4 – Réponses par SPARQL | Les 14 questions statiques sont obtenues par requêtes sur le graphe, identiques aux réponses calculées en Python ; Q11 = A102, B102 (séjours). |
 | 5 – Évacuation dynamique | Feu en cuisine A103 : alarme à 70 s, A101 dangereux à 180 s ; dès lors les chambres A202/A203 n'ont plus de route sûre (confinement), alors que la pénalité de Pang leur propose une route de 1 026 m à travers le feu ; le logement B évacue normalement. |
 | 5 – Réponses | Q15 = 70 s · Q16 = A101, A102, A103, A105, A201 · Q17 = A202, A201, A105, A101 · Q18 = 180 s · Q19 = A202, A203. |
+| 5 – Détour réactif | Sans guidage dynamique, l'occupant de A202 qui suit le plan à t = 180 s est bloqué dans la cage A105 après 15 m (dangereuse à 250 s) : pire que le confinement recommandé par la stratégie 2. |
 
 ## Écarts de la maquette à présenter au jury
 
@@ -50,6 +51,7 @@ Vérifiés à la main dans BIMvision le 10/11 (toutes les valeurs de la chaîne 
 | Limites de A201 / B201 | Décalées de 6 à 10 m (placement de l'espace modifié) | Contact géométrique utilisé |
 | Limites « EXTERNAL » | 12 limites virtuelles entre deux espaces typées externes | Traitées comme internes |
 | Porte A202–A201 orpheline | La porte `…159834` (Mark A202, 0,864 m) n'est rattachée à aucun niveau : BIMvision ne montre que 7 portes sous Level 2 | Niveau déduit du placement ; règle `rattachement_spatial` (trouvée grâce à la vérification BIMvision) |
+| Risque : espaces sans caméra | 7 espaces seulement ont un comptage de personnes ; à t = 600 s, 6 espaces dangereux (A101, A103, A104, A105, A201, A204) n'en ont pas : des personnes peuvent y être bloquées sans être vues | Signalé à chaque pas dans `evacuation_dynamique.jsonl` (`espaces_dangereux_sans_comptage`) |
 | Q13 vide | Aucun passage direct entre A et B | À justifier (question piège possible) |
 
 ## Choix de méthode à valider / défendre
