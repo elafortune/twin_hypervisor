@@ -43,10 +43,38 @@ def construire_parseur() -> argparse.ArgumentParser:
     vis.add_argument("--out", required=True, type=Path, help="dossier de sortie d'un run")
     vis.add_argument("--ifc", type=Path, help="IFC pour la vue 3D (défaut : celui de geometry.json)")
     vis.add_argument("--sans-3d", action="store_true", help="plan 2D seulement")
+    sen = sous.add_parser("sensibilite", help="IWCMC : sensibilité de l'atténuation (glouton, comparé à la figure 4)")
+    sen.add_argument("--out", required=True, type=Path)
+    sen.add_argument("--params", type=Path, default=DONNEES_PAR_DEFAUT / "parametres.json")
+    sen.add_argument("--facteurs", default="1,2,5,10,20,50")
+
     qst = sous.add_parser("questions", help="réponses Q01–Q14 obtenues par SPARQL sur <out>/kg.ttl")
     qst.add_argument("--out", required=True, type=Path)
     qst.add_argument("--sparql", action="store_true", help="afficher aussi les requêtes")
     return p
+
+
+def commande_sensibilite(args: argparse.Namespace) -> int:
+    import json
+
+    from twinhyp.io_schemas import ecrire_json
+    from twinhyp.m3_iwcmc import config, obstacles, radios
+    from twinhyp.m3_iwcmc.radio import Environnement
+    from twinhyp.m3_iwcmc.sensibilite import etude
+
+    cfg = config(json.loads(args.params.read_text(encoding="utf-8")))
+    geo = json.loads((args.out / SORTIES["geometry"]).read_text(encoding="utf-8"))
+    env = Environnement.charger(args.out / geo["voxels"]["fichier"])
+    obs = obstacles(env, cfg["technologie"], args.out / "iwcmc")
+    lignes = etude(lambda k, lecture: radios(env, obs, {**cfg, "facteur_attenuation": k, "lecture_L_obs": lecture}, 0),
+                   facteurs=[float(x) for x in args.facteurs.split(",")])
+    ecrire_json(args.out / "iwcmc" / "sensibilite.json", lignes)
+    print("lecture  facteur  couv.1 avec  couv.1 sans  qualité 1  n(90 %)  écart moyen fig. 4")
+    for l in lignes:
+        print(f"{l['lecture']:7}  {l['facteur']:7}  {l['couverture_1_avec']:11}  {l['couverture_1_sans_evaluee_avec']:11}"
+              f"  {l['qualite_1_avec']:9}  {l['n_90_avec']}  {l['ecart_moyen_couverture_fig4']:7}")
+    print("Article (fig. 4) : couv.1 avec 0,44 · sans 0,35 · qualité 1 −45,1 dBm · n(90 %) = 3")
+    return 0
 
 
 def commande_questions(args: argparse.Namespace) -> int:
@@ -94,7 +122,7 @@ def commande_questions(args: argparse.Namespace) -> int:
 def commande_visualiser(args: argparse.Namespace) -> int:
     import json
 
-    from twinhyp.visualisation import plan2d, voxels, vue3d
+    from twinhyp.visualisation import iwcmc, plan2d, voxels, vue3d
 
     geo = args.out / SORTIES["geometry"]
     if not geo.is_file():
@@ -104,6 +132,9 @@ def commande_visualiser(args: argparse.Namespace) -> int:
     npz = args.out / "grille_voxels.npz"
     if npz.is_file():
         print(f"Voxels  : {voxels.generer(npz, dossier).resolve()}")
+    chemin_iwcmc = iwcmc.generer(args.out, dossier)
+    if chemin_iwcmc:
+        print(f"IWCMC   : {chemin_iwcmc.resolve()}")
     if not args.sans_3d:
         ifc = args.ifc or Path(json.loads(geo.read_text(encoding="utf-8"))["source"]["ifc"])
         chemin = vue3d.generer(ifc, dossier, geo, args.out / SORTIES["devices"])
@@ -151,6 +182,8 @@ def main(argv: list[str] | None = None) -> int:
             return commande_visualiser(args)
         if args.commande == "questions":
             return commande_questions(args)
+        if args.commande == "sensibilite":
+            return commande_sensibilite(args)
         return commande_valider(args)
     except (FileNotFoundError, SortieNonConforme, ValueError) as exc:
         print(f"Erreur : {exc}", file=sys.stderr)
