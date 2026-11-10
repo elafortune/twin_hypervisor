@@ -9,14 +9,14 @@
 
 | # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |
 |---|---|---|---|---|---|
-| Q-1 | 🔴 | **Q01** : les cages d'escalier A105/B105 (double hauteur 0–5,7 m) sont-elles « au niveau Level 2 » ? | Non : rattachées à Level 1 dans l'IFC → Q01 = 10 espaces | Décision de ta part ; à défendre devant le jury dans les deux sens | ☐ |
+| Q-1 | 🔴 | **Q01** : les cages d'escalier A105/B105 (double hauteur 0–5,7 m) sont-elles « au niveau Level 2 » ? | Non : rattachées à Level 1 dans l'IFC → Q01 = 10 espaces | Décision de ta part ; à défendre devant le jury dans les deux sens | ☑ 10/11 : les deux cages ont leur base à z = 0,02 m (Level 1) et contiennent chacune la volée de leur logement ; B105 n'est pas au-dessus de A105 (6,9 m d'écart en x) → Level 1, Q01 = 10 |
 | Q-2 | 🟠 | **Q06** « une seule porte » : une ouverture libre ou un escalier compte-t-il comme accès ? | Seules les `IfcDoor` comptent | Relire l'énoncé ; au Level 2 aucun espace n'a d'ouverture libre, donc sans effet ici | ☐ |
 | Q-3 | 🟠 | **Q07** : « portes franchies » inclut-il la porte d'entrée elle-même ? | Oui (0,864 m de la chambre < 1,25 m de l'entrée : sans effet sur le résultat) | Sans effet ici ; à préciser si la question change | ☐ |
 | Q-4 | 🟠 | **Q07/Q08** : itinéraire choisi = somme des distances « pire point » (Pang). Un autre critère (moins de portes, distance porte à porte) pourrait choisir un autre chemin | Dans le duplex il n'existe qu'un chemin possible, donc sans effet | Vérifier sur le gros IFC de l'entretien | ☐ |
 | Q-5 | 🟠 | **Q09** « liaison verticale » : cages (A105, B105) ou aussi les espaces d'arrivée (A201, B201) ? | Espaces qui **contiennent** l'escalier (`bot:containsElement`) → A105, B105 | Ton avis | ☐ |
 | Q-6 | 🟠 | **Q11** « pour chaque logement » : un logement = composante connexe contenant une sortie ; ici = préfixe A/B | A102, B102 (séjours, 30,14 m²) | Recoupé avec le préfixe ; peut différer sur un immeuble à hall commun | ☐ |
 | Q-7 | 🟠 | **Q12** salles de bains : repérées par le nom long (`bath`, `salle de bain`, `wc`…). La catégorie OmniClass serait plus robuste | A204, B204 | Vérifier si « Utility » (A205/B205) contient une salle d'eau dans BIMvision | ☐ |
-| Q-8 | 🔴 | **Q13** vide : question piège ou erreur de ma connectivité ? | ∅ ; test qui prouve que la requête trouverait un passage s'il existait | Regarder dans BIMvision le mur mitoyen A/B (porte ? ouverture ?) | ☐ |
+| Q-8 | 🔴 | **Q13** vide : question piège ou erreur de ma connectivité ? | ∅ ; test qui prouve que la requête trouverait un passage s'il existait | Regarder dans BIMvision le mur mitoyen A/B (porte ? ouverture ?) | ☑ 10/11 : les 4 murs « Party Wall – Residential Unit Dimising Wall » n'ont aucune ouverture ; aucune limite IFC ni porte entre A et B ; les couloirs A201/B201 sont à 4 m l'un de l'autre → ∅ confirmé |
 | Q-9 | 🟢 | **Q05** inclut la cage A105 (escalier) dans la surface du logement A | 138,16 m² | ☑ vérifié dans BIMvision (somme GSA BIM Area) | ☑ |
 
 ## Maquette et extraction (étapes 1–2)

@@ -129,3 +129,12 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > rajoute doutes.md qui est le fichier qui indique tes propres doutes dans ta réflexion comme celui là de manière à ce que je puisse vérifier manuellement ou te donner des indications supplémentaires sur les cas où t'es pas sur. passe à l'étape 4
 
 **Résultat :** `doutes.md` (doutes classés par confiance, avec la manière de les lever) ; étape 4 réalisée : ontologie étendue, `kg.ttl` conforme (F3–F6 différées jusqu'à M4), 9 formes maison, Q01–Q14 par SPARQL, commande `questions` ; `choix.md` et `main.md` complétés.
+
+---
+
+## 15 — 2026-11-10 — Niveau des cages d'escalier (Q01) et passage A ↔ B (Q13)
+
+> A105 représente bien l'escalier qui permet d'aller au 2e étape donc associé au level 1 B105 est appelé "room" donc plus ambigu mais s'il est bien lié à A105 dans le sens est une cage d'escalier au dessus de A105 il pourrait etre considéré comme niveau level 2 dans le cas où le bas de la cage d'escalier n'a pas l'air d'être dans le niveau level 1 dis moi ce que t'en penses
+> Q13 n'a pas l'air d'une question piège dans le sens où ça serait logique après que l'escalier A105 permette de monter au level 2 qu'il y ait une porte pour le logement A et une pour le logement B. vérifie cela afin de savoir s'il y a pas une erreur de connectivité qui fait que ta requete a renvoyé l'ensemble vide
+
+**Résultat :** B105 n'est pas au-dessus de A105 : c'est la cage symétrique du logement B, base au Level 1 → Q01 inchangée. Q13 = ∅ confirmée par 4 voies (murs mitoyens sans ouverture, limites IFC, portes, géométrie) ; test ajouté ; doutes Q-1 et Q-8 levés.

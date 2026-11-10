@@ -102,3 +102,8 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Graphe statique conforme à F1, F2, F7, F8 et M1–M9 ; F3 (20 espaces) et F4 (4 sorties) échouent comme attendu sans équipements : différées automatiquement tant que M4 n'est pas calculé.
 - Les 14 questions statiques obtenues par SPARQL donnent les mêmes résultats que le calcul Python. Nouvelle : Q11 = A102, B102 (séjours, 30,14 m²).
 - Fichier `doutes.md` créé à ta demande. 76 tests verts.
+
+## 2026-11-10 – Vérification Q01 (cages d'escalier) et Q13 (passage A ↔ B)
+
+- Hypothèse discutée : B105 serait une cage au-dessus de A105, donc au Level 2. **Infirmée** : B105 (x 0,42–1,43 ; y −9,72 à −5,97) est le symétrique de A105 (x 7,37–8,38 ; y −11,82 à −8,07), à 6,9 m de distance ; base à z = 0,02 m et hauteur 5,68 m pour les deux ; chacune contient la volée de son propre logement (z 0 → 3,05). Le duplex est fait de deux logements symétriques, chacun avec son escalier.
+- Q13 vérifiée par 4 voies indépendantes : (1) les 4 murs « Party Wall – CMU Residential Unit Dimising Wall » (2 au Level 1, 1 au Level 2, 1 sans espace) n'ont **aucune** ouverture ; (2) aucune `IfcRelSpaceBoundary` (physique ou virtuelle) ne relie un espace A à un espace B, hormis des murs ; (3) les 14 portes desservent chacune un seul logement ; (4) seules les chambres A202/A203 et B202 sont voisines (0,55 m = épaisseur du mur mitoyen), et les couloirs A201/B201 sont à 4 m. Les murs extérieurs qui bordent A et B à la fois ne portent que les portes d'entrée et des fenêtres. → ∅ confirmé ; test ajouté.
