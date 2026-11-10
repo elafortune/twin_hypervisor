@@ -13,6 +13,8 @@ Le rattachement d'un élément à un niveau est fait par l'altitude de sa base
 
 from __future__ import annotations
 
+import math
+
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -125,6 +127,15 @@ def figure_3d(chemin_ifc: Path, geometrie: dict | None = None, devices: dict | N
             ajouter(go.Scatter3d(x=[d["x"] for d in ds], y=[d["y"] for d in ds], z=[d["z"] for d in ds],
                                  mode="markers", name=typ, marker=dict(size=6),
                                  text=[f"{d['id']} ({typ})" for d in ds], hoverinfo="text"), None)
+            if typ == "Camera":  # axe optique sur 1,5 m
+                xs, ys, zs = [], [], []
+                for d in ds:
+                    az, inc = math.radians(d["orientation_deg"]), math.radians(d["inclinaison_deg"])
+                    xs += [d["x"], d["x"] + 1.5 * math.cos(inc) * math.cos(az), None]
+                    ys += [d["y"], d["y"] + 1.5 * math.cos(inc) * math.sin(az), None]
+                    zs += [d["z"], d["z"] - 1.5 * math.sin(inc), None]
+                ajouter(go.Scatter3d(x=xs, y=ys, z=zs, mode="lines", name="Axes caméras",
+                                     line=dict(width=4), hoverinfo="skip"), None)
 
     # Menus --------------------------------------------------------------------------
     def masque(ngid_choisi):

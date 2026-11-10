@@ -8,6 +8,7 @@ sorties, escaliers, liaisons par type, distances d'évacuation, anomalies).
 from __future__ import annotations
 
 import json
+import math
 from collections import defaultdict
 from pathlib import Path
 
@@ -32,7 +33,11 @@ def _infobulle_espace(e: dict, anomalies: list[dict]) -> str:
     return "<br>".join(lignes)
 
 
-def figure_plan(geometrie: dict) -> go.Figure:
+SYMBOLES = {"SmokeDetector": ("circle", "#f97316"), "HeatDetector": ("circle", "#b91c1c"),
+            "ManualCallPoint": ("square", "#dc2626"), "Camera": ("triangle-up", "#7c3aed"), "IoTNode": ("x", "#0f766e")}
+
+
+def figure_plan(geometrie: dict, devices: dict | None = None) -> go.Figure:
     niveaux = {n["globalId"]: n for n in geometrie["niveaux"]}
     espaces = {e["globalId"]: e for e in geometrie["espaces"]}
     anomalies_de = defaultdict(list)
@@ -149,6 +154,31 @@ def figure_plan(geometrie: dict) -> go.Figure:
                                  for a in anomalies_de.get(p["globalId"], [])))
                       for p in sel]), ngid)
 
+        # Équipements SSI (M4) ------------------------------------------------
+        if devices:
+            ici = [d for d in devices.get("equipements", [])
+                   if espaces.get(d["espace_globalId"], {}).get("niveau_globalId") == ngid]
+            for typ in sorted({d["type"] for d in ici}):
+                sel = [d for d in ici if d["type"] == typ]
+                symbole, couleur = SYMBOLES.get(typ, ("circle", "#000"))
+                ajouter(go.Scatter(x=[d["x"] for d in sel], y=[d["y"] for d in sel], mode="markers",
+                                   marker=dict(symbol=symbole, size=10, color=couleur, line=dict(width=1, color="white")),
+                                   name=typ, legendgroup=f"eq_{typ}", visible=visible, hoverinfo="text",
+                                   text=[f"<b>{d['id']}</b> ({typ})<br>z = {d['z']} m"
+                                         + (f"<br>azimut {d['orientation_deg']}°, inclinaison {d['inclinaison_deg']}°"
+                                            if typ == "Camera" else "")
+                                         + (f"<br>zone {d['zone_detection']}" if d.get("zone_detection") else "")
+                                         for d in sel]), ngid)
+                if typ == "Camera":
+                    xs, ys = [], []
+                    for d in sel:
+                        az = math.radians(d["orientation_deg"])
+                        xs += [d["x"], d["x"] + 1.2 * math.cos(az), None]
+                        ys += [d["y"], d["y"] + 1.2 * math.sin(az), None]
+                    ajouter(go.Scatter(x=xs, y=ys, mode="lines", line=dict(color="#7c3aed", width=2),
+                                       name="Axes caméras", legendgroup="eq_axes", hoverinfo="skip",
+                                       visible=visible), ngid)
+
     n = len(fig.data)
     boutons = []
     for ngid in affiches:
@@ -172,4 +202,6 @@ def figure_plan(geometrie: dict) -> go.Figure:
 
 def generer(chemin_geometrie: Path, dossier: Path) -> Path:
     geometrie = json.loads(Path(chemin_geometrie).read_text(encoding="utf-8"))
-    return ecrire_html(figure_plan(geometrie), Path(dossier) / "plan_2d.html")
+    chemin_devices = Path(chemin_geometrie).parent / "devices.json"
+    devices = json.loads(chemin_devices.read_text(encoding="utf-8")) if chemin_devices.is_file() else None
+    return ecrire_html(figure_plan(geometrie, devices), Path(dossier) / "plan_2d.html")
