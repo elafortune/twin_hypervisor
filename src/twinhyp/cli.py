@@ -37,7 +37,29 @@ def construire_parseur() -> argparse.ArgumentParser:
     val = sous.add_parser("valider", help="valider des sorties existantes contre les contrats")
     val.add_argument("--out", required=True, type=Path)
     val.add_argument("--donnees", type=Path, default=DONNEES_PAR_DEFAUT)
+
+    vis = sous.add_parser("visualiser", help="plan 2D et vue 3D interactifs (HTML) dans <out>/figures/")
+    vis.add_argument("--out", required=True, type=Path, help="dossier de sortie d'un run")
+    vis.add_argument("--ifc", type=Path, help="IFC pour la vue 3D (défaut : celui de geometry.json)")
+    vis.add_argument("--sans-3d", action="store_true", help="plan 2D seulement")
     return p
+
+
+def commande_visualiser(args: argparse.Namespace) -> int:
+    import json
+
+    from twinhyp.visualisation import plan2d, vue3d
+
+    geo = args.out / SORTIES["geometry"]
+    if not geo.is_file():
+        raise FileNotFoundError(f"{geo} absent : lancer d'abord `run --etapes m1`")
+    dossier = args.out / "figures"
+    print(f"Plan 2D : {plan2d.generer(geo, dossier).resolve()}")
+    if not args.sans_3d:
+        ifc = args.ifc or Path(json.loads(geo.read_text(encoding="utf-8"))["source"]["ifc"])
+        chemin = vue3d.generer(ifc, dossier, geo, args.out / SORTIES["devices"])
+        print(f"Vue 3D  : {chemin.resolve()}")
+    return 0
 
 
 def commande_run(args: argparse.Namespace) -> int:
@@ -72,6 +94,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.commande == "run":
             return commande_run(args)
+        if args.commande == "visualiser":
+            return commande_visualiser(args)
         return commande_valider(args)
     except (FileNotFoundError, SortieNonConforme, ValueError) as exc:
         print(f"Erreur : {exc}", file=sys.stderr)
