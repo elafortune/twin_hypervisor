@@ -266,9 +266,18 @@ def connecter_escaliers(f, idx: Index):
                 continue
             a = min(depart, key=lambda g: idx.poly[g].distance(p_bas))
             b = min(arrivee, key=lambda g: idx.poly[g].distance(p_haut))
+            # axe de la volée (bas -> haut) ; course = étendue de l'empreinte le long de l'axe
+            u = np.array([p_haut.x - p_bas.x, p_haut.y - p_bas.y])
+            u = u / (np.linalg.norm(u) or 1.0)
+            proj = v[:, :2] @ u
+            c = v[:, :2].mean(axis=0)
+            pied, tete = c + u * (proj.min() - c @ u), c + u * (proj.max() - c @ u)
+            course, denivele = float(proj.max() - proj.min()), float(m.zmax - m.zmin)
             liaisons.append({"de": a, "vers": b, "type": "escalier", "element_globalId": st.GlobalId,
-                             "longueur_volee_m": round(float(np.hypot(p_haut.x - p_bas.x, p_haut.y - p_bas.y)), 3),
-                             "denivele_m": round(m.zmax - m.zmin, 3), "sources": ["geometrie"],
+                             "course_m": round(course, 3), "denivele_m": round(denivele, 3),
+                             "longueur_volee_m": round(float(np.hypot(course, denivele)), 3),
+                             "pied_xy": [round(float(x), 3) for x in pied],
+                             "tete_xy": [round(float(x), 3) for x in tete], "sources": ["geometrie"],
                              "cage_globalId": cage[0] if cage else None})
     return liaisons, anomalies
 

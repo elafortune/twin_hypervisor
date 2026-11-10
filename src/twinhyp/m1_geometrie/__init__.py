@@ -2,11 +2,12 @@
 
 Étape 1 : niveaux, espaces, portes, escaliers, anomalies d'attributs.
 Étape 2 : liaisons recoupées sur 3 sources, sorties, anomalies de connectivité.
+Étape 3 : distances d'évacuation orientées (point le plus défavorable, visibilité + Dijkstra).
 """
 
 from twinhyp.contexte import Contexte
 from twinhyp.io_schemas import ecrire_json
-from twinhyp.m1_geometrie import anomalies, connectivite, extraction
+from twinhyp.m1_geometrie import anomalies, connectivite, distances, extraction
 from twinhyp.m1_geometrie import ifc_outils as io
 
 
@@ -29,6 +30,7 @@ def construire_geometrie(chemin_ifc, params: dict | None = None) -> dict:
         "anomalies": anomalies.detecter(f, niveaux, espaces, escaliers),
     }
     geometrie["anomalies"] += connectivite.calculer(f, geometrie)  # étape 2
+    geometrie["anomalies"] += distances.calculer(geometrie)        # étape 3
     return geometrie
 
 
