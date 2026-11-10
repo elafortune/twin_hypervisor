@@ -130,6 +130,31 @@ def rapport_shacl(chemin_kg: Path, formes: Path | list[Path], ontologie: Path,
     return bool(conforme), texte
 
 
+def formes_violees_graphe(data, formes: Path | list[Path], ontologie: Path) -> tuple[list[str], str]:
+    """Valide un graphe rdflib EN MÉMOIRE (copie modifiée par l'agent) ; renvoie les noms des NodeShapes
+    ayant au moins une violation (sévérité sh:Violation) et le rapport texte."""
+    from pyshacl import validate
+    from rdflib import Graph
+    from rdflib.namespace import RDF, SH
+
+    formes_g = graphe_formes(formes)
+    _, resultats, texte = validate(data_graph=data, shacl_graph=formes_g, ont_graph=Graph().parse(ontologie),
+                                   inference="rdfs", abort_on_first=False, allow_warnings=True, inplace=False)
+    parent = {}
+    for s, p, o in formes_g.triples((None, None, None)):
+        if p in (SH.property, SH.sparql):
+            parent[o] = s
+    noms = set()
+    for r in resultats.subjects(RDF.type, SH.ValidationResult):
+        if resultats.value(r, SH.resultSeverity) != SH.Violation:
+            continue
+        forme = resultats.value(r, SH.sourceShape)
+        while forme in parent:
+            forme = parent[forme]
+        noms.add(str(forme).split("#")[-1])
+    return sorted(noms), texte
+
+
 # Point d'entrée commun -------------------------------------------------------
 def verifier_sortie(chemin: Path, dossier_schemas: Path, formes: Path | list[Path] | None = None,
                     ontologie: Path | None = None, differees: Iterable[str] | None = None) -> None:
