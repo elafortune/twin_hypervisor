@@ -91,3 +91,14 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - 62 tests verts.
 - Vérification Q07 dans BIMvision : la porte A202–A201 n'est pas nommée par ses espaces ; repérage par le numéro Revit 159834 / Mark A202. **Recoupement** : la porte de « Bedroom 2 » (B202 en double) porte la marque `B203`, ce qui confirme que l'espace s'appelait B203 à l'origine.
 - **[vérifié à la main]** BIMvision ne montre que 7 portes sous Level 2 et aucune de Mark A202 : la porte `2OBrcmyk58NupXoVOHUvVV` (A202–A201) **n'est rattachée à aucun niveau** (absente de `IfcRelContainedInSpatialStructure`) — seul élément de la maquette dans ce cas. La chaîne ne l'avait pas vu, car `ifcopenshell.util.element.get_container` déduit silencieusement un niveau (Level 2). Ajout de la règle générique `rattachement_spatial` (contrôle de la relation IFC directe) et d'un test. Leçon : ne pas se fier aux utilitaires qui « réparent » la donnée lorsqu'on cherche des anomalies.
+
+## 2026-11-10 – Étape 4 : ontologie et graphe de connaissances
+
+- `m2_graphe/` : `ontologie_extension.ttl` (alignement BOT / SAREF4BLDG, logement, distance vers sortie, anomalie, paramètres), `construction.py` (geometry.json → kg.ttl), `formes_maison.ttl` (M1–M9), `requetes.py` (gabarits SPARQL Q01–Q14).
+- **Piège évité** : `rdfs:domain` est une règle d'inférence. Réutiliser `ssi:connects` pour l'escalier en ferait une porte (F2) ; réutiliser `ssi:from/hasDistance` pour la distance vers une sortie en ferait une `EvacuationDistance` sans `ssi:to` (F7). Propriétés dédiées créées.
+- **Piège évité** : rattacher les espaces au logement par `bot:hasSpace` viole F1 (un seul parent `bot:hasSpace`, de type Storey) → `ssi:inDwelling`.
+- **Impasse** : rdflib distingue `"x"` et `"x"^^xsd:string` dans les requêtes ; comparer les GlobalId par `STR()`.
+- **Impasse** : mes premières formes maison rejetaient l'exemple minimal du kit (symétrie écrite dans un seul sens, porte sans largeur). Exigences de complétude passées en `sh:Warning` ; seuls les invariants restent des violations.
+- Graphe statique conforme à F1, F2, F7, F8 et M1–M9 ; F3 (20 espaces) et F4 (4 sorties) échouent comme attendu sans équipements : différées automatiquement tant que M4 n'est pas calculé.
+- Les 14 questions statiques obtenues par SPARQL donnent les mêmes résultats que le calcul Python. Nouvelle : Q11 = A102, B102 (séjours, 30,14 m²).
+- Fichier `doutes.md` créé à ta demande. 76 tests verts.

@@ -73,6 +73,25 @@
 | 3.7 | Poids d'un itinéraire | **somme des distances orientées (pire point de chaque espace)** · distance réelle porte à porte | 🟡 Somme des distances de Pang | Convention de Pang ; majorant prudent | M5 a besoin de temps d'évacuation réalistes |
 | 3.8 | Tolérance numérique | aucune · **1 cm** | Un segment qui longe un mur reste « dans » l'espace | Les segments sur le contour sont sinon rejetés par arrondi | — |
 
+## Étape 4 – Ontologie et graphe de connaissances
+
+| # | Question | Options envisagées | Choix final | Pourquoi | Revenir dessus si… |
+|---|---|---|---|---|---|
+| 4.1 | Étendre / aligner l'ontologie | `owl:equivalentClass` · **`rdfs:subClassOf`** · SKOS `closeMatch` | 🟡 Subsomption (`ssi:Door ⊑ s4bldg:Door`, `ssi:Dwelling ⊑ bot:Zone`) ; socle recopié sans modification | L'équivalence engage dans les deux sens (risque d'incohérence) | — |
+| 4.2 | TBox / ABox | un seul fichier · **séparés** | `ontology.ttl` = socle + extension ; `kg.ttl` = instances | Exigé par l'énoncé, validation `-e ontology.ttl` | — |
+| 4.3 | Source du graphe | IFC · **`geometry.json`** | `geometry.json` (+ `parametres.json`) | Modules découplés (0.5) ; la chaîne IFC → M1 → M2 reste automatique | — |
+| 4.4 | IRI des instances | nom · UUID · **GlobalId** | `…/kg/<type>/<GlobalId encodé>` | Stables d'une exécution à l'autre ; uniques malgré les deux `B202` | — |
+| 4.5 | Bibliothèques | **rdflib + pySHACL** · pyoxigraph · Jena/Fuseki · owlready2 | rdflib + pySHACL | pySHACL est l'outil du kit ; pur Python ; ~1 000 triplets | gros IFC trop lent (pyoxigraph pour SPARQL) |
+| 4.6 | Raisonnement | aucun · RDFS · OWL-RL · **matérialiser à la génération** | `isConnectedTo` écrit dans les deux sens ; types les plus précis écrits ; RDFS seulement à la validation | SPARQL sans raisonneur doit voir les deux sens | — |
+| 4.7 | Propriétés du socle à domaine inadapté | réutiliser · **créer une propriété dédiée** | 🟡 `ssi:linksSpace` pour les escaliers (pas `ssi:connects`, domaine Door) ; `ssi:ExitDistance` + `exitFrom/exitVia/exitDistance` (pas `from/to/hasDistance`) | Le domaine est une règle d'inférence : l'escalier deviendrait une porte, la distance vers une sortie violerait F7 | — |
+| 4.8 | Logement | préfixe du nom · **composante connexe avec sortie** | 🟡 Composante connexe, recoupée par le préfixe ; lien `ssi:inDwelling` (pas `bot:hasSpace`, F1) | Règle générique, ne dépend pas des noms | immeuble avec hall commun (tout est connexe) |
+| 4.9 | Paramètres personnels | constantes · **nœud unique `ssi:Parameters`** | Toutes les valeurs de `parametres.json` (2 imposées + 6 ajoutées + origine du feu) | F4/F5 et « paramètre personnel » | — |
+| 4.10 | Formes F3–F6 avant M4 | échouer · désactiver à la main · **différer automatiquement** | Différées tant que `devices.json` est « non calculé » | Le graphe statique les viole forcément (pas d'équipement) | — |
+| 4.11 | Formes maison | aucune · **9 formes (M1–M9)** | Violation pour les invariants (évacuabilité, surface, GlobalId unique, un seul nœud Parameters…) ; avertissement pour la complétude (symétrie écrite, distance par liaison, largeur de porte) | Anticiper les formes cachées sans rejeter l'exemple minimal du kit | une forme cachée contredit un choix |
+| 4.12 | Q07 / Q08 (plus court chemin) | SPARQL seul · **SPARQL pour extraire le graphe pondéré + Dijkstra en Python** | Hybride | SPARQL 1.1 ne calcule pas de plus court chemin pondéré | — |
+| 4.13 | Anomalies dans le graphe | non · **oui (`ssi:ModelAnomaly`)** | 🟡 Incluses avec règle, description, traitement, éléments concernés | L'agent M6 peut les citer | une forme cachée les gêne |
+| 4.14 | État initial | aucun · **`hasStatus Normal`** | 🟡 Normal sur tous les espaces | État initial de Pang ; mis à jour par M5 | — |
+
 ## Points ouverts à trancher
 
 | Sujet | Options | Échéance |

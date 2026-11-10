@@ -121,3 +121,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > je vois 7 portes dans l'étage level 2 pas de mark A202, j'ai A205 b202 et d'autres noms mais pas celui ci par contre les portes ont bien width 0.864
 
 **Résultat :** nouvelle anomalie trouvée : la porte A202–A201 (`2OBrcmyk58NupXoVOHUvVV`) n'est rattachée à aucun niveau ; règle générique `rattachement_spatial` + test ; `main.md`, `choix.md`, carnet et grille BIMvision mis à jour.
+
+---
+
+## 14 — 2026-11-10 — Fichier des doutes et étape 4
+
+> rajoute doutes.md qui est le fichier qui indique tes propres doutes dans ta réflexion comme celui là de manière à ce que je puisse vérifier manuellement ou te donner des indications supplémentaires sur les cas où t'es pas sur. passe à l'étape 4
+
+**Résultat :** `doutes.md` (doutes classés par confiance, avec la manière de les lever) ; étape 4 réalisée : ontologie étendue, `kg.ttl` conforme (F3–F6 différées jusqu'à M4), 9 formes maison, Q01–Q14 par SPARQL, commande `questions` ; `choix.md` et `main.md` complétés.

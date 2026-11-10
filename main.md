@@ -11,7 +11,8 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | `python -m twinhyp visualiser --out sorties` | Crée `sorties/figures/plan_2d.html` et `vue_3d.html` (double-clic pour ouvrir) ; cliquer « Distances (pire point) » dans la légende du plan pour voir les distances |
 | `python -m twinhyp visualiser --out sorties --sans-3d` | Plan 2D seul (1 s au lieu de 15 s) |
 | `python -m twinhyp valider --out sorties` | Revérifie que les sorties respectent schémas et formes SHACL |
-| `pytest` | Lance tous les tests (~40 s) |
+| `python -m twinhyp questions --out sorties` | Affiche les réponses Q01–Q14 obtenues par SPARQL sur `kg.ttl` (`--sparql` : montre les requêtes) |
+| `pytest` | Lance tous les tests (~60 s) |
 | `pytest -m "not integration"` | Tests rapides seulement |
 
 ## Résultats par phase
@@ -28,6 +29,8 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 2 – Réponses préliminaires | Q03 = A101, A102, B101, B102 · Q04 = A102, A103, A105 · Q09 = A105, B105 · Q13 = ∅. |
 | 3 – Distances | 40 distances orientées (point le plus défavorable → passage) + 4 vers les sorties ; la formule de Pang égale Dijkstra sur tout le duplex ; volée = 4,85 m. |
 | 3 – Réponses préliminaires | Q07 = 0,864 m (A202 → A201 → A105 → A101 → entrée) · Q08 confirmée = B201, B105, B101. |
+| 4 – Graphe de connaissances | `ontology.ttl` (socle + extension alignée BOT/SAREF4BLDG) et `kg.ttl` (~880 triplets) conformes aux formes publiques F1, F2, F7, F8 et à 9 formes maison ; F3–F6 attendent les équipements de M4. |
+| 4 – Réponses par SPARQL | Les 14 questions statiques sont obtenues par requêtes sur le graphe, identiques aux réponses calculées en Python ; Q11 = A102, B102 (séjours). |
 
 ## Écarts de la maquette à présenter au jury
 
@@ -61,6 +64,7 @@ Liste complète, avec les options écartées : `choix.md`.
 ## Où trouver le détail
 
 - Tous les choix, options écartées et quand y revenir : `choix.md`
+- Mes doutes, à vérifier ou trancher : `doutes.md`
 - Décisions et résultats des étapes 0 à 2 : `docs/etape0a2.md`
 - Journal daté (y compris impasses) : `docs/carnet_de_bord.md`
 - Vérifications à la main : `docs/verification_bimvision.md`
