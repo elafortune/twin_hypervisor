@@ -1,0 +1,84 @@
+"""Orchestrateur : enchaîne M1 → M6, valide chaque sortie, trace les temps.
+
+Chaque module expose `executer(ctx) -> list[str]` qui écrit ses sorties dans
+`ctx.sortie` et renvoie les clés de `SORTIES` produites. Les modules ne se
+parlent que par ces fichiers, ce qui permet de relancer un module seul
+(`--etapes m2`) à partir des sorties déjà présentes.
+"""
+
+from __future__ import annotations
+
+import importlib
+import importlib.metadata as md
+import logging
+import os
+import platform
+import time
+from datetime import datetime, timezone
+
+from twinhyp import __version__
+from twinhyp.contexte import Contexte
+from twinhyp.io_schemas import ecrire_json, verifier_sortie
+
+log = logging.getLogger("twinhyp")
+
+# Ordre imposé par les dépendances de données.
+ETAPES = {
+    "m1": "twinhyp.m1_geometrie",
+    "m2": "twinhyp.m2_graphe",
+    "m3": "twinhyp.m3_iwcmc",
+    "m4": "twinhyp.m4_deploiement",
+    "m5": "twinhyp.m5_evacuation",
+    "m6": "twinhyp.m6_agent",
+}
+
+PAQUETS_TRACES = ["ifcopenshell", "numpy", "shapely", "networkx", "rdflib", "pyshacl", "jsonschema", "plotly"]
+
+
+def verifier(ctx: Contexte, cles: list[str]) -> None:
+    for cle in cles:
+        verifier_sortie(ctx.chemin_sortie(cle), ctx.schemas,
+                        formes=ctx.formes_publiques, ontologie=ctx.chemin_sortie("ontology"))
+
+
+def machine() -> dict:
+    versions = {}
+    for p in PAQUETS_TRACES:
+        try:
+            versions[p] = md.version(p)
+        except md.PackageNotFoundError:
+            versions[p] = None
+    return {
+        "systeme": platform.platform(),
+        "processeur": platform.processor(),
+        "coeurs_logiques": os.cpu_count(),
+        "python": platform.python_version(),
+        "paquets": versions,
+    }
+
+
+def executer(ctx: Contexte, etapes: list[str] | None = None) -> dict:
+    etapes = etapes or list(ETAPES)
+    inconnues = [e for e in etapes if e not in ETAPES]
+    if inconnues:
+        raise ValueError(f"Étapes inconnues : {inconnues} (attendu : {list(ETAPES)})")
+
+    trace = {
+        "twinhyp": __version__,
+        "debut": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "entrees": {"ifc": str(ctx.ifc), "parametres": str(ctx.params_chemin), "observations": str(ctx.obs)},
+        "graine": ctx.graine,
+        "machine": machine(),
+        "etapes": {},
+    }
+    for nom in [e for e in ETAPES if e in etapes]:  # toujours dans l'ordre de la chaîne
+        module = importlib.import_module(ETAPES[nom])
+        t0 = time.perf_counter()
+        produites = module.executer(ctx)
+        duree = time.perf_counter() - t0
+        verifier(ctx, produites)
+        log.info("%s : %.2f s, sorties conformes : %s", nom, duree, ", ".join(produites))
+        trace["etapes"][nom] = {"duree_s": round(duree, 3), "sorties": produites}
+
+    ecrire_json(ctx.sortie / "execution.json", trace)
+    return trace
