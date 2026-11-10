@@ -360,6 +360,11 @@ def appeler(b: Boite, nom: str, arguments: dict) -> Resultat:
         raise ErreurOutil(f"outil inconnu « {nom} » ; outils : {', '.join(OUTILS)}")
     f, _, schema = OUTILS[nom]
     args = {k: v for k, v in (arguments or {}).items() if k in schema["properties"] and v not in (None, "")}
+    for k, v in list(args.items()):  # petits modèles : booléens envoyés en texte (« False » serait vrai en Python)
+        if schema["properties"][k].get("type") == "boolean" and isinstance(v, str):
+            if v.strip().lower() not in ("true", "false", "vrai", "faux", "1", "0"):
+                raise ErreurOutil(f"{k} doit être true ou false")
+            args[k] = v.strip().lower() in ("true", "vrai", "1")
     manquants = [k for k in schema["required"] if k not in args]
     if manquants:
         raise ErreurOutil(f"arguments manquants : {', '.join(manquants)}")

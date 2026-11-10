@@ -167,3 +167,10 @@ def test_rejeu_rend_la_meme_reponse(tmp_path):
     assert json.loads((tmp_path / "nouveau.jsonl").read_text(encoding="utf-8"))["rejeu"] is True
     with pytest.raises(RuntimeError):
         r.chat([{"role": "user", "content": "autre"}], tache="t")
+
+
+@pytest.mark.integration
+def test_booleen_en_texte_converti(boite):
+    a = O.appeler(boite, "itineraire", {"depart": "A202", "arrivee": "A101", "mesure": "espaces_traverses", "inclure_depart": "False"})
+    b = O.appeler(boite, "itineraire", {"depart": "A202", "arrivee": "A101", "mesure": "espaces_traverses", "inclure_depart": False})
+    assert a.valeur == b.valeur
