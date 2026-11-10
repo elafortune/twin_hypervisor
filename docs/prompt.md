@@ -190,3 +190,5 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > ok quand c'est fini et que tu as bien notés les différents résultats tu peux lancer l'étape suivante
 
 **Résultat (prompts 20–21) :** campagne de 12 expériences (`python -m twinhyp campagne`), `comparaison.md` (tests de validation expliqués, protocole, résultats et interprétation de chaque expérience, synthèse, questions aux auteurs), figure `comparaison.html` ; puis passage à l'étape 8.
+
+**Suite (étape 8) :** déploiement SSI par MILP (HiGHS) : 20 détecteurs, 2 déclencheurs, 18 caméras 3D (couverture 100 %, full-view 69 %), 4 zones, réseau connexe ; `kg.ttl` conforme à F1–F8 ; équipements sur le plan 2D et la vue 3D ; `choix.md` (8.1–8.12), `doutes.md` (S-1 à S-5).

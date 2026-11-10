@@ -31,7 +31,7 @@ IWCMC : `run` produit `pareto.json` (valeurs du tableau I) et `sorties/iwcmc/` (
 
 Comparaison approfondie : `python -m twinhyp campagne --out sorties/` (≈ 33 min) ; résultats commentés dans `comparaison.md`.
 
-Questions statiques : `python -m twinhyp questions --out sorties/` affiche les réponses Q01–Q19 obtenues par SPARQL sur `kg.ttl`. Les formes F3–F6 (équipements) sont différées tant que M4 n'a pas été calculé.
+Questions statiques : `python -m twinhyp questions --out sorties/` affiche les réponses Q01–Q19 obtenues par SPARQL sur `kg.ttl`. Les formes F3–F6 (équipements) ne sont différées que pour M1–M3 ; dès M4 (déploiement SSI, solveur MILP HiGHS), le graphe complet doit respecter F1–F8.
 
 Chaque exécution écrit `sorties/execution.json` : versions des paquets, machine, graine et durée de chaque étape.
 

@@ -8,7 +8,7 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 |---|---|
 | `python -m twinhyp run --ifc data/duplex_TwinHypervisor.ifc --params data/parametres.json --obs data/observations.csv --out sorties` | Rejoue toute la chaîne M1 → M6 et écrit les 8 sorties dans `sorties/` |
 | `… run … --etapes m1` | Relance seulement certains modules (ex. `m1,m2`) |
-| `python -m twinhyp visualiser --out sorties` | Crée `sorties/figures/plan_2d.html`, `voxels.html` (coupes de la grille par altitude), `iwcmc.html` (nos fronts contre les figures 4–5) et `vue_3d.html` (double-clic pour ouvrir) ; cliquer « Distances (pire point) » dans la légende du plan pour voir les distances |
+| `python -m twinhyp visualiser --out sorties` | Crée `sorties/figures/plan_2d.html`, `voxels.html` (coupes de la grille par altitude), `iwcmc.html` (nos fronts contre les figures 4–5) et `vue_3d.html` (équipements SSI sur le plan et en 3D) (double-clic pour ouvrir) ; cliquer « Distances (pire point) » dans la légende du plan pour voir les distances |
 | `python -m twinhyp visualiser --out sorties --sans-3d` | Plan 2D seul (1 s au lieu de 15 s) |
 | `python -m twinhyp valider --out sorties` | Revérifie que les sorties respectent schémas et formes SHACL |
 | `python -m twinhyp sensibilite --out sorties` | IWCMC : couverture selon un facteur sur L_obs (glouton), comparée à la figure 4 |
@@ -41,6 +41,8 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 7 – IWCMC, valeurs du tableau I | Un seul équipement couvre 100 % du duplex, avec ou sans jumeau : les L_obs de l'article (0,18–0,32 dB par obstacle) sont trop faibles pour reproduire ses figures ; Q20 = 1. |
 | 7 – IWCMC, L_obs × 30 | Reproduit la figure 4 (couverture 49 % contre 44 % pour un équipement, Q20 = 3 comme l'article) ; l'écart avec / sans jumeau va dans le même sens mais est plus faible (part de plâtre 47 % contre 18 %). |
 | 7 – Campagne de comparaison | 12 expériences (`comparaison.md`) : ni la sensibilité S_RX, ni un domaine à un niveau, ni le shadowing n'expliquent l'écart ; seul l'ordre de grandeur de L_obs (× 30–40) le fait ; avec une part de plâtre proche des 18 % de l'article, le gain du jumeau triple à 2 équipements ; PREP-NSGA se bloque en optimum local à µ = 3. |
+| 8 – Déploiement SSI | 40 équipements, chaque sous-problème optimal (HiGHS, gap 0) : 20 détecteurs de fumée (un par espace occupable), 2 déclencheurs manuels pour 4 sorties (≤ 6,6 m de marche), 18 caméras couvrant 100 % des 20 chemins (69 % des cellules vues de face), 4 zones de détection ; réseau connexe. |
+| 8 – Graphe complet | `kg.ttl` conforme aux 8 formes publiques F1–F8 et aux 11 formes maison, sans plus rien différer. |
 
 ## Écarts de la maquette à présenter au jury
 

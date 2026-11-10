@@ -139,6 +139,23 @@
 | 7.9 | Robustesse statistique | 1 graine · **5 graines** | ✅ 5 graines pour les scénarios principaux (médiane, min, max) | Un algorithme génétique est stochastique | — |
 | 7.10 | Campagne de comparaison | quelques variantes à la main · **campagne automatisée** | 12 expériences (A–L) : facteur, lecture, S_RX, domaine, shadowing, part de plâtre, technologies, poids, précision, graines, itérations ; comptes par groupe de matériau pour tout faire varier sans relancer le lancer de rayons | Demande du 10/11 : comparaison approfondie ; voir `comparaison.md` | — |
 
+## Étape 8 – Déploiement SSI
+
+| # | Question | Options envisagées | Choix final | Pourquoi | Revenir dessus si… |
+|---|---|---|---|---|---|
+| 8.1 | Formulation | un MILP global · algorithme génétique de M3 · **séquentielle (détecteurs → déclencheurs → caméras → réseau)** | Séquentielle, chaque sous-problème exact | Petits problèmes exacts, explicables au tableau, statut et gap fournis | l'optimum global est demandé |
+| 8.2 | Solveur | PuLP + CBC · OR-Tools · scipy.milp · **HiGHS (`highspy`)** | HiGHS, licence MIT ; seule dépendance ajoutée à cette étape | Libre, rapide, statut et gap directs | — |
+| 8.3 | Détecteurs : que couvrir ? | disque de 5 m quel que soit l'espace · **chaque cellule couverte par un détecteur DU MÊME espace, en vue directe** | 🟡 Couverture par espace (portes supposées fermées) ; `coversSpace` = l'espace où il est installé | La fumée ne traverse pas les cloisons ; sens clair pour F3 | règle plus souple acceptée par le jury |
+| 8.4 | Type de détecteur | chaleur en cuisine d'emblée · **fumée partout** | Fumée partout | La demande D1 (M6) porte justement sur le passage de la cuisine en chaleur | — |
+| 8.5 | Déclencheurs : distance | euclidienne · **de cheminement (graphe de visibilité dans le plateau ouvert)** | Distance de marche, plateaux reliés par ouvertures fusionnés | Label de `ssi:distanceToExit` ; distance réaliste | — |
+| 8.6 | Nombre de déclencheurs | un par sortie · **minimum couvrant toutes les sorties** | 🟡 2 déclencheurs pour 4 sorties (porte vitrée à 0,4 m, entrée à 6,6 m) ; `distanceToExit` = la plus défavorable des sorties servies | Sobriété sous la contrainte F4 | le jury attend un DM par sortie (paramétrable) |
+| 8.7 | Chemins d'évacuation | ligne centrale · bande · **polyligne espace → passages → sortie, à hauteur de visage** | 20 chemins (un par espace occupable, sortie la plus proche selon M1), échantillonnés à 0,25 m dans les voxels libres (182 cellules) | Cohérent avec M1 / M5 ; couverture 100 % faisable | — |
+| 8.8 | Caméras | 2D (PIMRC) · **3D : frustum 90° × 60°, portée 8 m, ligne de vue dans les voxels** | 8 azimuts × 2 inclinaisons (20°, 45°) sur les positions A, pose à 2,4 m (ou juste sous le faux plafond) : 7 184 candidats | Mode 3D attendu | plus d'orientations si couverture infaisable |
+| 8.9 | Full-view | contrainte · **objectif secondaire à nombre fixé** · indicateur | Phase 1 : nombre minimal (18) ; phase 2 : à 18 caméras, maximiser les cellules vues de face (Φ = 45°) | « Couverture prioritaire des chemins, puis full-view » | — |
+| 8.10 | Zones de détection | une par niveau · une par espace · **une par niveau et par logement** | 4 zones (A/B × Level 1/2) | F6 ; localisation de l'alarme par logement | — |
+| 8.11 | Réseau | ignoré · **modèle de M3 + relais si non connexe** | λ = 39 (tableau I) et 1 (× 30) : connexe, aucun relais | Réutilise M3 | — |
+| 8.12 | Formes F3–F6 dans la chaîne | toujours · selon `devices.json` · **selon l'étape** | Différées pour M1–M3 seulement ; actives dès M4 | Corrigé après un échec : un `devices.json` d'un run précédent activait F3–F6 dès M2 | — |
+
 ## Points ouverts à trancher
 
 | Sujet | Options | Échéance |

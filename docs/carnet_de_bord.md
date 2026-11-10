@@ -142,3 +142,15 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - `m3_iwcmc/campagne.py` : comptes de voxels traversés par groupe de matériau (6 groupes, 8 min, vérifié à 8 × 10⁻⁷ dB contre le calcul direct) → toutes les variantes par combinaison linéaire. 12 expériences, 33 min au total.
 - Résultats (détail dans `comparaison.md`) : tableau I → 100 % dès 1 équipement pour toutes les lectures, technologies, S_RX jusqu'à −45 dBm, domaine 1 ou 2 niveaux ; facteur × 30–40 (lecture voxel) → figure 4 (écart 0,02–0,035, Q20 = 3 à × 30) ; part de plâtre 21 % → gain du jumeau +5 points à 2 équipements (contre +1,5 à 47 %) ; µ = 3 : optimum local de PREP-NSGA (100, 300, 1 000 itérations identiques), étendue de 7 à 16 points entre graines ; précision du lancer de rayons : 91 % des rayons identiques entre pas 5 cm et 1,25 cm.
 - Figures : `sorties/figures/comparaison.html` (synthèse), `iwcmc.html` (fronts).
+
+## 2026-11-10 – Étape 8 : déploiement SSI
+
+- Dépendance ajoutée : `highspy` (HiGHS, MIT) pour les MILP exacts ; `requirements.lock` et `pyproject.toml` mis à jour.
+- `m4_deploiement/` : `milp.py` (couverture d'ensemble), `placement.py` (détecteurs, déclencheurs, chemins, caméras + full-view), `reseau.py` (connectivité, relais), `graphe.py` (écriture F3–F6), `__init__.py` (devices.json, zones).
+- Détecteurs : 932 candidats, 944 cellules, 20 détecteurs (un par espace occupable), optimal en 0,13 s.
+- Déclencheurs : 2 pour 4 sorties (distance de marche 0,4 m et 6,6 m dans le plateau séjour–foyer–cuisine), optimal.
+- **Impasse** : 78 cellules des chemins invisibles au premier essai. Au Level 2, une caméra à 3,1 + 2,4 = 5,5 m tombe dans la couche de voxels du faux plafond et était écartée. Correction : pose juste sous cette couche. Ensuite 0 cellule invisible.
+- Caméras : 7 184 candidats (positions × 8 azimuts × 2 inclinaisons), 182 cellules, 18 caméras (optimal), couverture 100 % de chaque chemin, full-view 69 % (phase 2 à 18 caméras).
+- Réseau : connexe (λ = 39 avec le tableau I, λ = 1 avec × 30) ; aucun relais.
+- **Impasse** : la chaîne complète échouait en M2 car un `devices.json` d'un run précédent (calculé) activait F3–F6 avant que le graphe ne contienne d'équipements. Le report des formes dépend maintenant de l'étape (M1–M3) et non du fichier sur disque.
+- Chaîne complète : `kg.ttl` conforme à F1–F8 et aux 11 formes maison ; `valider` : 8 sorties OK. 10 tests M4.
