@@ -14,7 +14,12 @@ pytestmark = pytest.mark.integration
 
 def test_commande_unique_produit_les_8_sorties(tmp_path):
     out = tmp_path / "sorties"
-    code = main(["run", "--ifc", str(IFC_DUPLEX), "--params", str(PARAMS), "--obs", str(OBS),
+    # M3 réduit (30 positions, 3 itérations) : la reproduction complète est testée à part
+    params = json.loads(PARAMS.read_text(encoding="utf-8"))
+    params["iwcmc"] = {"max_positions": 30, "n_it": 3, "n_pop": 10, "n_mu": 10, "facteurs_supplementaires": []}
+    chemin_params = tmp_path / "parametres.json"
+    chemin_params.write_text(json.dumps(params), encoding="utf-8")
+    code = main(["run", "--ifc", str(IFC_DUPLEX), "--params", str(chemin_params), "--obs", str(OBS),
                  "--out", str(out)])
     assert code == 0
     for nom in SORTIES.values():
