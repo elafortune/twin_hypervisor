@@ -92,3 +92,22 @@ fm:Prefixes sh:declare
     [ sh:prefix "ssi" ;  sh:namespace "https://ligm.univ-eiffel.fr/twinhypervisor/ssi#"^^xsd:anyURI ] ,
     [ sh:prefix "bot" ;  sh:namespace "https://w3id.org/bot#"^^xsd:anyURI ] ,
     [ sh:prefix "rdfs" ; sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ] .
+
+# M10 – Une observation SOSA est complète et bien typée.
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+fm:M10_Observation a sh:NodeShape ;
+    sh:targetClass sosa:Observation ;
+    sh:property [ sh:path sosa:observedProperty ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "M10 : propriété observée absente ou multiple."@fr ] ;
+    sh:property [ sh:path sosa:hasFeatureOfInterest ; sh:class bot:Space ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:message "M10 : une observation porte sur exactement un espace."@fr ] ;
+    sh:property [ sh:path sosa:hasSimpleResult ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "M10 : résultat absent ou multiple."@fr ] ;
+    sh:property [ sh:path sosa:resultTime ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ;
+                  sh:message "M10 : horodatage absent ou mal typé."@fr ] ;
+    sh:property [ sh:path [ sh:inversePath sosa:madeObservation ] ; sh:class sosa:Sensor ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:message "M10 : une observation est faite par exactement un capteur."@fr ] .
+
+# M11 – Une route d'évacuation est datée et part d'un espace.
+fm:M11_Route a sh:NodeShape ;
+    sh:targetClass ssi:EvacuationRoute ;
+    sh:property [ sh:path ssi:routeFor ; sh:class bot:Space ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path ssi:validAt ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] .

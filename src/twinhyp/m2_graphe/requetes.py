@@ -17,6 +17,7 @@ from rdflib import Graph
 PREFIXES = """PREFIX ssi: <https://ligm.univ-eiffel.fr/twinhypervisor/ssi#>
 PREFIX bot: <https://w3id.org/bot#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sosa: <http://www.w3.org/ns/sosa/>
 """
 
 GABARITS = {
@@ -48,6 +49,22 @@ GABARITS = {
         OPTIONAL {{ ?d ssi:viaElement ?e . ?e ssi:ifcGlobalId ?eg }}
         BIND (COALESCE(?eg, CONCAT("ouverture:", STR(?a), "|", STR(?b))) AS ?gid) }}""",
     "Q14": """SELECT ?gid WHERE {{ ?p a ssi:Door ; ssi:doorWidth ?l ; ssi:ifcGlobalId ?gid . FILTER (?l < {seuil}) }}""",
+    # --- scénario dynamique (graphe après M5) ---
+    "Q15": """SELECT (MIN(?t) AS ?t0) WHERE {{
+        ?o sosa:observedProperty ssi:SmokeObscuration ; sosa:hasSimpleResult ?v ; ssi:scenarioTime ?t .
+        FILTER (?v > {seuil}) }}""",
+    "Q16": """SELECT ?gid WHERE {{ ?s ssi:dangerSince ?t0 ; ssi:ifcGlobalId ?gid . FILTER (?t0 <= {t}) }}""",
+    "Q16_observations": """SELECT DISTINCT ?gid WHERE {{
+        ?o sosa:hasFeatureOfInterest ?s ; sosa:observedProperty ?p ; sosa:hasSimpleResult ?v ; ssi:scenarioTime ?t .
+        FILTER (?t <= {t} && ((?p = ssi:Temperature && ?v > {temp}) || (?p = ssi:COConcentration && ?v > {co})))
+        ?s ssi:ifcGlobalId ?gid }}""",
+    "Q19": """SELECT ?gid WHERE {{
+        ?o sosa:hasFeatureOfInterest ?s ; sosa:observedProperty ssi:Occupancy ; sosa:hasSimpleResult ?n ; ssi:scenarioTime ?t .
+        {{ SELECT ?s (MAX(?t2) AS ?dernier) WHERE {{
+             ?o2 sosa:hasFeatureOfInterest ?s ; sosa:observedProperty ssi:Occupancy ; ssi:scenarioTime ?t2 . FILTER (?t2 <= {t}) }}
+           GROUP BY ?s }}
+        FILTER (?t = ?dernier && ?n > 0)
+        ?s ssi:ifcGlobalId ?gid }}""",
 }
 
 # Valeurs des paramètres pour les questions du kit (tirées de leur énoncé).
@@ -56,6 +73,8 @@ PARAMETRES_KIT = {
     "Q06": {"niveau": "Level 2"}, "Q10": {"niveau": "Level 2"},
     "Q12": {"niveau": "Level 2", "motif": "bath|salle de bain|sdb|toilet|wc"},
     "Q13": {"logement_a": "Logement A", "logement_b": "Logement B"}, "Q14": {"seuil": 0.80},
+    "Q15": {"seuil": 0.0328}, "Q16": {"t": 300}, "Q16_observations": {"t": 300, "temp": 60, "co": 1000},
+    "Q19": {"t": 300},
 }
 
 ARETES = """SELECT ?a ?b ?d ?type ?via ?larg WHERE {
@@ -87,6 +106,8 @@ def repondre(g: Graph, qid: str, **params) -> tuple[list[str] | float, list[str]
     lignes = executer(g, texte)
     if qid in ("Q05", "Q10"):
         return round(float(lignes[0][0] or 0), 2), [texte]
+    if qid == "Q15":
+        return (int(lignes[0][0]) if lignes and lignes[0][0] is not None else None), [texte]
     return sorted({str(l[0]) for l in lignes}), [texte]
 
 

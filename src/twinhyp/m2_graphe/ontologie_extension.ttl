@@ -66,3 +66,13 @@ ssi:cameraRange            a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ;
 ssi:cameraMountHeight      a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ; rdfs:range xsd:decimal .
 ssi:detectorRadius         a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ; rdfs:range xsd:decimal .
 ssi:fireOrigin             a owl:ObjectProperty ; rdfs:domain ssi:Parameters ; rdfs:range bot:Space .
+
+# ---------- Observations et évacuation dynamique (M5) ----------
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+ssi:scenarioTime   a owl:DatatypeProperty ; rdfs:domain sosa:Observation ; rdfs:range xsd:integer ;
+    rdfs:label "instant de l'observation depuis le début du scénario (s)"@fr ;
+    rdfs:comment "Redondant avec sosa:resultTime, mais rend les questions « à t = 300 s » directes en SPARQL."@fr .
+ssi:dangerSince    a owl:DatatypeProperty ; rdfs:domain bot:Space ; rdfs:range xsd:integer ;
+    rdfs:label "instant (s) où l'espace est passé à l'état Dangerous (état verrouillé ensuite)"@fr .
+ssi:alarmTime      a owl:DatatypeProperty ; rdfs:domain bot:Building ; rdfs:range xsd:integer ;
+    rdfs:label "instant (s) de la première alarme fumée"@fr .

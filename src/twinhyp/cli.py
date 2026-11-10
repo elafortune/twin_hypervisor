@@ -54,6 +54,7 @@ def commande_questions(args: argparse.Namespace) -> int:
 
     from twinhyp.m2_graphe import requetes as R
     from twinhyp.m2_graphe.construction import SSI
+    from twinhyp.m5_evacuation import instant_alarme, plus_de_route_sure, route_a
 
     g = Graph().parse(args.out / SORTIES["kg"], format="turtle")
     libelle = {str(gid): f"{lab}" + (f" ({g.value(s, SSI.longName)})" if g.value(s, SSI.longName) else "")
@@ -77,6 +78,16 @@ def commande_questions(args: argparse.Namespace) -> int:
     afficher("Q08", q08["espaces"][1:], q08["requetes"])
     for qid in ["Q09", "Q10", "Q11", "Q12", "Q13", "Q14"]:
         afficher(qid, *R.repondre(g, qid))
+    if instant_alarme(g) is None:
+        print("Q15–Q19 : scénario non rejoué (lancer M5)")
+        return 0
+    afficher("Q15", *R.repondre(g, "Q15"))
+    afficher("Q16", *R.repondre(g, "Q16"))
+    a202 = R.espace(g, "A202")[0]
+    route, req = route_a(g, a202, instant_alarme(g))
+    afficher("Q17", route["route"] if route else [], req)
+    afficher("Q18", *plus_de_route_sure(g, a202))
+    afficher("Q19", *R.repondre(g, "Q19"))
     return 0
 
 
