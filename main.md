@@ -41,7 +41,7 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 7 – IWCMC, valeurs du tableau I | Un seul équipement couvre 100 % du duplex, avec ou sans jumeau : les L_obs de l'article (0,18–0,32 dB par obstacle) sont trop faibles pour reproduire ses figures ; Q20 = 1. |
 | 7 – IWCMC, L_obs × 30 | Reproduit la figure 4 (couverture 49 % contre 44 % pour un équipement, Q20 = 3 comme l'article) ; l'écart avec / sans jumeau va dans le même sens mais est plus faible (part de plâtre 47 % contre 18 %). |
 | 7 – Campagne de comparaison | 12 expériences (`comparaison.md`) : ni la sensibilité S_RX, ni un domaine à un niveau, ni le shadowing n'expliquent l'écart ; seul l'ordre de grandeur de L_obs (× 30–40) le fait ; avec une part de plâtre proche des 18 % de l'article, le gain du jumeau triple à 2 équipements ; PREP-NSGA se bloque en optimum local à µ = 3. |
-| 8 – Déploiement SSI | 40 équipements, chaque sous-problème optimal (HiGHS, gap 0) : 20 détecteurs de fumée (un par espace occupable), 2 déclencheurs manuels pour 4 sorties (≤ 6,6 m de marche), 18 caméras couvrant 100 % des 20 chemins (69 % des cellules vues de face), 4 zones de détection ; réseau connexe. |
+| 8 – Déploiement SSI | 42 équipements, chaque sous-problème optimal (HiGHS, gap 0) : 20 détecteurs de fumée (un par espace occupable), 4 déclencheurs manuels, un par sortie (0,4 m), 18 caméras couvrant 100 % des 20 chemins (69 % des cellules vues de face ; compromis full-view : +2 caméras → minimum 62,5 % par chemin), 4 zones de détection ; réseau connexe. |
 | 8 – Graphe complet | `kg.ttl` conforme aux 8 formes publiques F1–F8 et aux 11 formes maison, sans plus rien différer. |
 
 ## Écarts de la maquette à présenter au jury

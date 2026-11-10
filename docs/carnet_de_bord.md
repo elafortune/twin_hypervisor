@@ -154,3 +154,11 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Réseau : connexe (λ = 39 avec le tableau I, λ = 1 avec × 30) ; aucun relais.
 - **Impasse** : la chaîne complète échouait en M2 car un `devices.json` d'un run précédent (calculé) activait F3–F6 avant que le graphe ne contienne d'équipements. Le report des formes dépend maintenant de l'étape (M1–M3) et non du fichier sur disque.
 - Chaîne complète : `kg.ttl` conforme à F1–F8 et aux 11 formes maison ; `valider` : 8 sorties OK. 10 tests M4.
+
+## 2026-11-10 – Retours sur l'étape 8 (S-1, S-4)
+
+- S-1 : un déclencheur par sortie (décision) → 4 DM à 0,4 m ; option `declencheur_un_par_sortie` pour revenir au minimum. Lève aussi S-2.
+- S-4 : diagnostic → le full-view nul de B102/B103 n'était PAS structurel (88–93 % atteignables par au moins un candidat) : l'objectif « somme » sacrifiait les chemins courts. **Mon explication précédente était fausse.**
+- Phase 2 des caméras passée en lexicographique : max du full-view minimal par chemin, puis du total (variable continue ajoutée à `milp.resoudre`).
+- À 18 caméras, le MILP prouve qu'un minimum > 0 est impossible ; option `cameras_supplementaires_full_view` : k = 1 → 10 %, k = 2 → 62,5 % (global 86 %), k = 3 → 79 %, k = 4 → 80 %.
+- 2 tests ajoutés (12 tests M4).

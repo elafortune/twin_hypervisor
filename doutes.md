@@ -84,10 +84,10 @@
 
 | # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |
 |---|---|---|---|---|---|
-| S-1 | 🟠 | 2 déclencheurs pour 4 sorties (un DM sert la porte vitrée et l'entrée, à 6,6 m) : conforme à F4, mais l'usage met un DM par sortie | Minimum sous F4 | Ton avis ; un réglage « un par sortie » est simple | ☐ |
-| S-2 | 🟠 | `distanceToExit` : une seule valeur par déclencheur ; j'écris la plus défavorable (6,6 m) | Prudent | Une forme cachée pourrait attendre une valeur par sortie servie | ☐ |
+| S-1 | 🟢 | 2 déclencheurs pour 4 sorties : conforme à F4, mais l'usage met un DM par sortie | **Un par sortie** (décision de l'utilisateur) : 4 DM à 0,4 m ; option pour revenir au minimum | — | ✅ |
+| S-2 | 🟢 | `distanceToExit` : une seule valeur par déclencheur | Sans objet avec un DM par sortie (une sortie, une distance) ; en mode minimum, la plus défavorable | — | ✅ |
 | S-3 | 🟠 | Détecteur obligatoire dans chaque espace (même les petits : salles de bains, buanderies) | 20 détecteurs | EN 54 exclut parfois les salles d'eau ; sinon F3 échoue (espaces occupables) | ☐ |
-| S-4 | 🟠 | Full-view nul pour les chemins de B102 et B103 (et 10 % pour A102) : la sortie est proche, aucune caméra ne fait face au marcheur | Signalé | Ajouter une contrainte de full-view minimal ? | ☐ |
+| S-4 | 🟡 | Full-view nul pour B102 et B103 (10 % pour A102). **Mon explication initiale (« aucune caméra ne peut faire face ») était fausse** : 88–93 % y sont atteignables ; c'est l'objectif « somme » qui sacrifiait les chemins courts | Phase 2 passée en max-min puis somme. À 18 caméras, le MILP prouve que min > 0 est impossible (déplacer une caméra ne suffit pas) : +1 caméra → min 10 %, +2 → 62,5 % (global 86 %), +3 → 79 % | Choisir k (`cameras_supplementaires_full_view`) : 0 par défaut (nombre minimal) | ☐ |
 | S-5 | 🟢 | Caméras du Level 2 posées à 5,49 m (sous le faux plafond) et non à 5,5 m (= 3,1 + 2,4, dans la couche du plafond) | Décalage de 1 cm | — | ☐ |
 
 ## Énoncé

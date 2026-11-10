@@ -192,3 +192,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 **Résultat (prompts 20–21) :** campagne de 12 expériences (`python -m twinhyp campagne`), `comparaison.md` (tests de validation expliqués, protocole, résultats et interprétation de chaque expérience, synthèse, questions aux auteurs), figure `comparaison.html` ; puis passage à l'étape 8.
 
 **Suite (étape 8) :** déploiement SSI par MILP (HiGHS) : 20 détecteurs, 2 déclencheurs, 18 caméras 3D (couverture 100 %, full-view 69 %), 4 zones, réseau connexe ; `kg.ttl` conforme à F1–F8 ; équipements sur le plan 2D et la vue 3D ; `choix.md` (8.1–8.12), `doutes.md` (S-1 à S-5).
+
+---
+
+## 22 — 2026-11-10 — Retours sur l'étape 8 et Ollama
+
+> un déclencheur par sortie, S4 la question est est il possible d'avoir un full view non nul en changeant légèrement le positionne d'une caméra ? selon l'importance des éléments précédents modifie sinon passe à l'étape 9 après avoir vérifié ollama
+
+**Résultat :** 4 déclencheurs (un par sortie). S-4 : full-view atteignable pour B102/B103, mais à 18 caméras aucune configuration ne donne min > 0 (preuve MILP max-min) ; +1 caméra → 10 %, +2 → 62,5 %. Phase 2 en max-min puis somme. Ollama 0.40 présent avec qwen2.5:14b (outils).
