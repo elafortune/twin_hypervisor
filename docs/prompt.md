@@ -113,3 +113,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > je ne trouve pas de porte A202-201 à l'étahe level 2 dans BIMvision
 
 **Résultat :** la porte existe (`2OBrcmyk58NupXoVOHUvVV`, nom IFC « M_Single-Flush:0864 x 2032mm:0864 x 2032mm:159834 », marque Revit `A202`) ; table d'identification des 14 portes ajoutée dans `docs/verification_bimvision.md`.
+
+---
+
+## 13 — 2026-11-10 — Seulement 7 portes au Level 2 dans BIMvision
+
+> je vois 7 portes dans l'étage level 2 pas de mark A202, j'ai A205 b202 et d'autres noms mais pas celui ci par contre les portes ont bien width 0.864
+
+**Résultat :** nouvelle anomalie trouvée : la porte A202–A201 (`2OBrcmyk58NupXoVOHUvVV`) n'est rattachée à aucun niveau ; règle générique `rattachement_spatial` + test ; `main.md`, `choix.md`, carnet et grille BIMvision mis à jour.

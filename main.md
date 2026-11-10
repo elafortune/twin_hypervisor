@@ -44,6 +44,7 @@ Vérifiés à la main dans BIMvision le 10/11 (toutes les valeurs de la chaîne 
 | Cages d'escalier | A105 / B105 empiètent de 0,15 m² sur A203 / B202 | Pas de liaison, signalé |
 | Limites de A201 / B201 | Décalées de 6 à 10 m (placement de l'espace modifié) | Contact géométrique utilisé |
 | Limites « EXTERNAL » | 12 limites virtuelles entre deux espaces typées externes | Traitées comme internes |
+| Porte A202–A201 orpheline | La porte `…159834` (Mark A202, 0,864 m) n'est rattachée à aucun niveau : BIMvision ne montre que 7 portes sous Level 2 | Niveau déduit du placement ; règle `rattachement_spatial` (trouvée grâce à la vérification BIMvision) |
 | Q13 vide | Aucun passage direct entre A et B | À justifier (question piège possible) |
 
 ## Choix de méthode à valider / défendre

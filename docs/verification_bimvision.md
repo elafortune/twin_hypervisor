@@ -82,4 +82,4 @@ Les portes ne portent pas le nom des espaces qu'elles relient. Leur nom IFC est 
 | A102 → extérieur | `Single-Glass 1:0813 x 2420mm:171975` | A102 | `1s1jVhK8z0pgKYcr9jt7AB` | 0,813 |
 | B102 → extérieur | `Single-Glass 1:0813 x 2420mm:171853` | B102 | `1s1jVhK8z0pgKYcr9jt781` | 0,813 |
 
-☐ Q07 : porte `…159834` (Mark A202) de largeur 0,864 m ; porte d'entrée `…146596` de 1,25 m → minimum 0,864 m.
+☑ Q07 : 0,864 m. **La porte `…159834` (Mark A202) n'apparaît pas sous Level 2** (7 portes au lieu de 8) : elle n'est rattachée à aucun niveau dans l'IFC. Pour la voir : cliquer la porte entre A202 et le couloir A201 dans la vue 3D, ou chercher son GlobalId `2OBrcmyk58NupXoVOHUvVV`. Les 7 autres portes de Level 2 font bien 0,864 / 0,762 m. Porte d'entrée `…146596` : 1,25 m.

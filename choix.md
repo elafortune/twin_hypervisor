@@ -43,6 +43,7 @@
 | 1.6 | Espace occupable | mots-clés · hauteur < 1,8 m · « niveau le plus haut » | **Mots-clés seulement** (roof, gaine, plenum…), surchargeables par `mots_cles_non_occupable` | ↩ « niveau le plus haut » retiré : un dernier étage est souvent habité | le gros IFC contient des locaux techniques mal nommés (ajouter la hauteur) |
 | 1.7 | Détection des anomalies | correction silencieuse · ML · **règles génériques (invariants)** | Une règle par invariant, chaque correction écrite dans `anomalies` avec son traitement | 21 espaces : pas de données pour du ML ; il faut expliquer chaque constat | — |
 | 1.8 | Niveau d'un élément | rattachement IFC · **altitude de la base** | Altitude de la base ; le rattachement IFC est contrôlé | L'escalier B est rattaché au toit | — |
+| 1.8 bis | Élément sans niveau | se fier à `get_container` d'ifcopenshell · **contrôler la relation IFC directe** | ↩ Règle `rattachement_spatial` : un élément absent de `IfcRelContainedInSpatialStructure` est signalé ; son niveau est déduit du placement | ifcopenshell déduit un niveau sans le dire : la porte A202 semblait sur Level 2 alors qu'elle n'est rattachée à rien (vu dans BIMvision) | — |
 | 1.9 | Dimensions d'escalier | propriétés · **géométrie** | Géométrie ; propriétés en pieds signalées | `RiserHeight` 0,6357 n'est pas en mètres | — |
 
 ## Étape 2 – Connectivité
