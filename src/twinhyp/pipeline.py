@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 
 from twinhyp import __version__
 from twinhyp.contexte import Contexte
-from twinhyp.io_schemas import ecrire_json, verifier_sortie
+from twinhyp.io_schemas import FORMES_EQUIPEMENTS, ecrire_json, verifier_sortie
 
 log = logging.getLogger("twinhyp")
 
@@ -35,10 +35,14 @@ ETAPES = {
 PAQUETS_TRACES = ["ifcopenshell", "numpy", "shapely", "networkx", "rdflib", "pyshacl", "jsonschema", "plotly"]
 
 
-def verifier(ctx: Contexte, cles: list[str]) -> None:
+AVANT_DEPLOIEMENT = ("m1", "m2", "m3")  # le graphe ne contient pas encore d'équipements SSI
+
+
+def verifier(ctx: Contexte, cles: list[str], etape: str | None = None) -> None:
+    differees = FORMES_EQUIPEMENTS if etape in AVANT_DEPLOIEMENT else (() if etape else None)
     for cle in cles:
-        verifier_sortie(ctx.chemin_sortie(cle), ctx.schemas,
-                        formes=ctx.formes, ontologie=ctx.chemin_sortie("ontology"))
+        verifier_sortie(ctx.chemin_sortie(cle), ctx.schemas, formes=ctx.formes,
+                        ontologie=ctx.chemin_sortie("ontology"), differees=differees)
 
 
 def machine() -> dict:
@@ -76,7 +80,7 @@ def executer(ctx: Contexte, etapes: list[str] | None = None) -> dict:
         t0 = time.perf_counter()
         produites = module.executer(ctx)
         duree = time.perf_counter() - t0
-        verifier(ctx, produites)
+        verifier(ctx, produites, nom)
         log.info("%s : %.2f s, sorties conformes : %s", nom, duree, ", ".join(produites))
         trace["etapes"][nom] = {"duree_s": round(duree, 3), "sorties": produites}
 

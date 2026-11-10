@@ -132,8 +132,8 @@ def rapport_shacl(chemin_kg: Path, formes: Path | list[Path], ontologie: Path,
 
 # Point d'entrée commun -------------------------------------------------------
 def verifier_sortie(chemin: Path, dossier_schemas: Path, formes: Path | list[Path] | None = None,
-                    ontologie: Path | None = None) -> None:
-    """Lève `SortieNonConforme` si la sortie viole son contrat."""
+                    ontologie: Path | None = None, differees: Iterable[str] | None = None) -> None:
+    """`differees` : formes SHACL à ne pas appliquer ; None = déduit de devices.json (commande valider)."""
     if not chemin.is_file():
         raise SortieNonConforme(f"{chemin.name} : fichier absent")
     if chemin.name in SCHEMA_DE:
@@ -141,7 +141,7 @@ def verifier_sortie(chemin: Path, dossier_schemas: Path, formes: Path | list[Pat
         if erreurs:
             raise SortieNonConforme(f"{chemin.name} :\n  " + "\n  ".join(erreurs[:20]))
     elif chemin.name == "kg.ttl" and formes is not None and ontologie is not None:
-        differees = formes_differees(chemin.parent)
+        differees = formes_differees(chemin.parent) if differees is None else tuple(differees)
         conforme, texte = rapport_shacl(chemin, formes, ontologie, differees)
         if not conforme:
             note = " (F3–F6 différées : M4 non calculé)" if differees else ""
