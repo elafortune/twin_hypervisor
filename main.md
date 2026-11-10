@@ -25,6 +25,18 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 1 – Réponses préliminaires | Q05 = 138,16 m² · Q10 = 134,53 m² · Q12 = A204, B204 · Q14 = 4 portes de 0,762 m. |
 | 2 – Connectivité | *à venir* |
 
+## Écarts de la maquette à présenter au jury
+
+Vérifiés à la main dans BIMvision le 10/11 (toutes les valeurs de la chaîne correspondent).
+
+| Écart | Ce qu'on observe | Ce que fait la chaîne |
+|---|---|---|
+| `B202` en double | Deux espaces nommés `B202` ; « Bedroom 2 » a pour numéro Revit `B203` | Identifie par GlobalId ; signale `B203` comme nom d'origine |
+| B105 « Room » | Catégorie OmniClass « Stairway », jumeau de A105 « Stair » | Traite B105 comme une cage d'escalier |
+| `IsFireExit` | Valeur texte « IsFireExit » sur les 14 portes | Ignore la propriété ; sorties par géométrie + `IsExternal` |
+| Escalier B sous Roof | Rattaché au toit alors que sa base est à 0 m | Le replace sur Level 1 |
+| Marches en pieds | Hauteur 0,6357 et giron 0,8202 dans un fichier en mètres | Utilise la géométrie |
+
 ## Où trouver le détail
 
 - Décisions et résultats des étapes 0 à 2 : `docs/etape0a2.md`

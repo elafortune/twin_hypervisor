@@ -81,3 +81,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > j'ai bimvision et j'ai ouvert le duplex ifc mais je ne vois pas comment vérifier la surface et les différentes questions. dis moi comment faire cela ensuite on passe à la prochaine étape
 
 **Résultat :** `main.md` (mémo commandes + résultat de chaque phase en une phrase) et `docs/verification_bimvision.md` (grille de contrôle des valeurs à lire dans BIMvision) ; mode opératoire BIMvision donné dans le terminal.
+
+---
+
+## 9 — 2026-11-10 — Vérification faite, passage à l'étape 2
+
+> j'ai vérifié,le double B202 et le B105 classé en stairway a la place de room note ces éléments de décalages dans main.md je suppose que ce seront des éléments dont je parlerai avec le jury. tout correspond, passons à l'étape 2
+
+**Résultat :** section « Écarts de la maquette à présenter au jury » dans `main.md`, grille BIMvision cochée, étape 2 (connectivité) réalisée.

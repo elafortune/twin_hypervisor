@@ -69,3 +69,4 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Impasse : export PNG des figures pour vérification nécessitant `kaleido` (installé dans l'environnement pour le contrôle, non requis par la chaîne).
 - Visualisation contrôlée à l'œil (plan Level 1, Level 2, vue 3D) : contours, portes et escaliers aux bons endroits.
 - **À faire à la main** : vérifier Q01, Q05, Q10, Q12, Q14 dans BIMvision.
+- **[vérifié à la main]** 10/11 : dans BIMvision, surfaces GSA BIM Area, espaces de Level 2, salles de bains, largeurs de portes et anomalies (double `B202`, B105 catégorie « Stairway ») conformes à la chaîne (Q01, Q05, Q10, Q12, Q14).
