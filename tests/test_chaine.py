@@ -12,7 +12,8 @@ from twinhyp.pipeline import executer
 pytestmark = pytest.mark.integration
 
 
-def test_commande_unique_produit_les_8_sorties(tmp_path):
+def test_commande_unique_produit_les_8_sorties(tmp_path, monkeypatch):
+    monkeypatch.setenv("TWINHYP_LLM", "factice")  # M6 : plomberie seulement (l'agent réel est testé à part)
     out = tmp_path / "sorties"
     # M3 réduit (30 positions, 3 itérations) : la reproduction complète est testée à part
     params = json.loads(PARAMS.read_text(encoding="utf-8"))
