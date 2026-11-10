@@ -76,3 +76,12 @@ ssi:dangerSince    a owl:DatatypeProperty ; rdfs:domain bot:Space ; rdfs:range x
     rdfs:label "instant (s) où l'espace est passé à l'état Dangerous (état verrouillé ensuite)"@fr .
 ssi:alarmTime      a owl:DatatypeProperty ; rdfs:domain bot:Building ; rdfs:range xsd:integer ;
     rdfs:label "instant (s) de la première alarme fumée"@fr .
+
+# ---------- Déploiement SSI (M4) ----------
+ssi:posX           a owl:DatatypeProperty ; rdfs:domain ssi:SafetyDevice ; rdfs:range xsd:decimal ; rdfs:label "x monde IFC (m)"@fr .
+ssi:posY           a owl:DatatypeProperty ; rdfs:domain ssi:SafetyDevice ; rdfs:range xsd:decimal ; rdfs:label "y monde IFC (m)"@fr .
+ssi:posZ           a owl:DatatypeProperty ; rdfs:domain ssi:SafetyDevice ; rdfs:range xsd:decimal ; rdfs:label "z monde IFC (m)"@fr .
+ssi:azimuthDeg     a owl:DatatypeProperty ; rdfs:domain ssi:Camera ; rdfs:range xsd:decimal ; rdfs:label "azimut de l'axe optique (°, 0 = +X, sens trigonométrique)"@fr .
+ssi:tiltDeg        a owl:DatatypeProperty ; rdfs:domain ssi:Camera ; rdfs:range xsd:decimal ; rdfs:label "inclinaison vers le bas (°)"@fr .
+ssi:fullViewRatio  a owl:DatatypeProperty ; rdfs:domain ssi:EvacuationPath ; rdfs:range xsd:decimal ;
+    rdfs:label "part des cellules du chemin vues de face par une caméra, selon la direction d'évacuation (PIMRC, éq. 4)"@fr .
