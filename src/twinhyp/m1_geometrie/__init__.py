@@ -3,11 +3,16 @@
 Étape 1 : niveaux, espaces, portes, escaliers, anomalies d'attributs.
 Étape 2 : liaisons recoupées sur 3 sources, sorties, anomalies de connectivité.
 Étape 3 : distances d'évacuation orientées (point le plus défavorable, visibilité + Dijkstra).
+Étape 6 : grille de voxels avec matériau (grille_voxels.npz) et positions autorisées au plafond.
 """
 
 from twinhyp.contexte import Contexte
 from twinhyp.io_schemas import ecrire_json
-from twinhyp.m1_geometrie import anomalies, connectivite, distances, extraction
+import json
+
+import numpy as np
+
+from twinhyp.m1_geometrie import anomalies, connectivite, distances, extraction, voxels
 from twinhyp.m1_geometrie import ifc_outils as io
 
 
@@ -34,6 +39,24 @@ def construire_geometrie(chemin_ifc, params: dict | None = None) -> dict:
     return geometrie
 
 
+FICHIER_VOXELS = "grille_voxels.npz"
+
+
+def ajouter_voxels(chemin_ifc, geometrie: dict, params: dict, chemin_npz) -> None:
+    """Étape 6 : la grille complète va dans un .npz (tableaux), le résumé et A dans geometry.json."""
+    grille, vox, A, resume = voxels.calculer(io.ouvrir(chemin_ifc), geometrie, params)
+    np.savez_compressed(
+        chemin_npz, origine=grille.origine, pas=grille.pas, libre=vox["libre"], materiau=vox["materiau"],
+        fraction_obstacle=vox["fraction_obstacle"], element=vox["element"],
+        positions=np.array([a["xyz"] for a in A], dtype=np.float32).reshape(-1, 3),
+        categories=json.dumps(voxels.CATEGORIES, ensure_ascii=False),
+        elements=json.dumps(vox["elements"], ensure_ascii=False))
+    geometrie["voxels"] = {"fichier": chemin_npz.name, **resume}
+    geometrie["positions_autorisees"] = A
+
+
 def executer(ctx: Contexte) -> list[str]:
-    ecrire_json(ctx.chemin_sortie("geometry"), construire_geometrie(ctx.ifc, ctx.params))
+    geometrie = construire_geometrie(ctx.ifc, ctx.params)
+    ajouter_voxels(ctx.ifc, geometrie, ctx.params, ctx.sortie / FICHIER_VOXELS)
+    ecrire_json(ctx.chemin_sortie("geometry"), geometrie)
     return ["geometry"]
