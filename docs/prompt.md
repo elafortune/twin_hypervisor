@@ -97,3 +97,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > indique ces choix dans main.md aussi et dis moi comment l'étape 3 sera réalisée afin que je valide
 
 **Résultat :** section « Choix de méthode à valider / défendre » dans `main.md` ; plan de l'étape 3 (distances d'évacuation) proposé dans le terminal, en attente de validation.
+
+---
+
+## 11 — 2026-11-10 — Validation de l'étape 3 et fichier des choix
+
+> je valide ce plan crée aussi un fichier choix.md qui décris tous les choix qui ont du etre fait à chaque étape , les différentes propositions pertinentes et le choix final réalisé cela me permet de pouvoir garder une vision d'ensemble des choix faits et potentiellement de revenir sur certains choix réalisés par la suite avec une meilleure compréhension, tu peux continuer
+
+**Résultat :** `choix.md` (toutes les décisions des étapes 0 à 3 : options, choix final, raison, quand y revenir) ; étape 3 réalisée (`distances.py` : graphe de visibilité + Dijkstra, formule de Pang en comparaison, longueur de volée, itinéraires), couche « Distances » dans le plan 2D, Q07 = 0,864 m, 62 tests verts.

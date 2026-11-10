@@ -8,10 +8,10 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 |---|---|
 | `python -m twinhyp run --ifc data/duplex_TwinHypervisor.ifc --params data/parametres.json --obs data/observations.csv --out sorties` | Rejoue toute la chaîne M1 → M6 et écrit les 8 sorties dans `sorties/` |
 | `… run … --etapes m1` | Relance seulement certains modules (ex. `m1,m2`) |
-| `python -m twinhyp visualiser --out sorties` | Crée `sorties/figures/plan_2d.html` et `vue_3d.html` (double-clic pour ouvrir) |
+| `python -m twinhyp visualiser --out sorties` | Crée `sorties/figures/plan_2d.html` et `vue_3d.html` (double-clic pour ouvrir) ; cliquer « Distances (pire point) » dans la légende du plan pour voir les distances |
 | `python -m twinhyp visualiser --out sorties --sans-3d` | Plan 2D seul (1 s au lieu de 15 s) |
 | `python -m twinhyp valider --out sorties` | Revérifie que les sorties respectent schémas et formes SHACL |
-| `pytest` | Lance tous les tests (~25 s) |
+| `pytest` | Lance tous les tests (~40 s) |
 | `pytest -m "not integration"` | Tests rapides seulement |
 
 ## Résultats par phase
@@ -26,6 +26,8 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 2 – Connectivité | 20 liaisons (10 portes, 8 ouvertures libres, 2 escaliers) et 4 sorties ; tout espace occupable atteint une sortie ; aucun passage entre logements A et B (Q13 vide). |
 | 2 – Anomalies | 5 constats de plus : porte A204–A205 reliée à tort à A201 dans l'IFC, cages d'escalier qui empiètent sur une chambre, limites de A201/B201 décalées de 6–10 m, 12 limites « EXTERNAL » entre deux espaces. |
 | 2 – Réponses préliminaires | Q03 = A101, A102, B101, B102 · Q04 = A102, A103, A105 · Q09 = A105, B105 · Q13 = ∅. |
+| 3 – Distances | 40 distances orientées (point le plus défavorable → passage) + 4 vers les sorties ; la formule de Pang égale Dijkstra sur tout le duplex ; volée = 4,85 m. |
+| 3 – Réponses préliminaires | Q07 = 0,864 m (A202 → A201 → A105 → A101 → entrée) · Q08 confirmée = B201, B105, B101. |
 
 ## Écarts de la maquette à présenter au jury
 
@@ -46,6 +48,8 @@ Vérifiés à la main dans BIMvision le 10/11 (toutes les valeurs de la chaîne 
 
 ## Choix de méthode à valider / défendre
 
+Liste complète, avec les options écartées : `choix.md`.
+
 | Choix | Pourquoi |
 |---|---|
 | Un désaccord entre sources n'est une anomalie que si la source IFC est minoritaire ou absente | Sinon la chaîne de Pang crée seule 2 fausses anomalies (cages A105/B105 citées à cause du chevauchement de 0,15 m²) |
@@ -55,6 +59,7 @@ Vérifiés à la main dans BIMvision le 10/11 (toutes les valeurs de la chaîne 
 
 ## Où trouver le détail
 
+- Tous les choix, options écartées et quand y revenir : `choix.md`
 - Décisions et résultats des étapes 0 à 2 : `docs/etape0a2.md`
 - Journal daté (y compris impasses) : `docs/carnet_de_bord.md`
 - Vérifications à la main : `docs/verification_bimvision.md`

@@ -79,3 +79,13 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Premier essai : toute citation minoritaire signalée → 2 fausses anomalies (A105/B105 cités par la seule chaîne de Pang, à cause du chevauchement cage/chambre). Décision : seule une citation minoritaire **de la source IFC** est une anomalie de la maquette.
 - Escaliers : la volée est entièrement dans la cage (x105, double hauteur) ; arrivée détectée dans x201. Liaison A105 → A201 ; la limite virtuelle A201/A105 est l'arrivée de l'escalier (pas une ouverture distincte).
 - Résultats et réponses préliminaires : `etape0a2.md` §2 bis. 54 tests verts.
+
+## 2026-11-10 – Étape 3 : distances d'évacuation
+
+- `m1_geometrie/distances.py` : graphe de visibilité (sommets du contour + cible, segments contenus dans l'espace à 1 cm près) puis Dijkstra depuis la cible ; distance = max sur les sommets. Formule de Pang calculée à côté.
+- 40 distances orientées (20 liaisons × 2 sens) + 4 distances vers les sorties, toutes > 0 ; calcul en ≈ 0,5 s.
+- **Constat** : la formule de Pang (un seul sommet intermédiaire) donne exactement la même valeur que Dijkstra sur **tous** les espaces du duplex, y compris le foyer A101 (12 sommets, non convexe). Elle échoue sur un polygone en U (test unitaire) : à montrer au jury.
+- Volée : course mesurée sur l'empreinte le long de l'axe bas → haut (3,77 m, cohérent avec 15 girons de 0,25 m une fois convertis depuis les pieds), dénivelé 3,05 m, longueur 4,85 m. Le premier calcul (distance entre centres des marches basses et hautes) donnait 3,52 m de course : corrigé.
+- Distances extrêmes : foyer A101 → entrée 8,35 m ; A201 → cage (descente) 4,11 m + 4,85 m.
+- Itinéraire A202 → entrée A101 : A202, A201, A105, A101 ; portes franchies 0,864 m (chambre) et entrée → **Q07 = 0,864 m**. Q08 confirmée (B201, B105, B101).
+- 62 tests verts.
