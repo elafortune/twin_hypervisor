@@ -85,3 +85,27 @@ def test_antenne_sous_le_plafond_et_a_cote_d_un_mur():
                         np.array([[1.5, 0.5, 2.6]]))
     a = env.antennes()[0]
     assert a[2] == pytest.approx(1.5) and a[0] in (0.5, 2.5)
+
+
+def test_campagne_ecart_nul_sur_les_valeurs_de_l_article():
+    from twinhyp.m3_iwcmc.campagne import ecarts_figure4, resume
+    courbe = {f"{'avec' if j else 'sans'}_{n}": list(v) for (j, mu), d in article.FIGURES.items() if mu == 0
+              for n, v in d.items()}
+    assert ecarts_figure4(courbe) == {"ecart_couverture": 0.0, "ecart_qualite_dB": 0.0}
+    r = resume(courbe)
+    assert r["q20"] == 3 and r["gain_couverture_max"] == pytest.approx(0.105, abs=1e-3)
+
+
+def test_campagne_variante_par_groupes(couloir):
+    """Les pertes reconstruites à partir des comptes par groupe = calcul direct."""
+    from twinhyp.m3_iwcmc.campagne import GROUPES, radios, variante
+    from twinhyp.m3_iwcmc.radio import matrices_obstacles
+    g = np.array([0, 1, 0]).reshape(3, 1, 1)
+    champs = [(g == k).astype(np.float32) for k in sorted(GROUPES)]
+    A, C = couloir.antennes(), couloir.centres_libres()
+    V, M = matrices_obstacles(couloir, A, C, champs)
+    VA, MA = matrices_obstacles(couloir, A, A, champs)
+    c = {"voxel": V, "metre": M, "AA_voxel": VA, "AA_metre": MA}
+    r, _, _ = radios(couloir, c, variante(shadowing=False, facteur=2.0))
+    d = np.linalg.norm(A[0] - C[1])
+    assert r[True].PL[0, 1] == pytest.approx(37.15 + 20 * np.log10(d) + 2 * 0.32 * (C[1, 0] > 1.5), abs=1e-4)
