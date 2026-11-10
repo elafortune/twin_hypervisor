@@ -76,7 +76,7 @@
 |---|---|---|---|---|---|
 | R-1 | 🔴 | **Q20** : avec les valeurs du tableau I (`pareto.json`), Q20 = **1** (100 % dès un équipement) ; avec L × 30, Q20 = 3 comme l'article. Laquelle donner ? | `pareto.json` (et donc Q20) suit le tableau I tel quel, comme décidé | Ton choix ; à expliquer au jury dans les deux cas | ☐ |
 | R-2 | 🔴 | Facteur 30 : explication par un L_obs appliqué à chaque échantillon de raycast (hypothèse, non prouvée) | Présenté comme hypothèse | Question aux auteurs | ☐ |
-| R-3 | 🟠 | µ = 3 : l'optimisation « avec jumeau » fait moins bien que « sans jumeau » à 4–5 équipements (× 30) : convergence insuffisante | Signalé (E-14) | Relancer avec 5 graines / plus d'itérations | ☐ |
+| R-3 | 🟠 | µ = 3 : l'optimisation « avec jumeau » fait moins bien que « sans jumeau » à 4–5 équipements (× 30) : convergence insuffisante | Signalé (E-14) | Relancer avec 5 graines / plus d'itérations | ☑ 10/11 : 5 graines et 100/300/1 000 itérations : optimum local de PREP-NSGA sous peine de mort, pas un manque d'itérations (comparaison.md, I) |
 | R-4 | 🟠 | Initialisation par « cellules d'intérêt » (référence [7] absente du kit) | Une cellule par espace (centre des positions A) | Lire MetaCom 2023 si accessible | ☐ |
 | R-5 | 🟢 | Relevé des figures 4 et 5 à l'œil (±0,005 ; ±0,2 dBm) | Valeurs dans `m3_iwcmc/article.py` | — | ☐ |
 

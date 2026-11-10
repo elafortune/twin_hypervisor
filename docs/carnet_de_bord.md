@@ -136,3 +136,9 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Étude de sensibilité (glouton) : lecture voxel × 30 reproduit la figure 4 (écart moyen 0,035 ; Q20 = 3) ; lecture mètre ne s'en approche qu'au-delà de × 50.
 - PREP-NSGA (graine 0, 300 itérations) : tableau I → fronts plats à 100 % ; × 30 → µ = 0 proche de l'article, µ = 3 en dessous (convergence, une seule graine).
 - Outils installés pour lire l'article seulement : `pypdf`, `pymupdf` (non requis par la chaîne).
+
+## 2026-11-10 – Campagne de comparaison IWCMC
+
+- `m3_iwcmc/campagne.py` : comptes de voxels traversés par groupe de matériau (6 groupes, 8 min, vérifié à 8 × 10⁻⁷ dB contre le calcul direct) → toutes les variantes par combinaison linéaire. 12 expériences, 33 min au total.
+- Résultats (détail dans `comparaison.md`) : tableau I → 100 % dès 1 équipement pour toutes les lectures, technologies, S_RX jusqu'à −45 dBm, domaine 1 ou 2 niveaux ; facteur × 30–40 (lecture voxel) → figure 4 (écart 0,02–0,035, Q20 = 3 à × 30) ; part de plâtre 21 % → gain du jumeau +5 points à 2 équipements (contre +1,5 à 47 %) ; µ = 3 : optimum local de PREP-NSGA (100, 300, 1 000 itérations identiques), étendue de 7 à 16 points entre graines ; précision du lancer de rayons : 91 % des rayons identiques entre pas 5 cm et 1,25 cm.
+- Figures : `sorties/figures/comparaison.html` (synthèse), `iwcmc.html` (fronts).

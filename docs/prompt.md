@@ -176,3 +176,17 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 **Résultat :** voir `iwcmc.md` et l'étape 7 ci-dessous.
 
 **Suite (étape 7) :** `iwcmc.md` (résumé, lectures, décalages chiffrés) ; reproduction complète (modèle radio, score, µ-connexité, PREP-NSGA, 4 scénarios) ; avec le tableau I tel quel, 100 % de couverture dès un équipement (Q20 = 1) ; L_obs × 30 reproduit la figure 4 (Q20 = 3) ; figure `iwcmc.html`, commande `sensibilite`.
+
+---
+
+## 20 — 2026-11-10 — Campagne de comparaison IWCMC
+
+> réalise le maximum de tests possible et donne les explications des tests dans comparaison.md car c'est une des attentes principales de bien mettre en place l'article de thèse et d'effectuer cette comparaison. seulement après avoir fait différents scénarios pertinents et réalisé une bonne comparaison on passe à l'étape suivante
+
+---
+
+## 21 — 2026-11-10 — Suite après la campagne
+
+> ok quand c'est fini et que tu as bien notés les différents résultats tu peux lancer l'étape suivante
+
+**Résultat (prompts 20–21) :** campagne de 12 expériences (`python -m twinhyp campagne`), `comparaison.md` (tests de validation expliqués, protocole, résultats et interprétation de chaque expérience, synthèse, questions aux auteurs), figure `comparaison.html` ; puis passage à l'étape 8.

@@ -136,7 +136,8 @@
 | 7.6 | Qualité moyenne de lien | moyenne sur les voxels couverts · **moyenne sur tous les voxels (non couvert = S_RX)** | ↩ Lecture I-5 révisée après comparaison à la figure 4 (a) | Seule lecture croissante comme l'article (« relative coverage ») | — |
 | 7.7 | Algorithme génétique | pymoo · DEAP · **maison** | PREP-NSGA maison (tri non dominé + encombrement, 3 mutations, peine de mort, initialisation par cellules d'intérêt) | Fidèle à l'algorithme 1, explicable | — |
 | 7.8 | Validation de l'algorithme | aucune · **référence gloutonne** | Glouton (garantie 1 − 1/e) utilisé pour l'étude de sensibilité | Contrôle indépendant de PREP-NSGA | — |
-| 7.9 | Robustesse statistique | 1 graine · 5 graines | 🟡 1 graine pour l'instant | Temps | **à faire** : 5 graines (µ = 3 converge mal, E-14) |
+| 7.9 | Robustesse statistique | 1 graine · **5 graines** | ✅ 5 graines pour les scénarios principaux (médiane, min, max) | Un algorithme génétique est stochastique | — |
+| 7.10 | Campagne de comparaison | quelques variantes à la main · **campagne automatisée** | 12 expériences (A–L) : facteur, lecture, S_RX, domaine, shadowing, part de plâtre, technologies, poids, précision, graines, itérations ; comptes par groupe de matériau pour tout faire varier sans relancer le lancer de rayons | Demande du 10/11 : comparaison approfondie ; voir `comparaison.md` | — |
 
 ## Points ouverts à trancher
 

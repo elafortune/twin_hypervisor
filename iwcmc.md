@@ -72,6 +72,8 @@ Ce tableau est complété au fil de l'étape 7 (valeurs chiffrées dans `pareto.
 
 ## 8. Résultats chiffrés (graine 0, 300 itérations)
 
+> La campagne complète (12 expériences, 5 graines) et son analyse sont dans **`comparaison.md`**.
+
 | | n = 1 | 2 | 3 | 4 | 5 | 10 |
 |---|---|---|---|---|---|---|
 | Article, couverture avec / sans jumeau (µ = 0) | 0,44 / 0,35 | 0,775 / 0,67 | 0,905 / 0,825 | 0,95 / 0,92 | 0,985 / 0,965 | 0,998 / 0,988 |

@@ -12,6 +12,7 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | `python -m twinhyp visualiser --out sorties --sans-3d` | Plan 2D seul (1 s au lieu de 15 s) |
 | `python -m twinhyp valider --out sorties` | Revérifie que les sorties respectent schémas et formes SHACL |
 | `python -m twinhyp sensibilite --out sorties` | IWCMC : couverture selon un facteur sur L_obs (glouton), comparée à la figure 4 |
+| `python -m twinhyp campagne --out sorties` | IWCMC : toutes les expériences de `comparaison.md` (≈ 33 min) |
 | `python -m twinhyp questions --out sorties` | Affiche les réponses Q01–Q19 obtenues par SPARQL sur `kg.ttl` (`--sparql` : montre les requêtes) |
 | `pytest` | Lance tous les tests (~3 min) |
 | `pytest -m "not integration"` | Tests rapides seulement |
@@ -39,6 +40,7 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 6 – Positions autorisées | 932 positions au plafond (518 au Level 1 à 2,60 m, 414 au Level 2 à 5,70 m), uniquement au-dessus des espaces occupables. |
 | 7 – IWCMC, valeurs du tableau I | Un seul équipement couvre 100 % du duplex, avec ou sans jumeau : les L_obs de l'article (0,18–0,32 dB par obstacle) sont trop faibles pour reproduire ses figures ; Q20 = 1. |
 | 7 – IWCMC, L_obs × 30 | Reproduit la figure 4 (couverture 49 % contre 44 % pour un équipement, Q20 = 3 comme l'article) ; l'écart avec / sans jumeau va dans le même sens mais est plus faible (part de plâtre 47 % contre 18 %). |
+| 7 – Campagne de comparaison | 12 expériences (`comparaison.md`) : ni la sensibilité S_RX, ni un domaine à un niveau, ni le shadowing n'expliquent l'écart ; seul l'ordre de grandeur de L_obs (× 30–40) le fait ; avec une part de plâtre proche des 18 % de l'article, le gain du jumeau triple à 2 équipements ; PREP-NSGA se bloque en optimum local à µ = 3. |
 
 ## Écarts de la maquette à présenter au jury
 
@@ -75,6 +77,7 @@ Liste complète, avec les options écartées : `choix.md`.
 - Tous les choix, options écartées et quand y revenir : `choix.md`
 - Mes doutes, à vérifier ou trancher : `doutes.md`
 - Résumé de l'IWCMC, lectures des ambiguïtés et décalages chiffrés : `iwcmc.md`
+- Campagne de comparaison à l'IWCMC (tests, scénarios, résultats commentés) : `comparaison.md`
 - Décisions et résultats des étapes 0 à 2 : `docs/etape0a2.md`
 - Journal daté (y compris impasses) : `docs/carnet_de_bord.md`
 - Vérifications à la main : `docs/verification_bimvision.md`
