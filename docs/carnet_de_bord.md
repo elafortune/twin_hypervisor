@@ -39,3 +39,22 @@ Entrées datées, y compris les impasses. Outils : Claude Code (Claude Opus 5.5)
 | Risque | Nul | Lenteur sur l'IFC plus grand de l'entretien |
 
   Décision : 2D maintenant (étapes 1–2). La 3D sera faite après M4 si le temps reste, en réutilisant les mêmes données, pour montrer les équipements.
+
+## 2026-11-10 – Étape 1 : exploration de l'IFC (avant d'écrire le code)
+
+Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées monde.
+
+- IFC2X3, longueurs en mètres (échelle 1.0). 4 niveaux : T/FDN −1,25 ; Level 1 0 ; Level 2 3,1 ; Roof 6,0.
+- 21 espaces, tous avec `GSA Space Areas`, `PSet_Revit_Dimensions` (Area, Unbounded Height), `PSet_Revit_Constraints`.
+- **Surface géométrique (union des triangles projetés) inférieure de 7 à 23 % à « GSA BIM Area »**, de façon identique entre logements A et B : écart **systématique** (convention de mesure), pas une anomalie. Une règle « écart > 5 % » signalerait tout : écartée. Q05 et Q10 demandent explicitement « GSA BIM Area ».
+- **Les 12 ouvertures non remplies ne sont pas des passages** : 8 percent des meubles hauts, 2 des plans de travail (évier), 2 la dalle de toit. Les liaisons « ouverture » viennent donc des **limites virtuelles** (`IfcRelSpaceBoundary` VIRTUAL : 16 internes, 12 externes).
+- 14 portes : 4 extérieures (`Pset_DoorCommon.IsExternal = True`, une seule limite d'espace) : entrées A101/B101, portes vitrées A102/B102.
+- Anomalies candidates repérées :
+  1. `IsFireExit` vaut le texte `'IsFireExit'` pour **toutes** les portes (valeur fictive du gabarit Revit) : inutilisable pour les sorties.
+  2. Deux espaces nommés `B202` (`…_39` « Bedroom 2 », `…_3A` « Bedroom 1 ») ; le logement A a A202/A203.
+  3. `B105` « Room » alors que son symétrique `A105` est « Stair » (même géométrie, hauteur 5,7 m).
+  4. La porte `1aj$VJZFn2TxepZUBcKpac` borde **3 espaces** (A204, A205, A201) ; sa symétrique dans B n'en borde que 2.
+  5. Le second escalier est rattaché au niveau **Roof** (le premier à Level 1), alors que sa volée va de z = 0 à 3,05.
+  6. `RiserHeight` = 0,6357 et `TreadLength` = 0,8202 : ce sont des **pieds** (0,194 m et 0,25 m) dans un fichier en mètres.
+- Escaliers : chaque volée touche le foyer, l'espace escalier (x105, double hauteur 0–5,7 m), le couloir x201 et une chambre du niveau 2.
+- Q13 (passage direct A ↔ B) : aucune porte ni limite virtuelle ne relie les deux logements dans les relations IFC. À confirmer par la géométrie : la réponse attendue est peut-être l'ensemble vide.
