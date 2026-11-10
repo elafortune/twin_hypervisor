@@ -125,3 +125,14 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Résultats : grille 16 × 34 × 24 — les 16 × 34 de l'IWCMC retrouvés en prenant l'emprise des espaces ; 4 956 obstacles sur 13 056 ; plafonds à 2,60 m et 5,70 m ; cages d'escalier libres à travers le plancher ; 932 positions.
 - **Écart** : plaque de plâtre = 47 % des voxels obstacles (catégorie dominante), 8 % en volume réel de matière, contre 18 % dans l'article. Aucune méthode simple ne donne 18 % : à présenter comme écart documenté.
 - Outil : `pypdf` installé dans l'environnement pour lire l'article (non requis par la chaîne).
+
+## 2026-11-10 – Étape 7 : reproduction IWCMC
+
+- Relecture de l'article (texte + figures rendues en image) ; `iwcmc.md` : résumé, lectures I-1 à I-10, décalages E-1 à E-14. Valeurs des figures 4 et 5 relevées à l'œil (`m3_iwcmc/article.py`).
+- `m3_iwcmc` : `radio.py` (équation 2, tableau I complet, traversée par échantillonnage 5 cm, lectures voxel / mètre, environnement sans jumeau), `score.py` (équations 1, 3, 4, métriques, µ-connexité par `edge_connectivity`), `prep_nsga.py` (algorithme 1), `sensibilite.py` (glouton + étude du facteur), `article.py`. Matrices 932 × 8 100 en cache (≈ 5 min, 33 Mo).
+- **Constat majeur** : avec les valeurs du tableau I, un équipement couvre 100 % du duplex (perte ≤ 62,5 + 10 dB, sensibilité −65 dBm) ; avec et sans jumeau identiques. Les figures de l'article (44 % pour un équipement) ne sont pas reproductibles ainsi.
+- **Impasse** : équipements placés au point d'impact (dans le voxel du faux plafond) → les liaisons équipement–équipement longent la couche du plafond ; avec atténuation renforcée, plus aucune liaison et µ = 3 sans solution initiale (plantage). Antenne déplacée dans le voxel libre juste sous le plafond.
+- **Impasse** : qualité moyenne sur les seuls voxels couverts → courbe non monotone ; la moyenne sur tous les voxels libres (non couvert = S_RX) reproduit la forme de la figure 4 (a) (« relative coverage »).
+- Étude de sensibilité (glouton) : lecture voxel × 30 reproduit la figure 4 (écart moyen 0,035 ; Q20 = 3) ; lecture mètre ne s'en approche qu'au-delà de × 50.
+- PREP-NSGA (graine 0, 300 itérations) : tableau I → fronts plats à 100 % ; × 30 → µ = 0 proche de l'article, µ = 3 en dessous (convergence, une seule graine).
+- Outils installés pour lire l'article seulement : `pypdf`, `pymupdf` (non requis par la chaîne).

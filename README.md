@@ -27,6 +27,8 @@ Visualiser : `python -m twinhyp visualiser --out sorties/` produit `sorties/figu
 
 Voxels : `visualiser` produit aussi `sorties/figures/voxels.html` (coupe de la grille par altitude, couleur = matériau, positions autorisées au plafond) ; la grille complète est dans `sorties/grille_voxels.npz`.
 
+IWCMC : `run` produit `pareto.json` (valeurs du tableau I) et `sorties/iwcmc/` (solutions, variante à atténuation renforcée) ; `python -m twinhyp sensibilite --out sorties/` compare la couverture à la figure 4 selon un facteur sur L_obs ; `visualiser` produit `sorties/figures/iwcmc.html`. Les matrices de perte (≈ 5 min) sont mises en cache.
+
 Questions statiques : `python -m twinhyp questions --out sorties/` affiche les réponses Q01–Q19 obtenues par SPARQL sur `kg.ttl`. Les formes F3–F6 (équipements) sont différées tant que M4 n'a pas été calculé.
 
 Chaque exécution écrit `sorties/execution.json` : versions des paquets, machine, graine et durée de chaque étape.

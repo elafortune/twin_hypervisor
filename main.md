@@ -8,9 +8,10 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 |---|---|
 | `python -m twinhyp run --ifc data/duplex_TwinHypervisor.ifc --params data/parametres.json --obs data/observations.csv --out sorties` | Rejoue toute la chaîne M1 → M6 et écrit les 8 sorties dans `sorties/` |
 | `… run … --etapes m1` | Relance seulement certains modules (ex. `m1,m2`) |
-| `python -m twinhyp visualiser --out sorties` | Crée `sorties/figures/plan_2d.html`, `voxels.html` (coupes de la grille par altitude) et `vue_3d.html` (double-clic pour ouvrir) ; cliquer « Distances (pire point) » dans la légende du plan pour voir les distances |
+| `python -m twinhyp visualiser --out sorties` | Crée `sorties/figures/plan_2d.html`, `voxels.html` (coupes de la grille par altitude), `iwcmc.html` (nos fronts contre les figures 4–5) et `vue_3d.html` (double-clic pour ouvrir) ; cliquer « Distances (pire point) » dans la légende du plan pour voir les distances |
 | `python -m twinhyp visualiser --out sorties --sans-3d` | Plan 2D seul (1 s au lieu de 15 s) |
 | `python -m twinhyp valider --out sorties` | Revérifie que les sorties respectent schémas et formes SHACL |
+| `python -m twinhyp sensibilite --out sorties` | IWCMC : couverture selon un facteur sur L_obs (glouton), comparée à la figure 4 |
 | `python -m twinhyp questions --out sorties` | Affiche les réponses Q01–Q19 obtenues par SPARQL sur `kg.ttl` (`--sparql` : montre les requêtes) |
 | `pytest` | Lance tous les tests (~3 min) |
 | `pytest -m "not integration"` | Tests rapides seulement |
@@ -36,6 +37,8 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 5 – Détour réactif | Sans guidage dynamique, l'occupant de A202 qui suit le plan à t = 180 s est bloqué dans la cage A105 après 15 m (dangereuse à 250 s) : pire que le confinement recommandé par la stratégie 2. |
 | 6 – Voxels | Grille 16 × 34 × 24 (pas 0,5 × 0,5 × 0,25 m, comme l'IWCMC), 38 % d'obstacles colorés par matériau ; plaque de plâtre = 47 % des voxels obstacles (8 % en volume réel) contre 18 % annoncés par l'IWCMC : écart à discuter. |
 | 6 – Positions autorisées | 932 positions au plafond (518 au Level 1 à 2,60 m, 414 au Level 2 à 5,70 m), uniquement au-dessus des espaces occupables. |
+| 7 – IWCMC, valeurs du tableau I | Un seul équipement couvre 100 % du duplex, avec ou sans jumeau : les L_obs de l'article (0,18–0,32 dB par obstacle) sont trop faibles pour reproduire ses figures ; Q20 = 1. |
+| 7 – IWCMC, L_obs × 30 | Reproduit la figure 4 (couverture 49 % contre 44 % pour un équipement, Q20 = 3 comme l'article) ; l'écart avec / sans jumeau va dans le même sens mais est plus faible (part de plâtre 47 % contre 18 %). |
 
 ## Écarts de la maquette à présenter au jury
 
@@ -71,6 +74,7 @@ Liste complète, avec les options écartées : `choix.md`.
 
 - Tous les choix, options écartées et quand y revenir : `choix.md`
 - Mes doutes, à vérifier ou trancher : `doutes.md`
+- Résumé de l'IWCMC, lectures des ambiguïtés et décalages chiffrés : `iwcmc.md`
 - Décisions et résultats des étapes 0 à 2 : `docs/etape0a2.md`
 - Journal daté (y compris impasses) : `docs/carnet_de_bord.md`
 - Vérifications à la main : `docs/verification_bimvision.md`

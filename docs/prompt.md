@@ -157,3 +157,22 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 **Résultat :** Q18 = 180 s validé ; risque des espaces dangereux sans caméra signalé (JSONL, `main.md`) ; variante « détour réactif » de la stratégie 1 ajoutée (bloqué dans la cage A105 à 180 s) ; choix 5.5, 5.10, 5.12, 5.13 et doutes V-1, V-3, V-6 mis à jour.
 
 **Suite (étape 6) :** grille de voxels 16 × 34 × 24 avec matériau, 932 positions au plafond, figure `voxels.html` ; `choix.md` (6.1–6.8), `doutes.md` (X-1 à X-5) ; écart sur la part de plaque de plâtre (47 % / 8 % contre 18 %).
+
+---
+
+## 18 — 2026-11-10 — Interprétation de L_obs et résumé de l'IWCMC
+
+> vu qu'une des étapes du projet est d'implémenter IWCMC et de comparer à notre étude note bien les décalages avec IWCMC. Les jury sont les auteurs de IWCMC donc il est important de réaliser la comparaison vis à vis des vraies valeurs proposées par IWCMC même si elles sont faibles dans cette idée la j'opte pour 1 ou 2 qui sont tirés des valeurs du tableau I et de l'article en général (vérifie que cela est bien tiré de l'article et du processus de pensée décris dans l'article) si besoin réalise un résumé de l'article (iwcmc.md) pour vérifier ta compréhension de l'article
+> dis moi lequel est mieux entre 1 et 2 dans ce contexte cela et argumente ton choix
+
+**Résultat :** option 2 recommandée (L_obs ajouté une fois par voxel obstacle traversé : équation (2) appliquée à la lettre, obstacles = voxels au §III.A) ; option 1 (× longueur) en sensibilité ; autres ambiguïtés relevées (équation 1 « max », voxels obstacles dans F_obj, formule de qualité, tirage de X_σ).
+
+---
+
+## 19 — 2026-11-10 — Lancement de l'étape 7
+
+> ok vasy
+
+**Résultat :** voir `iwcmc.md` et l'étape 7 ci-dessous.
+
+**Suite (étape 7) :** `iwcmc.md` (résumé, lectures, décalages chiffrés) ; reproduction complète (modèle radio, score, µ-connexité, PREP-NSGA, 4 scénarios) ; avec le tableau I tel quel, 100 % de couverture dès un équipement (Q20 = 1) ; L_obs × 30 reproduit la figure 4 (Q20 = 3) ; figure `iwcmc.html`, commande `sensibilite`.

@@ -124,6 +124,20 @@
 | 6.7 | Positions autorisées A | sol · **plafond** | Rayon vers le haut depuis plancher + 0,5 m, premier impact sur couverture / dalle / toit, au-dessus d'un espace occupable du niveau | Fidèle à l'IWCMC (« surfaces labeled as roof ») | — |
 | 6.8 | Stockage | JSON · **`.npz` + résumé dans `geometry.json`** | `sorties/grille_voxels.npz` (uint8 / float16) ; `geometry.json` : résumé `voxels` + liste `positions_autorisees` | Taille (13 056 voxels) et lecture rapide par M3/M4 | — |
 
+## Étape 7 – Reproduction IWCMC
+
+| # | Question | Options envisagées | Choix final | Pourquoi | Revenir dessus si… |
+|---|---|---|---|---|---|
+| 7.1 | Lecture de L_obs (dB/m) | 1 : × longueur traversée · **2 : une fois par voxel obstacle** · 3 : dB/cm | ✅ Option 2 principale, option 1 en sensibilité (validé 10/11 : rester sur les valeurs de l'article) | Équation (2) : somme sur les obstacles de Θ sans facteur de longueur ; obstacles = voxels (§III.A) | les auteurs précisent |
+| 7.2 | Résultat principal | valeurs ajustées · **valeurs du tableau I** | `pareto.json` = tableau I tel quel ; variante × 30 dans `sorties/iwcmc/` pour expliquer l'écart | Le jury est l'auteur de l'article : comparer à ses vraies valeurs | — |
+| 7.3 | Traversée des voxels | DDA exact · **échantillonnage tous les 5 cm** (vectorisé) | Échantillonnage, voxels distincts comptés une fois | 932 × 8 100 rayons en 5 min ; ≥ 5 échantillons par voxel | coins de voxel manqués gênants |
+| 7.4 | Point d'émission | impact au plafond · **voxel libre juste dessous** | Lecture I-10 | Sinon les équipements ne se voient plus (rayon le long du plafond) | — |
+| 7.5 | Shadowing X_σ | 0 · **tiré une fois par couple, graine fixée** · Monte-Carlo | Tirage unique (équipement → voxel, équipement → équipement orienté) | Reproductible ; asymétrie des liens | — |
+| 7.6 | Qualité moyenne de lien | moyenne sur les voxels couverts · **moyenne sur tous les voxels (non couvert = S_RX)** | ↩ Lecture I-5 révisée après comparaison à la figure 4 (a) | Seule lecture croissante comme l'article (« relative coverage ») | — |
+| 7.7 | Algorithme génétique | pymoo · DEAP · **maison** | PREP-NSGA maison (tri non dominé + encombrement, 3 mutations, peine de mort, initialisation par cellules d'intérêt) | Fidèle à l'algorithme 1, explicable | — |
+| 7.8 | Validation de l'algorithme | aucune · **référence gloutonne** | Glouton (garantie 1 − 1/e) utilisé pour l'étude de sensibilité | Contrôle indépendant de PREP-NSGA | — |
+| 7.9 | Robustesse statistique | 1 graine · 5 graines | 🟡 1 graine pour l'instant | Temps | **à faire** : 5 graines (µ = 3 converge mal, E-14) |
+
 ## Points ouverts à trancher
 
 | Sujet | Options | Échéance |
