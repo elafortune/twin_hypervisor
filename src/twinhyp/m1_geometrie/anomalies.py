@@ -137,6 +137,30 @@ def rattachement_niveau(espaces: list[dict], escaliers: list[dict], niveaux: lis
     return sortie
 
 
+def rattachement_spatial(f) -> list[dict]:
+    """Invariant : tout élément physique est rattaché à la structure spatiale
+    (IfcRelContainedInSpatialStructure), directement ou via l'assemblage dont il fait partie.
+    Un élément orphelin n'apparaît sous aucun niveau dans les visionneuses (arbre du projet)."""
+    sortie = []
+    for el in sorted(f.by_type("IfcElement"), key=lambda e: e.GlobalId):
+        if el.is_a("IfcFeatureElement"):  # ouvertures : rattachées à leur hôte
+            continue
+        parent, rattache = el, False
+        while parent is not None and not rattache:
+            rattache = bool(getattr(parent, "ContainedInStructure", None))
+            parent = io.ue.get_aggregate(parent)
+        if rattache:
+            continue
+        deduit = io.niveau_de(el)
+        sortie.append(anomalie(
+            el.GlobalId,
+            f"{el.is_a()} « {el.Name} » n'est rattaché à aucun niveau (absent de IfcRelContainedInSpatialStructure) : "
+            "il n'apparaît sous aucun niveau dans l'arborescence d'une visionneuse.",
+            f"Niveau déduit du placement / de l'élément hôte : « {deduit.Name if deduit else '?'} » ; "
+            "élément conservé dans la connectivité.", "rattachement_spatial"))
+    return sortie
+
+
 def dimensions_escalier(escaliers: list[dict]) -> list[dict]:
     """Invariant : hauteur de marche et giron déclarés dans des plages plausibles,
     et cohérents avec la géométrie (hauteur de la volée / nombre de contremarches)."""
@@ -168,6 +192,7 @@ def detecter(f, niveaux: list[dict], espaces: list[dict], escaliers: list[dict])
         jumeaux_noms_differents(f, espaces),
         booleens_mal_types(f),
         rattachement_niveau(espaces, escaliers, niveaux),
+        rattachement_spatial(f),
         dimensions_escalier(escaliers),
     ]
     return [a for r in regles for a in r]

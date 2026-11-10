@@ -48,3 +48,11 @@ def test_anomalies_du_duplex():
             "rattachement_niveau", "dimensions_escalier"} <= regles
     fonction = [a for a in geo["anomalies"] if a["regle"] == "fonction_coherente"]
     assert [a["element_globalId"] for a in fonction] == ["10mjSDZJj9gPS2PrQaxa4o"]  # B105 « Room »
+
+
+def test_porte_orpheline_hors_structure_spatiale():
+    """La porte A202–A201 n'est rattachée à aucun niveau (invisible sous Level 2 dans BIMvision)."""
+    from twinhyp.m1_geometrie import ifc_outils as io
+    from twinhyp.m1_geometrie.anomalies import rattachement_spatial
+    from conftest import IFC_DUPLEX
+    assert [a["element_globalId"] for a in rattachement_spatial(io.ouvrir(IFC_DUPLEX))] == ["2OBrcmyk58NupXoVOHUvVV"]
