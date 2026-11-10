@@ -16,6 +16,7 @@ dependencies = [
     "pyshacl>=0.26",
     "jsonschema[format-nongpl]>=4.21",
     "plotly>=5.20",
+    "highspy>=1.7",
 ]
 
 [project.optional-dependencies]
