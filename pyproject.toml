@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "twinhyp"
+version = "0.1.0"
+description = "Du BIM au SSI neuro-symbolique : chaîne IFC -> jumeau -> graphe -> déploiement -> évacuation -> agent"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "ifcopenshell>=0.8",
+    "numpy>=1.26",
+    "shapely>=2.0",
+    "networkx>=3.2",
+    "rdflib>=7.0",
+    "pyshacl>=0.26",
+    "jsonschema[format-nongpl]>=4.21",
+    "plotly>=5.20",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+twinhyp = "twinhyp.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    # bruit interne de rdflib appelé par pyshacl, sans effet sur nos résultats
+    "ignore:Dataset.default_context is deprecated:DeprecationWarning",
+]
+markers = [
+    "integration: lance la chaîne complète (plus lent)",
+]
