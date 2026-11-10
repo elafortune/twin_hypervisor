@@ -44,6 +44,15 @@ Vérifiés à la main dans BIMvision le 10/11 (toutes les valeurs de la chaîne 
 | Limites « EXTERNAL » | 12 limites virtuelles entre deux espaces typées externes | Traitées comme internes |
 | Q13 vide | Aucun passage direct entre A et B | À justifier (question piège possible) |
 
+## Choix de méthode à valider / défendre
+
+| Choix | Pourquoi |
+|---|---|
+| Un désaccord entre sources n'est une anomalie que si la source IFC est minoritaire ou absente | Sinon la chaîne de Pang crée seule 2 fausses anomalies (cages A105/B105 citées à cause du chevauchement de 0,15 m²) |
+| Une paire reliée à la fois par un escalier et une limite virtuelle ne garde que « escalier » | La limite virtuelle A105–A201 matérialise l'arrivée de la volée, ce n'est pas un second passage |
+| `surface_m2` = « GSA BIM Area » (pas la surface géométrique) | Q05 et Q10 la citent ; l'écart de 7–23 % est une convention de mesure |
+| Espace non occupable = mot-clé dans le nom (roof, gaine, plenum…) uniquement | Le critère « niveau le plus haut » proposé au départ classerait à tort un dernier étage habité |
+
 ## Où trouver le détail
 
 - Décisions et résultats des étapes 0 à 2 : `docs/etape0a2.md`
