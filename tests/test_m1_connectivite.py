@@ -92,3 +92,19 @@ def test_anomalies_de_connectivite(geo):
     regles = {a["regle"] for a in geo["anomalies"]}
     assert {"porte_sources_concordantes", "chevauchement_espaces", "limite_bien_placee",
             "limite_type_coherent"} <= regles
+
+
+def test_murs_mitoyens_sans_ouverture():
+    """Q13 : aucun élément séparant un espace A d'un espace B n'a de porte (l'ensemble vide est réel)."""
+    from collections import defaultdict
+
+    from twinhyp.m1_geometrie import ifc_outils as io
+
+    f = io.ouvrir(IFC_DUPLEX)
+    nom = {s.GlobalId: s.Name for s in f.by_type("IfcSpace")}
+    par_element = defaultdict(set)
+    for b in f.by_type("IfcRelSpaceBoundary"):
+        if b.RelatingSpace and b.RelatedBuildingElement:
+            par_element[b.RelatedBuildingElement].add(nom[b.RelatingSpace.GlobalId][0])
+    mitoyens = [el for el, logts in par_element.items() if {"A", "B"} <= logts and "Party" in (el.Name or "")]
+    assert mitoyens and all(not el.HasOpenings for el in mitoyens)
