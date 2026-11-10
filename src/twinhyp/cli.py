@@ -5,6 +5,7 @@
 
     python -m twinhyp run ... --etapes m1,m2     # relancer une partie de la chaîne
     python -m twinhyp valider --out sorties/     # revalider des sorties existantes
+    python -m twinhyp questions --out sorties/   # réponses Q01–Q14 par SPARQL
 """
 
 from __future__ import annotations
@@ -15,7 +16,7 @@ import sys
 from pathlib import Path
 
 from twinhyp.contexte import DONNEES_PAR_DEFAUT, SORTIES
-from twinhyp.io_schemas import SortieNonConforme, verifier_sortie
+from twinhyp.io_schemas import SortieNonConforme, formes_differees, verifier_sortie
 
 
 def construire_parseur() -> argparse.ArgumentParser:
@@ -42,7 +43,41 @@ def construire_parseur() -> argparse.ArgumentParser:
     vis.add_argument("--out", required=True, type=Path, help="dossier de sortie d'un run")
     vis.add_argument("--ifc", type=Path, help="IFC pour la vue 3D (défaut : celui de geometry.json)")
     vis.add_argument("--sans-3d", action="store_true", help="plan 2D seulement")
+    qst = sous.add_parser("questions", help="réponses Q01–Q14 obtenues par SPARQL sur <out>/kg.ttl")
+    qst.add_argument("--out", required=True, type=Path)
+    qst.add_argument("--sparql", action="store_true", help="afficher aussi les requêtes")
     return p
+
+
+def commande_questions(args: argparse.Namespace) -> int:
+    from rdflib import Graph, RDFS
+
+    from twinhyp.m2_graphe import requetes as R
+    from twinhyp.m2_graphe.construction import SSI
+
+    g = Graph().parse(args.out / SORTIES["kg"], format="turtle")
+    libelle = {str(gid): f"{lab}" + (f" ({g.value(s, SSI.longName)})" if g.value(s, SSI.longName) else "")
+               for s, gid in g.subject_objects(SSI.ifcGlobalId) for lab in [g.value(s, RDFS.label)]}
+
+    def afficher(qid, reponse, requetes):
+        if isinstance(reponse, list):
+            texte = ", ".join(f"{libelle.get(x, x)} [{x}]" for x in reponse) or "∅ (aucun)"
+        else:
+            texte = str(reponse)
+        print(f"{qid} : {texte}")
+        if args.sparql:
+            for r in requetes:
+                print("    " + r.replace("\n", "\n    "))
+
+    for qid in ["Q01", "Q02", "Q03", "Q04", "Q05", "Q06"]:
+        afficher(qid, *R.repondre(g, qid))
+    q07 = R.chemin(g, R.espace(g, "A202")[0], R.espace(g, "A101")[0])
+    afficher("Q07", q07["largeur_min_porte_m"], q07["requetes"])
+    q08 = R.chemin(g, R.espace(g, "B202", "Bedroom 2")[0], R.espace(g, "B101")[0])
+    afficher("Q08", q08["espaces"][1:], q08["requetes"])
+    for qid in ["Q09", "Q10", "Q11", "Q12", "Q13", "Q14"]:
+        afficher(qid, *R.repondre(g, qid))
+    return 0
 
 
 def commande_visualiser(args: argparse.Namespace) -> int:
@@ -75,8 +110,12 @@ def commande_run(args: argparse.Namespace) -> int:
 
 def commande_valider(args: argparse.Namespace) -> int:
     schemas = args.donnees / "schemas"
-    formes = args.donnees / "ontologie" / "formes_publiques.ttl"
+    formes = [args.donnees / "ontologie" / "formes_publiques.ttl",
+              Path(__file__).parent / "m2_graphe" / "formes_maison.ttl"]
     ontologie = args.out / SORTIES["ontology"]
+    differees = formes_differees(args.out)
+    if differees:
+        print(f"NOTE    formes {', '.join(differees)} différées : devices.json non calculé (M4)")
     echecs = 0
     for nom in SORTIES.values():
         try:
@@ -96,6 +135,8 @@ def main(argv: list[str] | None = None) -> int:
             return commande_run(args)
         if args.commande == "visualiser":
             return commande_visualiser(args)
+        if args.commande == "questions":
+            return commande_questions(args)
         return commande_valider(args)
     except (FileNotFoundError, SortieNonConforme, ValueError) as exc:
         print(f"Erreur : {exc}", file=sys.stderr)
