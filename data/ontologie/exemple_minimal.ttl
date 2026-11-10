@@ -1,0 +1,21 @@
+# Exemple minimal CONFORME aux 8 formes publiques (2 espaces fictifs, sans lien avec le Duplex).
+@prefix ssi: <https://ligm.univ-eiffel.fr/twinhypervisor/ssi#> .
+@prefix bot: <https://w3id.org/bot#> .
+@prefix ex:  <https://ligm.univ-eiffel.fr/twinhypervisor/exemple#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:params a ssi:Parameters ; ssi:maxCallPointDistance 10.0 ; ssi:minCameraCoverage 1.0 .
+ex:niveau0 a bot:Storey ; bot:hasSpace ex:hall , ex:bureau .
+ex:hall   a bot:Space ; ssi:ifcGlobalId "0AAAAAAAAAAAAAAAAAAAA1" ; ssi:occupiable true ; ssi:area 12.5 .
+ex:bureau a bot:Space ; ssi:ifcGlobalId "0AAAAAAAAAAAAAAAAAAAA2" ; ssi:occupiable true ; ssi:area 20.0 .
+ex:porte1 a ssi:Door ; ssi:connects ex:hall , ex:bureau .
+ex:sortie1 a ssi:Exit ; ssi:connects ex:hall .
+ex:zd1 a ssi:DetectionZone .
+ex:df1 a ssi:SmokeDetector ; ssi:coversSpace ex:hall , ex:bureau ; ssi:inDetectionZone ex:zd1 ; ssi:onStorey ex:niveau0 .
+ex:dm1 a ssi:ManualCallPoint ; ssi:servesExit ex:sortie1 ; ssi:distanceToExit 1.5 ; ssi:inDetectionZone ex:zd1 ; ssi:onStorey ex:niveau0 .
+ex:ch1 a ssi:EvacuationPath ; ssi:pathFrom ex:bureau ; ssi:pathTo ex:sortie1 ; ssi:coverageRatio 1.0 .
+ex:cam1 a ssi:Camera ; ssi:monitors ex:ch1 .
+ex:hall ssi:isConnectedTo ex:bureau ; ssi:hasStatus ssi:Normal .
+ex:bureau ssi:hasStatus ssi:Normal ; ssi:peopleCount 2 .
+ex:dist1 a ssi:EvacuationDistance ; ssi:from ex:bureau ; ssi:to ex:hall ; ssi:hasDistance 7.4 ; ssi:connectionType "porte" .
+ex:route1 a ssi:EvacuationRoute ; ssi:routeFor ex:bureau ; ssi:passesThrough ex:hall ; ssi:routeTo ex:sortie1 ; ssi:validAt "2026-11-20T10:01:10Z"^^xsd:dateTime .

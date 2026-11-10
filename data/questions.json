@@ -1,0 +1,106 @@
+{
+  "batiment": "duplex_TwinHypervisor.ifc",
+  "consignes": "Répondre avec l'agent (module M6). 'ensemble' : liste de GlobalId IFC ; 'valeur' : nombre. Q15 à Q19 portent sur le scénario d'observations fourni, Q20 sur votre reproduction : elles sont vérifiées sur vos propres sorties.",
+  "questions": [
+    {
+      "id": "Q01",
+      "type": "ensemble",
+      "question": "Quels espaces se trouvent au niveau « Level 2 » ?"
+    },
+    {
+      "id": "Q02",
+      "type": "ensemble",
+      "question": "Quelles portes donnent directement sur l'extérieur ?"
+    },
+    {
+      "id": "Q03",
+      "type": "ensemble",
+      "question": "Quels espaces ont un accès direct (sans traverser un autre espace) à une sortie vers l'extérieur ?"
+    },
+    {
+      "id": "Q04",
+      "type": "ensemble",
+      "question": "Quels espaces communiquent avec le foyer A101 sans porte (ouverture libre) ?"
+    },
+    {
+      "id": "Q05",
+      "type": "valeur",
+      "question": "Quelle est la surface totale, en m², des espaces du logement A (préfixe A), d'après la propriété « GSA BIM Area » de l'IFC ?"
+    },
+    {
+      "id": "Q06",
+      "type": "ensemble",
+      "question": "Quels espaces du niveau « Level 2 » n'ont qu'une seule porte ?"
+    },
+    {
+      "id": "Q07",
+      "type": "valeur",
+      "question": "Quelle est la largeur minimale, en m, des portes franchies entre la chambre A202 et la porte d'entrée du foyer A101 ?"
+    },
+    {
+      "id": "Q08",
+      "type": "ensemble",
+      "question": "Quels espaces traverse-t-on depuis la chambre « Bedroom 2 » du logement B jusqu'à la porte d'entrée du logement B (espace de départ exclu, espace de la porte inclus) ?"
+    },
+    {
+      "id": "Q09",
+      "type": "ensemble",
+      "question": "Quels espaces assurent la liaison verticale entre les deux niveaux de chaque logement ?"
+    },
+    {
+      "id": "Q10",
+      "type": "valeur",
+      "question": "Quelle est la surface totale, en m², des espaces du niveau « Level 2 », d'après la propriété « GSA BIM Area » ?"
+    },
+    {
+      "id": "Q11",
+      "type": "ensemble",
+      "question": "Quel est, pour chaque logement, l'espace de plus grande surface ?"
+    },
+    {
+      "id": "Q12",
+      "type": "ensemble",
+      "question": "Quelles salles de bains se trouvent au niveau « Level 2 » ?"
+    },
+    {
+      "id": "Q13",
+      "type": "ensemble",
+      "question": "Quelles portes ou ouvertures permettent de passer directement du logement A au logement B ?"
+    },
+    {
+      "id": "Q14",
+      "type": "ensemble",
+      "question": "Quelles portes ont une largeur inférieure à 0,80 m ?"
+    },
+    {
+      "id": "Q15",
+      "type": "valeur",
+      "question": "Dans le scénario d'observations, à quel instant (en s) la première alarme fumée se déclenche-t-elle (obscurcissement > 0,0328 /m, d'après Pang et al.) ?"
+    },
+    {
+      "id": "Q16",
+      "type": "ensemble",
+      "question": "Quels espaces sont dans l'état « Dangerous » à t = 300 s (température > 60 °C ou CO > 1 000 ppm) ?"
+    },
+    {
+      "id": "Q17",
+      "type": "ensemble",
+      "question": "À l'instant de l'alarme, quels espaces traverse la route recommandée par la stratégie 2 pour les occupants de la chambre A202, espace de départ inclus ?"
+    },
+    {
+      "id": "Q18",
+      "type": "valeur",
+      "question": "À partir de quel instant (en s) les occupants de la chambre A202 n'ont-ils plus aucune route sûre ?"
+    },
+    {
+      "id": "Q19",
+      "type": "ensemble",
+      "question": "À t = 300 s, quels espaces comptent encore des personnes en attente d'évacuation ?"
+    },
+    {
+      "id": "Q20",
+      "type": "valeur",
+      "question": "Dans votre reproduction de l'article IWCMC 2024 (avec jumeau, µ = 0), quel est le plus petit nombre de nœuds d'une solution du front de Pareto atteignant au moins 90 % de couverture ?"
+    }
+  ]
+}

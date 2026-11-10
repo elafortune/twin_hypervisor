@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "evacuation_dynamique.jsonl – une ligne par pas de temps et par espace occupé",
+  "type": "object",
+  "required": [
+    "t_s",
+    "espace_globalId",
+    "strategie",
+    "route",
+    "sortie_globalId"
+  ],
+  "properties": {
+    "t_s": {
+      "type": "integer"
+    },
+    "espace_globalId": {
+      "type": "string"
+    },
+    "strategie": {
+      "enum": [
+        1,
+        2
+      ]
+    },
+    "route": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "GlobalId des espaces traversés, départ inclus ; null si aucune route sûre"
+    },
+    "sortie_globalId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "distance_m": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "espaces_dangereux": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "action_recommandee": {
+      "type": "string"
+    }
+  }
+}

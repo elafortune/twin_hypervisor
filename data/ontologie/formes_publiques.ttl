@@ -1,0 +1,100 @@
+# 8 formes SHACL publiques – exercice CIFRE TwinHypervisor
+# Règles SIMPLIFIÉES à visée pédagogique, inspirées des référentiels EN 54 / NF S 61-93x ;
+# elles ne remplacent en aucun cas ces normes. Le jury appliquera d'autres formes, non communiquées.
+# Le graphe doit contenir exactement un nœud ssi:Parameters portant vos paramètres personnels.
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix ssi:  <https://ligm.univ-eiffel.fr/twinhypervisor/ssi#> .
+@prefix bot:  <https://w3id.org/bot#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# F1 – Chaque espace porte un GlobalId IFC unique (22 caractères) et appartient à exactement un niveau.
+ssi:F1_Espace a sh:NodeShape ;
+    sh:targetClass bot:Space ;
+    sh:property [ sh:path ssi:ifcGlobalId ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ;
+                  sh:minLength 22 ; sh:maxLength 22 ; sh:message "F1 : GlobalId manquant, multiple ou mal formé."@fr ] ;
+    sh:property [ sh:path [ sh:inversePath bot:hasSpace ] ; sh:class bot:Storey ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:message "F1 : l'espace doit appartenir à exactement un niveau."@fr ] .
+
+# F2 – Une porte relie un ou deux espaces ; une sortie relie exactement un espace intérieur.
+ssi:F2_Porte a sh:NodeShape ;
+    sh:targetClass ssi:Door ;
+    sh:property [ sh:path ssi:connects ; sh:class bot:Space ; sh:minCount 1 ; sh:maxCount 2 ;
+                  sh:message "F2 : une porte doit relier un ou deux espaces."@fr ] .
+ssi:F2_Sortie a sh:NodeShape ;
+    sh:targetClass ssi:Exit ;
+    sh:property [ sh:path ssi:connects ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:message "F2 : une sortie relie exactement un espace intérieur."@fr ] .
+
+# F3 – Chaque espace occupable est couvert par au moins un détecteur automatique.
+ssi:F3_Detection a sh:NodeShape ;
+    sh:targetClass bot:Space ;
+    sh:sparql [ sh:message "F3 : espace occupable sans détecteur automatique."@fr ;
+        sh:prefixes ssi:Prefixes ;
+        sh:select """SELECT $this WHERE {
+            $this ssi:occupiable true .
+            FILTER NOT EXISTS { ?d ssi:coversSpace $this . ?d a ?c . ?c rdfs:subClassOf* ssi:Detector . }
+        }""" ] .
+
+# F4 – Chaque sortie est desservie par au moins un déclencheur manuel situé à une distance
+#      inférieure ou égale à la valeur ssi:maxCallPointDistance de vos paramètres.
+ssi:F4_Declencheur a sh:NodeShape ;
+    sh:targetClass ssi:Exit ;
+    sh:sparql [ sh:message "F4 : sortie sans déclencheur manuel à distance réglementaire (paramètre personnel)."@fr ;
+        sh:prefixes ssi:Prefixes ;
+        sh:select """SELECT $this WHERE {
+            ?p a ssi:Parameters ; ssi:maxCallPointDistance ?dmax .
+            FILTER NOT EXISTS { ?m a ssi:ManualCallPoint ; ssi:servesExit $this ; ssi:distanceToExit ?d . FILTER (?d <= ?dmax) }
+        }""" ] .
+
+# F5 – Chaque chemin d'évacuation est surveillé par au moins une caméra et atteint la couverture minimale.
+ssi:F5_Video a sh:NodeShape ;
+    sh:targetClass ssi:EvacuationPath ;
+    sh:property [ sh:path [ sh:inversePath ssi:monitors ] ; sh:minCount 1 ;
+                  sh:message "F5 : chemin d'évacuation sans caméra."@fr ] ;
+    sh:sparql [ sh:message "F5 : couverture vidéo du chemin inférieure au minimum (paramètre personnel)."@fr ;
+        sh:prefixes ssi:Prefixes ;
+        sh:select """SELECT $this WHERE {
+            ?p a ssi:Parameters ; ssi:minCameraCoverage ?cmin .
+            $this ssi:coverageRatio ?r . FILTER (?r < ?cmin)
+        }""" ] .
+
+# F6 – Chaque équipement automatique appartient à exactement une zone de détection,
+#      et une zone de détection ne s'étend pas sur deux niveaux.
+ssi:F6_Zone a sh:NodeShape ;
+    sh:targetClass ssi:Detector ;
+    sh:property [ sh:path ssi:inDetectionZone ; sh:class ssi:DetectionZone ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:message "F6 : un détecteur appartient à exactement une zone de détection."@fr ] .
+ssi:F6_ZoneNiveau a sh:NodeShape ;
+    sh:targetClass ssi:DetectionZone ;
+    sh:sparql [ sh:message "F6 : zone de détection répartie sur plusieurs niveaux."@fr ;
+        sh:prefixes ssi:Prefixes ;
+        sh:select """SELECT $this WHERE {
+            ?a ssi:inDetectionZone $this ; ssi:onStorey ?s1 .
+            ?b ssi:inDetectionZone $this ; ssi:onStorey ?s2 .
+            FILTER (?s1 != ?s2)
+        }""" ] .
+
+
+# F7 – Chaque distance d'évacuation relie exactement deux espaces distincts et porte une distance strictement positive.
+ssi:F7_Distance a sh:NodeShape ;
+    sh:targetClass ssi:EvacuationDistance ;
+    sh:property [ sh:path ssi:from ; sh:class bot:Space ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "F7 : origine manquante ou multiple."@fr ] ;
+    sh:property [ sh:path ssi:to ; sh:class bot:Space ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "F7 : destination manquante ou multiple."@fr ] ;
+    sh:property [ sh:path ssi:hasDistance ; sh:minCount 1 ; sh:maxCount 1 ; sh:minExclusive 0 ; sh:message "F7 : distance absente ou non positive."@fr ] ;
+    sh:sparql [ sh:message "F7 : origine et destination identiques."@fr ; sh:prefixes ssi:Prefixes ;
+        sh:select """SELECT $this WHERE { $this ssi:from ?a ; ssi:to ?a . }""" ] .
+
+# F8 – Garde symbolique : une route d'évacuation ne traverse jamais un espace dans l'état Dangerous
+#      (contrainte dure, à la différence de la pénalité de 1 000 m de Pang et al.).
+ssi:F8_RouteSure a sh:NodeShape ;
+    sh:targetClass ssi:EvacuationRoute ;
+    sh:property [ sh:path ssi:routeTo ; sh:class ssi:Exit ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "F8 : une route aboutit à exactement une sortie."@fr ] ;
+    sh:sparql [ sh:message "F8 : route traversant un espace dangereux."@fr ; sh:prefixes ssi:Prefixes ;
+        sh:select """SELECT $this WHERE { { $this ssi:passesThrough ?s } UNION { $this ssi:routeFor ?s } ?s ssi:hasStatus ssi:Dangerous . }""" ] .
+
+ssi:Prefixes sh:declare
+    [ sh:prefix "ssi" ;  sh:namespace "https://ligm.univ-eiffel.fr/twinhypervisor/ssi#"^^xsd:anyURI ] ,
+    [ sh:prefix "bot" ;  sh:namespace "https://w3id.org/bot#"^^xsd:anyURI ] ,
+    [ sh:prefix "rdfs" ; sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ] .

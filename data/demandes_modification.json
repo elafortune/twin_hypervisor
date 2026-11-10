@@ -1,0 +1,21 @@
+{
+  "consignes": "Traiter les demandes dans l'ordre (D4 sur l'état du scénario à t = 200 s). Pour chacune : décision (acceptée, refusée, acceptée avec adaptation), justification fondée sur le graphe, les formes SHACL et la politique de priorité sécurité des personnes > accessibilité > sobriété, modifications appliquées. Tout est inscrit dans audit_log.jsonl.",
+  "demandes": [
+    {
+      "id": "D1",
+      "demande": "La cuisine A103 est requalifiée en local à risque : les détecteurs qui la couvrent doivent être des détecteurs de chaleur."
+    },
+    {
+      "id": "D2",
+      "demande": "Pour améliorer la connectivité du réseau, déplacer l'équipement qui couvre le couloir A201 vers la chambre A202."
+    },
+    {
+      "id": "D3",
+      "demande": "Pendant des travaux au niveau « Level 2 », retirer tous les détecteurs automatiques de ce niveau."
+    },
+    {
+      "id": "D4",
+      "demande": "À t = 200 s du scénario, l'opérateur demande de diriger les occupants de l'étage du logement A vers l'escalier, par la route habituelle."
+    }
+  ]
+}

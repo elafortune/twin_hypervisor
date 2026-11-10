@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "devices.json – équipements placés",
+  "type": "object",
+  "required": [
+    "parametres",
+    "objectif",
+    "equipements"
+  ],
+  "properties": {
+    "parametres": {
+      "type": "string",
+      "description": "nom du fichier de paramètres utilisé"
+    },
+    "objectif": {
+      "type": "object",
+      "required": [
+        "valeur",
+        "statut_solveur",
+        "temps_s",
+        "mode"
+      ],
+      "properties": {
+        "valeur": {
+          "type": "number"
+        },
+        "statut_solveur": {
+          "type": "string"
+        },
+        "gap_relatif": {
+          "type": "number"
+        },
+        "temps_s": {
+          "type": "number"
+        },
+        "mode": {
+          "enum": [
+            "2D",
+            "3D"
+          ]
+        }
+      }
+    },
+    "equipements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "espace_globalId",
+          "x",
+          "y",
+          "z"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "SmokeDetector",
+              "HeatDetector",
+              "ManualCallPoint",
+              "Camera",
+              "IoTNode"
+            ]
+          },
+          "espace_globalId": {
+            "type": "string",
+            "minLength": 22,
+            "maxLength": 22
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "z": {
+            "type": "number",
+            "description": "coordonnées monde IFC, en mètres"
+          },
+          "orientation_deg": {
+            "type": "number",
+            "description": "caméras : azimut de l'axe optique, 0 = +X, sens trigonométrique"
+          },
+          "inclinaison_deg": {
+            "type": "number",
+            "description": "caméras : angle vers le bas"
+          },
+          "zone_detection": {
+            "type": "string"
+          },
+          "sortie_servie_globalId": {
+            "type": "string",
+            "minLength": 22,
+            "maxLength": 22
+          }
+        }
+      }
+    }
+  }
+}

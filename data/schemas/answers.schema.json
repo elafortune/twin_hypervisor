@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "answers.jsonl – une ligne par question",
+  "type": "object",
+  "required": [
+    "id",
+    "reponse",
+    "requetes_sparql"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "reponse": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "requetes_sparql": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "iterations": {
+      "type": "integer"
+    },
+    "jetons": {
+      "type": "integer"
+    }
+  }
+}

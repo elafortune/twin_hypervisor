@@ -1,0 +1,22 @@
+# Articles de l'équipe : ne pas diffuser (consigne du kit)
+articles/
+*.pdf
+
+# Sorties régénérables
+sorties/
+sorties_*/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+build/
+dist/
+
+# Système / éditeurs
+.DS_Store
+~$*
+.vscode/
+.idea/

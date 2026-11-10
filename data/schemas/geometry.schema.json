@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "geometry.json – jumeau géométrique",
+  "type": "object",
+  "required": [
+    "niveaux",
+    "espaces",
+    "portes",
+    "liaisons",
+    "anomalies"
+  ],
+  "properties": {
+    "niveaux": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "globalId",
+          "nom",
+          "altitude_m"
+        ]
+      }
+    },
+    "espaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "globalId",
+          "nom",
+          "niveau_globalId",
+          "polygone_xy",
+          "surface_m2",
+          "hauteur_m",
+          "occupable"
+        ]
+      }
+    },
+    "portes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "globalId",
+          "largeur_m",
+          "espaces",
+          "sortie"
+        ]
+      }
+    },
+    "liaisons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "de",
+          "vers",
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "porte",
+              "ouverture",
+              "escalier"
+            ]
+          }
+        }
+      }
+    },
+    "anomalies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "element_globalId",
+          "description",
+          "traitement"
+        ]
+      }
+    }
+  }
+}

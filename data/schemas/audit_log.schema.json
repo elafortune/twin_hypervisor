@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "audit_log.jsonl – une ligne par action de l'agent",
+  "type": "object",
+  "required": [
+    "horodatage",
+    "demande_id",
+    "action",
+    "decision",
+    "justification",
+    "formes_violees"
+  ],
+  "properties": {
+    "horodatage": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "demande_id": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string"
+    },
+    "decision": {
+      "enum": [
+        "acceptee",
+        "refusee",
+        "acceptee_avec_adaptation"
+      ]
+    },
+    "justification": {
+      "type": "string"
+    },
+    "formes_violees": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "triplets_ajoutes": {
+      "type": "integer"
+    },
+    "triplets_retires": {
+      "type": "integer"
+    },
+    "source": {
+      "enum": [
+        "llm",
+        "regle",
+        "veto_symbolique"
+      ]
+    }
+  }
+}

@@ -1,0 +1,70 @@
+# Ontologie socle SSI – exercice CIFRE TwinHypervisor
+# Version 3 – vocabulaire minimal OBLIGATOIRE : vous pouvez l'étendre (sous-classes, nouvelles propriétés),
+# mais pas le renommer ni le contredire. Les formes SHACL et les questions s'appuient sur lui.
+@prefix ssi:  <https://ligm.univ-eiffel.fr/twinhypervisor/ssi#> .
+@prefix bot:  <https://w3id.org/bot#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix saref: <https://saref.etsi.org/core/> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<https://ligm.univ-eiffel.fr/twinhypervisor/ssi> a owl:Ontology ;
+    rdfs:label "Socle SSI – exercice TwinHypervisor"@fr ;
+    owl:imports <https://w3id.org/bot#> .
+
+# ---------- Classes ----------
+ssi:Door            a owl:Class ; rdfs:subClassOf bot:Element ; rdfs:label "Porte"@fr .
+ssi:Exit            a owl:Class ; rdfs:subClassOf ssi:Door ; rdfs:label "Porte de sortie vers l'extérieur"@fr .
+ssi:Stair           a owl:Class ; rdfs:subClassOf bot:Element ; rdfs:label "Escalier"@fr .
+ssi:FireCompartment a owl:Class ; rdfs:subClassOf bot:Zone ; rdfs:label "Compartiment incendie"@fr .
+ssi:DetectionZone   a owl:Class ; rdfs:subClassOf bot:Zone ; rdfs:label "Zone de détection"@fr .
+ssi:SafetyDevice    a owl:Class ; rdfs:subClassOf bot:Element , saref:Device ; rdfs:label "Équipement SSI"@fr .
+ssi:Detector        a owl:Class ; rdfs:subClassOf ssi:SafetyDevice , sosa:Sensor ; rdfs:label "Détecteur automatique"@fr .
+ssi:SmokeDetector   a owl:Class ; rdfs:subClassOf ssi:Detector ; rdfs:label "Détecteur de fumée"@fr .
+ssi:HeatDetector    a owl:Class ; rdfs:subClassOf ssi:Detector ; rdfs:label "Détecteur de chaleur"@fr .
+ssi:ManualCallPoint a owl:Class ; rdfs:subClassOf ssi:SafetyDevice ; rdfs:label "Déclencheur manuel"@fr .
+ssi:Camera          a owl:Class ; rdfs:subClassOf ssi:SafetyDevice , sosa:Sensor ; rdfs:label "Caméra"@fr .
+ssi:EvacuationPath  a owl:Class ; rdfs:label "Chemin d'évacuation (d'un espace vers une sortie)"@fr .
+ssi:Parameters      a owl:Class ; rdfs:label "Paramètres personnels du candidat"@fr .
+
+# ---------- Propriétés ----------
+ssi:ifcGlobalId      a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "GlobalId IFC (22 caractères)"@fr .
+ssi:connects         a owl:ObjectProperty ; rdfs:domain ssi:Door ; rdfs:range bot:Space ; rdfs:label "relie l'espace"@fr .
+ssi:area             a owl:DatatypeProperty ; rdfs:domain bot:Space ; rdfs:range xsd:decimal ; rdfs:label "surface (m²)"@fr .
+ssi:occupiable       a owl:DatatypeProperty ; rdfs:domain bot:Space ; rdfs:range xsd:boolean ; rdfs:label "espace occupable"@fr .
+ssi:inCompartment    a owl:ObjectProperty ; rdfs:domain bot:Space ; rdfs:range ssi:FireCompartment .
+ssi:inDetectionZone  a owl:ObjectProperty ; rdfs:domain ssi:SafetyDevice ; rdfs:range ssi:DetectionZone .
+ssi:onStorey         a owl:ObjectProperty ; rdfs:range bot:Storey ; rdfs:label "situé au niveau"@fr .
+ssi:coversSpace      a owl:ObjectProperty ; rdfs:domain ssi:Detector ; rdfs:range bot:Space .
+ssi:servesExit       a owl:ObjectProperty ; rdfs:domain ssi:ManualCallPoint ; rdfs:range ssi:Exit .
+ssi:distanceToExit   a owl:DatatypeProperty ; rdfs:domain ssi:ManualCallPoint ; rdfs:range xsd:decimal ; rdfs:label "distance de cheminement à la sortie servie (m)"@fr .
+ssi:monitors         a owl:ObjectProperty ; rdfs:domain ssi:Camera ; rdfs:range ssi:EvacuationPath .
+ssi:pathFrom         a owl:ObjectProperty ; rdfs:domain ssi:EvacuationPath ; rdfs:range bot:Space .
+ssi:pathTo           a owl:ObjectProperty ; rdfs:domain ssi:EvacuationPath ; rdfs:range ssi:Exit .
+ssi:coverageRatio    a owl:DatatypeProperty ; rdfs:domain ssi:EvacuationPath ; rdfs:range xsd:decimal ; rdfs:label "part des cellules du chemin couvertes par au moins une caméra (0 à 1)"@fr .
+ssi:maxCallPointDistance a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ; rdfs:range xsd:decimal .
+ssi:minCameraCoverage    a owl:DatatypeProperty ; rdfs:domain ssi:Parameters ; rdfs:range xsd:decimal .
+
+# ---------- Ajouts v3 : connectivité, distances d'évacuation, états et observations (d'après Pang et al., 2024) ----------
+ssi:EvacuationDistance a owl:Class ; rdfs:label "Distance d'évacuation entre deux espaces (réifiée)"@fr .
+ssi:Status          a owl:Class ; owl:oneOf ( ssi:Normal ssi:Dangerous ) ; rdfs:label "État de sûreté d'un espace"@fr .
+ssi:Normal          a ssi:Status .
+ssi:Dangerous       a ssi:Status .
+ssi:EvacuationRoute a owl:Class ; rdfs:label "Route d'évacuation recommandée à un instant donné"@fr .
+ssi:isConnectedTo   a owl:ObjectProperty , owl:SymmetricProperty ; rdfs:domain bot:Space ; rdfs:range bot:Space ; rdfs:label "communique avec"@fr .
+ssi:connectionType  a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:comment "« porte », « ouverture » ou « escalier », porté par l'EvacuationDistance"@fr .
+ssi:from            a owl:ObjectProperty ; rdfs:domain ssi:EvacuationDistance ; rdfs:range bot:Space .
+ssi:to              a owl:ObjectProperty ; rdfs:domain ssi:EvacuationDistance ; rdfs:range bot:Space .
+ssi:hasDistance     a owl:DatatypeProperty ; rdfs:domain ssi:EvacuationDistance ; rdfs:range xsd:decimal ; rdfs:label "distance (m), point le plus défavorable"@fr .
+ssi:hasStatus       a owl:ObjectProperty ; rdfs:domain bot:Space ; rdfs:range ssi:Status .
+ssi:statusTime      a owl:DatatypeProperty ; rdfs:range xsd:dateTime ; rdfs:label "instant de la dernière mise à jour de l'état"@fr .
+ssi:peopleCount     a owl:DatatypeProperty ; rdfs:domain bot:Space ; rdfs:range xsd:integer ; rdfs:label "personnes en attente d'évacuation"@fr .
+ssi:isLocatedIn     a owl:ObjectProperty ; rdfs:domain ssi:SafetyDevice ; rdfs:range bot:Space .
+ssi:routeFor        a owl:ObjectProperty ; rdfs:domain ssi:EvacuationRoute ; rdfs:range bot:Space .
+ssi:passesThrough   a owl:ObjectProperty ; rdfs:domain ssi:EvacuationRoute ; rdfs:range bot:Space .
+ssi:routeTo         a owl:ObjectProperty ; rdfs:domain ssi:EvacuationRoute ; rdfs:range ssi:Exit .
+ssi:validAt         a owl:DatatypeProperty ; rdfs:domain ssi:EvacuationRoute ; rdfs:range xsd:dateTime .
+# Observations : utiliser SOSA (sosa:madeObservation, sosa:Observation, sosa:hasSimpleResult, sosa:resultTime, sosa:observedProperty).
+ssi:Temperature a sosa:ObservableProperty . ssi:COConcentration a sosa:ObservableProperty .
+ssi:SmokeObscuration a sosa:ObservableProperty . ssi:Occupancy a sosa:ObservableProperty .

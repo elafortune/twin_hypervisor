@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "pareto.json – fronts de Pareto de la reproduction IWCMC 2024",
+  "type": "object",
+  "required": [
+    "scenario",
+    "parametres_algo",
+    "front"
+  ],
+  "properties": {
+    "scenario": {
+      "type": "string",
+      "description": "'avec jumeau, mu=0', 'sans jumeau, mu=0', 'avec jumeau, mu=3' ou 'sans jumeau, mu=3'"
+    },
+    "parametres_algo": {
+      "type": "object"
+    },
+    "temps_cpu_s": {
+      "type": "number"
+    },
+    "front": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "n_equipements",
+          "couverture"
+        ],
+        "properties": {
+          "n_equipements": {
+            "type": "integer"
+          },
+          "couverture": {
+            "type": "number"
+          },
+          "couverture_ZI": {
+            "type": "number"
+          },
+          "full_view": {
+            "type": "number"
+          },
+          "qualite_lien_moyenne_dBm": {
+            "type": "number"
+          },
+          "connectivite": {
+            "type": "integer"
+          },
+          "fichier_solution": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
