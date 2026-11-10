@@ -84,9 +84,8 @@ def commande_sensibilite(args: argparse.Namespace) -> int:
 def commande_questions(args: argparse.Namespace) -> int:
     from rdflib import Graph, RDFS
 
-    from twinhyp.m2_graphe import requetes as R
     from twinhyp.m2_graphe.construction import SSI
-    from twinhyp.m5_evacuation import instant_alarme, plus_de_route_sure, route_a
+    from twinhyp.m6_agent import reference
 
     g = Graph().parse(args.out / SORTIES["kg"], format="turtle")
     libelle = {str(gid): f"{lab}" + (f" ({g.value(s, SSI.longName)})" if g.value(s, SSI.longName) else "")
@@ -102,24 +101,11 @@ def commande_questions(args: argparse.Namespace) -> int:
             for r in requetes:
                 print("    " + r.replace("\n", "\n    "))
 
-    for qid in ["Q01", "Q02", "Q03", "Q04", "Q05", "Q06"]:
-        afficher(qid, *R.repondre(g, qid))
-    q07 = R.chemin(g, R.espace(g, "A202")[0], R.espace(g, "A101")[0])
-    afficher("Q07", q07["largeur_min_porte_m"], q07["requetes"])
-    q08 = R.chemin(g, R.espace(g, "B202", "Bedroom 2")[0], R.espace(g, "B101")[0])
-    afficher("Q08", q08["espaces"][1:], q08["requetes"])
-    for qid in ["Q09", "Q10", "Q11", "Q12", "Q13", "Q14"]:
-        afficher(qid, *R.repondre(g, qid))
-    if instant_alarme(g) is None:
+    rep = reference.reponses(g, args.out / SORTIES["pareto"])
+    for qid, (reponse, requetes) in rep.items():
+        afficher(qid, reponse, requetes)
+    if "Q15" not in rep:
         print("Q15–Q19 : scénario non rejoué (lancer M5)")
-        return 0
-    afficher("Q15", *R.repondre(g, "Q15"))
-    afficher("Q16", *R.repondre(g, "Q16"))
-    a202 = R.espace(g, "A202")[0]
-    route, req = route_a(g, a202, instant_alarme(g))
-    afficher("Q17", route["route"] if route else [], req)
-    afficher("Q18", *plus_de_route_sure(g, a202))
-    afficher("Q19", *R.repondre(g, "Q19"))
     return 0
 
 
