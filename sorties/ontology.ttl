@@ -1,0 +1,393 @@
+@prefix bot: <https://w3id.org/bot#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s4bldg: <https://saref.etsi.org/saref4bldg/> .
+@prefix saref: <https://saref.etsi.org/core/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssi: <https://ligm.univ-eiffel.fr/twinhypervisor/ssi#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ssi:COConcentration a sosa:ObservableProperty .
+
+ssi:HeatDetector a owl:Class ;
+    rdfs:label "Détecteur de chaleur"@fr ;
+    rdfs:subClassOf ssi:Detector .
+
+ssi:Occupancy a sosa:ObservableProperty .
+
+ssi:SmokeDetector a owl:Class ;
+    rdfs:label "Détecteur de fumée"@fr ;
+    rdfs:subClassOf ssi:Detector .
+
+ssi:SmokeObscuration a sosa:ObservableProperty .
+
+ssi:Temperature a sosa:ObservableProperty .
+
+ssi:alarmTime a owl:DatatypeProperty ;
+    rdfs:label "instant (s) de la première alarme fumée"@fr ;
+    rdfs:domain bot:Building ;
+    rdfs:range xsd:integer .
+
+ssi:area a owl:DatatypeProperty ;
+    rdfs:label "surface (m²)"@fr ;
+    rdfs:domain bot:Space ;
+    rdfs:range xsd:decimal .
+
+ssi:areaSource a owl:DatatypeProperty ;
+    rdfs:label "origine de ssi:area (propriété IFC ou géométrie)"@fr ;
+    rdfs:domain bot:Space ;
+    rdfs:range xsd:string .
+
+ssi:azimuthDeg a owl:DatatypeProperty ;
+    rdfs:label "azimut de l'axe optique (°, 0 = +X, sens trigonométrique)"@fr ;
+    rdfs:domain ssi:Camera ;
+    rdfs:range xsd:decimal .
+
+ssi:cameraHorizontalFov a owl:DatatypeProperty ;
+    rdfs:domain ssi:Parameters ;
+    rdfs:range xsd:decimal .
+
+ssi:cameraMountHeight a owl:DatatypeProperty ;
+    rdfs:domain ssi:Parameters ;
+    rdfs:range xsd:decimal .
+
+ssi:cameraRange a owl:DatatypeProperty ;
+    rdfs:domain ssi:Parameters ;
+    rdfs:range xsd:decimal .
+
+ssi:cameraVerticalFov a owl:DatatypeProperty ;
+    rdfs:domain ssi:Parameters ;
+    rdfs:range xsd:decimal .
+
+ssi:concerns a owl:ObjectProperty ;
+    rdfs:label "élément du graphe concerné"@fr ;
+    rdfs:domain ssi:ModelAnomaly .
+
+ssi:concernsGlobalId a owl:DatatypeProperty ;
+    rdfs:label "GlobalId IFC concerné (l'élément peut ne pas être dans le graphe : mur, limite…)"@fr ;
+    rdfs:domain ssi:ModelAnomaly ;
+    rdfs:range xsd:string .
+
+ssi:connectionType a owl:DatatypeProperty ;
+    rdfs:comment "« porte », « ouverture » ou « escalier », porté par l'EvacuationDistance"@fr ;
+    rdfs:range xsd:string .
+
+ssi:connects a owl:ObjectProperty ;
+    rdfs:label "relie l'espace"@fr ;
+    rdfs:domain ssi:Door ;
+    rdfs:range bot:Space .
+
+ssi:coverageRatio a owl:DatatypeProperty ;
+    rdfs:label "part des cellules du chemin couvertes par au moins une caméra (0 à 1)"@fr ;
+    rdfs:domain ssi:EvacuationPath ;
+    rdfs:range xsd:decimal .
+
+ssi:coversSpace a owl:ObjectProperty ;
+    rdfs:domain ssi:Detector ;
+    rdfs:range bot:Space .
+
+ssi:dangerSince a owl:DatatypeProperty ;
+    rdfs:label "instant (s) où l'espace est passé à l'état Dangerous (état verrouillé ensuite)"@fr ;
+    rdfs:domain bot:Space ;
+    rdfs:range xsd:integer .
+
+ssi:detectorRadius a owl:DatatypeProperty ;
+    rdfs:domain ssi:Parameters ;
+    rdfs:range xsd:decimal .
+
+ssi:distanceToExit a owl:DatatypeProperty ;
+    rdfs:label "distance de cheminement à la sortie servie (m)"@fr ;
+    rdfs:domain ssi:ManualCallPoint ;
+    rdfs:range xsd:decimal .
+
+ssi:doorWidth a owl:DatatypeProperty ;
+    rdfs:label "largeur de passage (m)"@fr ;
+    rdfs:domain ssi:Door ;
+    rdfs:range xsd:decimal .
+
+ssi:elevation a owl:DatatypeProperty ;
+    rdfs:label "altitude du niveau (m)"@fr ;
+    rdfs:domain bot:Storey ;
+    rdfs:range xsd:decimal .
+
+ssi:exitDistance a owl:DatatypeProperty ;
+    rdfs:label "distance (m), point le plus défavorable"@fr ;
+    rdfs:domain ssi:ExitDistance ;
+    rdfs:range xsd:decimal .
+
+ssi:exitFrom a owl:ObjectProperty ;
+    rdfs:domain ssi:ExitDistance ;
+    rdfs:range bot:Space .
+
+ssi:exitVia a owl:ObjectProperty ;
+    rdfs:domain ssi:ExitDistance ;
+    rdfs:range ssi:Exit .
+
+ssi:fireOrigin a owl:ObjectProperty ;
+    rdfs:domain ssi:Parameters ;
+    rdfs:range bot:Space .
+
+ssi:flightLength a owl:DatatypeProperty ;
+    rdfs:label "longueur de la volée √(course² + dénivelé²) (m)"@fr ;
+    rdfs:domain ssi:Stair ;
+    rdfs:range xsd:decimal .
+
+ssi:from a owl:ObjectProperty ;
+    rdfs:domain ssi:EvacuationDistance ;
+    rdfs:range bot:Space .
+
+ssi:fullViewRatio a owl:DatatypeProperty ;
+    rdfs:label "part des cellules du chemin vues de face par une caméra, selon la direction d'évacuation (PIMRC, éq. 4)"@fr ;
+    rdfs:domain ssi:EvacuationPath ;
+    rdfs:range xsd:decimal .
+
+ssi:geometricArea a owl:DatatypeProperty ;
+    rdfs:label "surface de l'empreinte géométrique (m²)"@fr ;
+    rdfs:domain bot:Space ;
+    rdfs:range xsd:decimal .
+
+ssi:gridStep a owl:DatatypeProperty ;
+    rdfs:domain ssi:Parameters ;
+    rdfs:range xsd:decimal .
+
+ssi:hasDistance a owl:DatatypeProperty ;
+    rdfs:label "distance (m), point le plus défavorable"@fr ;
+    rdfs:domain ssi:EvacuationDistance ;
+    rdfs:range xsd:decimal .
+
+ssi:hasStatus a owl:ObjectProperty ;
+    rdfs:domain bot:Space ;
+    rdfs:range ssi:Status .
+
+ssi:height a owl:DatatypeProperty ;
+    rdfs:label "hauteur de l'espace (m)"@fr ;
+    rdfs:domain bot:Space ;
+    rdfs:range xsd:decimal .
+
+ssi:ifcGlobalId a owl:DatatypeProperty ;
+    rdfs:label "GlobalId IFC (22 caractères)"@fr ;
+    rdfs:range xsd:string .
+
+ssi:inCompartment a owl:ObjectProperty ;
+    rdfs:domain bot:Space ;
+    rdfs:range ssi:FireCompartment .
+
+ssi:inDetectionZone a owl:ObjectProperty ;
+    rdfs:domain ssi:SafetyDevice ;
+    rdfs:range ssi:DetectionZone .
+
+ssi:inDwelling a owl:ObjectProperty ;
+    rdfs:label "appartient au logement"@fr ;
+    rdfs:domain bot:Space ;
+    rdfs:range ssi:Dwelling .
+
+ssi:isConnectedTo a owl:ObjectProperty,
+        owl:SymmetricProperty ;
+    rdfs:label "communique avec"@fr ;
+    rdfs:domain bot:Space ;
+    rdfs:range bot:Space .
+
+ssi:isLocatedIn a owl:ObjectProperty ;
+    rdfs:domain ssi:SafetyDevice ;
+    rdfs:range bot:Space .
+
+ssi:linksSpace a owl:ObjectProperty ;
+    rdfs:label "escalier desservant l'espace"@fr ;
+    rdfs:comment "Pendant de ssi:connects pour les escaliers : ssi:connects a pour domaine ssi:Door, l'employer ferait inférer qu'un escalier est une porte."@fr ;
+    rdfs:domain ssi:Stair ;
+    rdfs:range bot:Space .
+
+ssi:longName a owl:DatatypeProperty ;
+    rdfs:label "nom long IFC (LongName)"@fr ;
+    rdfs:range xsd:string .
+
+ssi:maxCallPointDistance a owl:DatatypeProperty ;
+    rdfs:domain ssi:Parameters ;
+    rdfs:range xsd:decimal .
+
+ssi:minCameraCoverage a owl:DatatypeProperty ;
+    rdfs:domain ssi:Parameters ;
+    rdfs:range xsd:decimal .
+
+ssi:monitors a owl:ObjectProperty ;
+    rdfs:domain ssi:Camera ;
+    rdfs:range ssi:EvacuationPath .
+
+ssi:occupiable a owl:DatatypeProperty ;
+    rdfs:label "espace occupable"@fr ;
+    rdfs:domain bot:Space ;
+    rdfs:range xsd:boolean .
+
+ssi:onStorey a owl:ObjectProperty ;
+    rdfs:label "situé au niveau"@fr ;
+    rdfs:range bot:Storey .
+
+ssi:pangDistance a owl:DatatypeProperty ;
+    rdfs:label "distance selon la formule de Pang (un seul sommet intermédiaire), pour comparaison"@fr ;
+    rdfs:domain ssi:EvacuationDistance ;
+    rdfs:range xsd:decimal .
+
+ssi:passesThrough a owl:ObjectProperty ;
+    rdfs:domain ssi:EvacuationRoute ;
+    rdfs:range bot:Space .
+
+ssi:pathFrom a owl:ObjectProperty ;
+    rdfs:domain ssi:EvacuationPath ;
+    rdfs:range bot:Space .
+
+ssi:pathTo a owl:ObjectProperty ;
+    rdfs:domain ssi:EvacuationPath ;
+    rdfs:range ssi:Exit .
+
+ssi:peopleCount a owl:DatatypeProperty ;
+    rdfs:label "personnes en attente d'évacuation"@fr ;
+    rdfs:domain bot:Space ;
+    rdfs:range xsd:integer .
+
+ssi:posX a owl:DatatypeProperty ;
+    rdfs:label "x monde IFC (m)"@fr ;
+    rdfs:domain ssi:SafetyDevice ;
+    rdfs:range xsd:decimal .
+
+ssi:posY a owl:DatatypeProperty ;
+    rdfs:label "y monde IFC (m)"@fr ;
+    rdfs:domain ssi:SafetyDevice ;
+    rdfs:range xsd:decimal .
+
+ssi:posZ a owl:DatatypeProperty ;
+    rdfs:label "z monde IFC (m)"@fr ;
+    rdfs:domain ssi:SafetyDevice ;
+    rdfs:range xsd:decimal .
+
+ssi:routeFor a owl:ObjectProperty ;
+    rdfs:domain ssi:EvacuationRoute ;
+    rdfs:range bot:Space .
+
+ssi:routeTo a owl:ObjectProperty ;
+    rdfs:domain ssi:EvacuationRoute ;
+    rdfs:range ssi:Exit .
+
+ssi:rule a owl:DatatypeProperty ;
+    rdfs:domain ssi:ModelAnomaly ;
+    rdfs:range xsd:string .
+
+ssi:scenarioTime a owl:DatatypeProperty ;
+    rdfs:label "instant de l'observation depuis le début du scénario (s)"@fr ;
+    rdfs:comment "Redondant avec sosa:resultTime, mais rend les questions « à t = 300 s » directes en SPARQL."@fr ;
+    rdfs:domain sosa:Observation ;
+    rdfs:range xsd:integer .
+
+ssi:servesExit a owl:ObjectProperty ;
+    rdfs:domain ssi:ManualCallPoint ;
+    rdfs:range ssi:Exit .
+
+ssi:statusTime a owl:DatatypeProperty ;
+    rdfs:label "instant de la dernière mise à jour de l'état"@fr ;
+    rdfs:range xsd:dateTime .
+
+ssi:tiltDeg a owl:DatatypeProperty ;
+    rdfs:label "inclinaison vers le bas (°)"@fr ;
+    rdfs:domain ssi:Camera ;
+    rdfs:range xsd:decimal .
+
+ssi:to a owl:ObjectProperty ;
+    rdfs:domain ssi:EvacuationDistance ;
+    rdfs:range bot:Space .
+
+ssi:treatment a owl:DatatypeProperty ;
+    rdfs:domain ssi:ModelAnomaly ;
+    rdfs:range xsd:string .
+
+ssi:validAt a owl:DatatypeProperty ;
+    rdfs:domain ssi:EvacuationRoute ;
+    rdfs:range xsd:dateTime .
+
+ssi:viaElement a owl:ObjectProperty ;
+    rdfs:label "porte ou escalier franchi"@fr ;
+    rdfs:domain ssi:EvacuationDistance ;
+    rdfs:range bot:Element .
+
+<https://ligm.univ-eiffel.fr/twinhypervisor/ssi/extension> a owl:Ontology ;
+    rdfs:label "Extension TwinHypervisor du socle SSI"@fr ;
+    owl:imports <https://ligm.univ-eiffel.fr/twinhypervisor/ssi>,
+        s4bldg: .
+
+<https://ligm.univ-eiffel.fr/twinhypervisor/ssi> a owl:Ontology ;
+    rdfs:label "Socle SSI – exercice TwinHypervisor"@fr ;
+    owl:imports bot: .
+
+ssi:Dangerous a ssi:Status .
+
+ssi:DetectionZone a owl:Class ;
+    rdfs:label "Zone de détection"@fr ;
+    rdfs:subClassOf bot:Zone .
+
+ssi:Dwelling a owl:Class ;
+    rdfs:label "Logement"@fr ;
+    rdfs:comment "Ensemble d'espaces reliés entre eux (composante connexe du graphe de connectivité contenant une sortie). Relié aux espaces par ssi:inDwelling et non par bot:hasSpace : F1 impose qu'un espace ait exactement un « parent » bot:hasSpace, son niveau."@fr ;
+    rdfs:subClassOf bot:Zone .
+
+ssi:FireCompartment a owl:Class ;
+    rdfs:label "Compartiment incendie"@fr ;
+    rdfs:subClassOf bot:Zone .
+
+ssi:Normal a ssi:Status .
+
+ssi:ManualCallPoint a owl:Class ;
+    rdfs:label "Déclencheur manuel"@fr ;
+    rdfs:subClassOf ssi:SafetyDevice .
+
+ssi:Stair a owl:Class ;
+    rdfs:label "Escalier"@fr ;
+    rdfs:subClassOf s4bldg:Stair,
+        bot:Element .
+
+ssi:Camera a owl:Class ;
+    rdfs:label "Caméra"@fr ;
+    rdfs:subClassOf sosa:Sensor,
+        ssi:SafetyDevice .
+
+ssi:Detector a owl:Class ;
+    rdfs:label "Détecteur automatique"@fr ;
+    rdfs:subClassOf sosa:Sensor,
+        ssi:SafetyDevice .
+
+ssi:Door a owl:Class ;
+    rdfs:label "Porte"@fr ;
+    rdfs:subClassOf s4bldg:Door,
+        bot:Element .
+
+ssi:ExitDistance a owl:Class ;
+    rdfs:label "Distance d'un espace à une sortie"@fr ;
+    rdfs:comment "Distance du point le plus défavorable de l'espace à la porte de sortie. Classe distincte de ssi:EvacuationDistance : l'extérieur n'est pas un bot:Space (F7)."@fr .
+
+ssi:Status a owl:Class ;
+    rdfs:label "État de sûreté d'un espace"@fr ;
+    owl:oneOf ( ssi:Normal ssi:Dangerous ) .
+
+ssi:EvacuationRoute a owl:Class ;
+    rdfs:label "Route d'évacuation recommandée à un instant donné"@fr .
+
+ssi:Exit a owl:Class ;
+    rdfs:label "Porte de sortie vers l'extérieur"@fr ;
+    rdfs:subClassOf ssi:Door .
+
+ssi:ModelAnomaly a owl:Class ;
+    rdfs:label "Incohérence de la maquette IFC"@fr ;
+    rdfs:comment "Constat d'une règle de contrôle (M1) et traitement appliqué par la chaîne."@fr .
+
+ssi:EvacuationDistance a owl:Class ;
+    rdfs:label "Distance d'évacuation entre deux espaces (réifiée)"@fr .
+
+ssi:EvacuationPath a owl:Class ;
+    rdfs:label "Chemin d'évacuation (d'un espace vers une sortie)"@fr .
+
+ssi:SafetyDevice a owl:Class ;
+    rdfs:label "Équipement SSI"@fr ;
+    rdfs:subClassOf saref:Device,
+        bot:Element .
+
+ssi:Parameters a owl:Class ;
+    rdfs:label "Paramètres personnels du candidat"@fr .
+

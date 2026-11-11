@@ -239,8 +239,11 @@ Chaîne complète rejouée avec des détecteurs de chaleur (A1R, A1, rayon rédu
 
 ## Points ouverts à trancher
 
-| Sujet | Options | Échéance |
+| Sujet | Options | Choix actuel |
 |---|---|---|
-| Q01 : A105/B105 comptés à Level 2 ? | oui (double hauteur) · non (rattachement) | avant M6 (étape 9) |
-| Q13 vide (aucun passage A ↔ B) | réponse vide justifiée · question piège à signaler | M6 |
-| Format de `pareto.json` | liste · objet | dès qu'on écrit M3 |
+| Q20 | 1 (tableau I tel quel) · 3 (L_obs × 30, figure 4 reproduite) | 1, avec la variante × 30 documentée (`iwcmc.md`, rapport §3) |
+| Caméras supplémentaires pour le *full-view* | 0 (18 caméras, minimum) · 2 (min. 62,5 % par chemin) | 0 (`cameras_supplementaires_full_view`) |
+| D3 : citer la classe A1R dans la justification | oui (relancer M6) · non | non (documenté dans `fumee_chaleur.md`) |
+| Q01 : A105/B105 comptés au Level 2 | oui (double hauteur) · non (rattachement IFC) | non (rattachement) — tranché à l'étape 4 |
+| Q13 vide | réponse vide justifiée · question piège | réponse vide, justifiée (aucun passage A ↔ B) |
+| Format de `pareto.json` | liste · objet | liste des 4 scénarios (doute E-1) |

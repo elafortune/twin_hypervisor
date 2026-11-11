@@ -1,0 +1,637 @@
+{
+  "parametres": "parametres.json",
+  "objectif": {
+    "valeur": 42.0,
+    "statut_solveur": "Optimal",
+    "gap_relatif": 0.0,
+    "temps_s": 13.084,
+    "mode": "3D",
+    "formulation": "séquentielle : détecteurs, déclencheurs, caméras (HiGHS)"
+  },
+  "sous_problemes": {
+    "detecteurs": {
+      "variables": 932,
+      "contraintes": 944,
+      "valeur": 20.0,
+      "statut": "Optimal",
+      "gap_relatif": 0.0,
+      "temps_s": 0.134,
+      "cellules_sans_candidat": [],
+      "rayon_m": 5.0
+    },
+    "declencheurs": {
+      "variables": 4,
+      "contraintes": 4,
+      "valeur": 4.0,
+      "statut": "Optimal",
+      "gap_relatif": 0.0,
+      "temps_s": 0.001,
+      "distance_max_m": 10.0,
+      "un_par_sortie": true,
+      "sorties_non_servies": []
+    },
+    "cameras": {
+      "candidats": 7184,
+      "cellules": 182,
+      "cellules_invisibles": 0,
+      "valeur": 18.0,
+      "statut": "Optimal",
+      "gap_relatif": 0.0,
+      "temps_s": 12.949,
+      "statut_full_view": "Optimal",
+      "full_view_global": 0.6923,
+      "full_view_min_par_chemin": 0.0,
+      "chemins_sans_full_view_possible": [],
+      "couverture_globale": 1.0
+    },
+    "reseau": {
+      "principal": {
+        "facteur_attenuation": 1.0,
+        "aretes": 861,
+        "composantes": 1,
+        "arete_connexite": 41
+      },
+      "attenuation_x30": {
+        "facteur_attenuation": 30.0,
+        "aretes": 107,
+        "composantes": 1,
+        "arete_connexite": 1
+      },
+      "relais_ajoutes": 0
+    }
+  },
+  "zones_detection": {
+    "ZD_A_Level1": "1xS3BCk291UvhgP2dvNMKI",
+    "ZD_B_Level1": "1xS3BCk291UvhgP2dvNMKI",
+    "ZD_A_Level2": "1xS3BCk291UvhgP2dvNMQJ",
+    "ZD_B_Level2": "1xS3BCk291UvhgP2dvNMQJ"
+  },
+  "chemins": [
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXr$",
+      "sortie_globalId": "1s1jVhK8z0pgKYcr9jt7AB",
+      "cellules": 13,
+      "couverture": 1.0,
+      "full_view": 0.4615
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXr2",
+      "sortie_globalId": "1s1jVhK8z0pgKYcr9jt7AB",
+      "cellules": 10,
+      "couverture": 1.0,
+      "full_view": 0.1
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrb",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRGQ",
+      "cellules": 44,
+      "couverture": 1.0,
+      "full_view": 0.8182
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrc",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRGQ",
+      "cellules": 40,
+      "couverture": 1.0,
+      "full_view": 0.8
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXre",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRGQ",
+      "cellules": 34,
+      "couverture": 1.0,
+      "full_view": 0.7941
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXri",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRGQ",
+      "cellules": 34,
+      "couverture": 1.0,
+      "full_view": 0.7941
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrr",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRGQ",
+      "cellules": 6,
+      "couverture": 1.0,
+      "full_view": 0.6667
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXru",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRGQ",
+      "cellules": 13,
+      "couverture": 1.0,
+      "full_view": 0.7692
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_39",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRH8",
+      "cellules": 39,
+      "couverture": 1.0,
+      "full_view": 0.8718
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3A",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRH8",
+      "cellules": 37,
+      "couverture": 1.0,
+      "full_view": 0.8108
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3C",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRH8",
+      "cellules": 30,
+      "couverture": 1.0,
+      "full_view": 0.8667
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3G",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRH8",
+      "cellules": 31,
+      "couverture": 1.0,
+      "full_view": 0.871
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3P",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRH8",
+      "cellules": 15,
+      "couverture": 1.0,
+      "full_view": 0.9333
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3Q",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRH8",
+      "cellules": 7,
+      "couverture": 1.0,
+      "full_view": 1.0
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3S",
+      "sortie_globalId": "1s1jVhK8z0pgKYcr9jt781",
+      "cellules": 15,
+      "couverture": 1.0,
+      "full_view": 0.0
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_CZ",
+      "sortie_globalId": "1s1jVhK8z0pgKYcr9jt781",
+      "cellules": 8,
+      "couverture": 1.0,
+      "full_view": 0.0
+    },
+    {
+      "espace_globalId": "10mjSDZJj9gPS2PrQaxa3z",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRGQ",
+      "cellules": 13,
+      "couverture": 1.0,
+      "full_view": 0.8462
+    },
+    {
+      "espace_globalId": "10mjSDZJj9gPS2PrQaxa4o",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRH8",
+      "cellules": 11,
+      "couverture": 1.0,
+      "full_view": 1.0
+    },
+    {
+      "espace_globalId": "2gRXFgjRn2HPE$YoDLX3FC",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRH8",
+      "cellules": 30,
+      "couverture": 1.0,
+      "full_view": 0.8333
+    },
+    {
+      "espace_globalId": "2gRXFgjRn2HPE$YoDLX3FV",
+      "sortie_globalId": "1hOSvn6df7F8_7GcBWlRGQ",
+      "cellules": 34,
+      "couverture": 1.0,
+      "full_view": 0.7647
+    }
+  ],
+  "equipements": [
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXr$",
+      "x": 5.167,
+      "y": -10.633,
+      "z": 2.6,
+      "id": "DF-01",
+      "zone_detection": "ZD_A_Level1"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXr2",
+      "x": 4.667,
+      "y": -14.133,
+      "z": 2.6,
+      "id": "DF-02",
+      "zone_detection": "ZD_A_Level1"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrr",
+      "x": 7.167,
+      "y": -12.633,
+      "z": 2.6,
+      "id": "DF-03",
+      "zone_detection": "ZD_A_Level1"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXru",
+      "x": 6.167,
+      "y": -8.133,
+      "z": 2.6,
+      "id": "DF-04",
+      "zone_detection": "ZD_A_Level1"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3P",
+      "x": 3.667,
+      "y": -7.633,
+      "z": 2.795,
+      "id": "DF-05",
+      "zone_detection": "ZD_B_Level1"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3Q",
+      "x": 2.167,
+      "y": -5.133,
+      "z": 2.6,
+      "id": "DF-06",
+      "zone_detection": "ZD_B_Level1"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3S",
+      "x": 7.167,
+      "y": -5.633,
+      "z": 2.6,
+      "id": "DF-07",
+      "zone_detection": "ZD_B_Level1"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_CZ",
+      "x": 6.667,
+      "y": -2.133,
+      "z": 2.6,
+      "id": "DF-08",
+      "zone_detection": "ZD_B_Level1"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "10mjSDZJj9gPS2PrQaxa3z",
+      "x": 8.167,
+      "y": -8.133,
+      "z": 5.7,
+      "id": "DF-09",
+      "zone_detection": "ZD_A_Level1"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "10mjSDZJj9gPS2PrQaxa4o",
+      "x": 1.167,
+      "y": -6.133,
+      "z": 2.6,
+      "id": "DF-10",
+      "zone_detection": "ZD_B_Level1"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrb",
+      "x": 8.167,
+      "y": -13.133,
+      "z": 5.7,
+      "id": "DF-11",
+      "zone_detection": "ZD_A_Level2"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrc",
+      "x": 7.167,
+      "y": -2.133,
+      "z": 5.7,
+      "id": "DF-12",
+      "zone_detection": "ZD_A_Level2"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXre",
+      "x": 6.167,
+      "y": -8.133,
+      "z": 5.7,
+      "id": "DF-13",
+      "zone_detection": "ZD_A_Level2"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXri",
+      "x": 7.167,
+      "y": -8.133,
+      "z": 5.7,
+      "id": "DF-14",
+      "zone_detection": "ZD_A_Level2"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_39",
+      "x": 3.667,
+      "y": -2.133,
+      "z": 5.7,
+      "id": "DF-15",
+      "zone_detection": "ZD_B_Level2"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3A",
+      "x": 3.667,
+      "y": -13.133,
+      "z": 5.7,
+      "id": "DF-16",
+      "zone_detection": "ZD_B_Level2"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3C",
+      "x": 3.667,
+      "y": -7.133,
+      "z": 5.7,
+      "id": "DF-17",
+      "zone_detection": "ZD_B_Level2"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3G",
+      "x": 2.167,
+      "y": -9.633,
+      "z": 5.7,
+      "id": "DF-18",
+      "zone_detection": "ZD_B_Level2"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "2gRXFgjRn2HPE$YoDLX3FC",
+      "x": 3.667,
+      "y": -10.133,
+      "z": 5.7,
+      "id": "DF-19",
+      "zone_detection": "ZD_B_Level2"
+    },
+    {
+      "type": "SmokeDetector",
+      "espace_globalId": "2gRXFgjRn2HPE$YoDLX3FV",
+      "x": 6.167,
+      "y": -7.133,
+      "z": 5.7,
+      "id": "DF-20",
+      "zone_detection": "ZD_A_Level2"
+    },
+    {
+      "type": "ManualCallPoint",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrr",
+      "x": 8.245,
+      "y": -15.802,
+      "z": 1.2,
+      "sortie_servie_globalId": "1hOSvn6df7F8_7GcBWlRGQ",
+      "sorties_servies": [
+        [
+          "1hOSvn6df7F8_7GcBWlRGQ",
+          0.4
+        ]
+      ],
+      "id": "DM-01",
+      "zone_detection": "ZD_A_Level1"
+    },
+    {
+      "type": "ManualCallPoint",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3Q",
+      "x": 0.555,
+      "y": -1.998,
+      "z": 1.2,
+      "sortie_servie_globalId": "1hOSvn6df7F8_7GcBWlRH8",
+      "sorties_servies": [
+        [
+          "1hOSvn6df7F8_7GcBWlRH8",
+          0.4
+        ]
+      ],
+      "id": "DM-02",
+      "zone_detection": "ZD_B_Level1"
+    },
+    {
+      "type": "ManualCallPoint",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_CZ",
+      "x": 3.328,
+      "y": -0.696,
+      "z": 1.2,
+      "sortie_servie_globalId": "1s1jVhK8z0pgKYcr9jt781",
+      "sorties_servies": [
+        [
+          "1s1jVhK8z0pgKYcr9jt781",
+          0.4
+        ]
+      ],
+      "id": "DM-03",
+      "zone_detection": "ZD_B_Level1"
+    },
+    {
+      "type": "ManualCallPoint",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXr2",
+      "x": 5.472,
+      "y": -17.104,
+      "z": 1.2,
+      "sortie_servie_globalId": "1s1jVhK8z0pgKYcr9jt7AB",
+      "sorties_servies": [
+        [
+          "1s1jVhK8z0pgKYcr9jt7AB",
+          0.4
+        ]
+      ],
+      "id": "DM-04",
+      "zone_detection": "ZD_A_Level1"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXr2",
+      "x": 3.167,
+      "y": -17.133,
+      "z": 2.4,
+      "orientation_deg": 45.0,
+      "inclinaison_deg": 20.0,
+      "id": "CAM-01"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrr",
+      "x": 7.167,
+      "y": -16.133,
+      "z": 2.4,
+      "orientation_deg": 90.0,
+      "inclinaison_deg": 20.0,
+      "id": "CAM-02"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXru",
+      "x": 5.667,
+      "y": -8.633,
+      "z": 2.4,
+      "orientation_deg": 315.0,
+      "inclinaison_deg": 45.0,
+      "id": "CAM-03"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3P",
+      "x": 3.667,
+      "y": -8.133,
+      "z": 2.4,
+      "orientation_deg": 270.0,
+      "inclinaison_deg": 45.0,
+      "id": "CAM-04"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3Q",
+      "x": 1.167,
+      "y": -0.633,
+      "z": 2.4,
+      "orientation_deg": 270.0,
+      "inclinaison_deg": 20.0,
+      "id": "CAM-05"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3S",
+      "x": 4.667,
+      "y": -7.133,
+      "z": 2.4,
+      "orientation_deg": 90.0,
+      "inclinaison_deg": 20.0,
+      "id": "CAM-06"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrb",
+      "x": 7.167,
+      "y": -12.133,
+      "z": 5.49,
+      "orientation_deg": 225.0,
+      "inclinaison_deg": 45.0,
+      "id": "CAM-07"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrc",
+      "x": 7.167,
+      "y": -5.633,
+      "z": 5.49,
+      "orientation_deg": 135.0,
+      "inclinaison_deg": 45.0,
+      "id": "CAM-08"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXre",
+      "x": 5.667,
+      "y": -8.133,
+      "z": 5.49,
+      "orientation_deg": 315.0,
+      "inclinaison_deg": 45.0,
+      "id": "CAM-09"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXri",
+      "x": 6.667,
+      "y": -11.133,
+      "z": 5.49,
+      "orientation_deg": 90.0,
+      "inclinaison_deg": 20.0,
+      "id": "CAM-10"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXri",
+      "x": 8.167,
+      "y": -6.633,
+      "z": 5.49,
+      "orientation_deg": 225.0,
+      "inclinaison_deg": 20.0,
+      "id": "CAM-11"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_39",
+      "x": 1.667,
+      "y": -5.633,
+      "z": 5.49,
+      "orientation_deg": 45.0,
+      "inclinaison_deg": 45.0,
+      "id": "CAM-12"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3A",
+      "x": 2.667,
+      "y": -12.133,
+      "z": 5.49,
+      "orientation_deg": 225.0,
+      "inclinaison_deg": 45.0,
+      "id": "CAM-13"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3C",
+      "x": 3.167,
+      "y": -9.133,
+      "z": 5.49,
+      "orientation_deg": 135.0,
+      "inclinaison_deg": 45.0,
+      "id": "CAM-14"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3G",
+      "x": 0.667,
+      "y": -11.133,
+      "z": 5.49,
+      "orientation_deg": 45.0,
+      "inclinaison_deg": 20.0,
+      "id": "CAM-15"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3G",
+      "x": 2.167,
+      "y": -6.633,
+      "z": 5.49,
+      "orientation_deg": 270.0,
+      "inclinaison_deg": 20.0,
+      "id": "CAM-16"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "2gRXFgjRn2HPE$YoDLX3FC",
+      "x": 3.667,
+      "y": -10.633,
+      "z": 5.49,
+      "orientation_deg": 225.0,
+      "inclinaison_deg": 45.0,
+      "id": "CAM-17"
+    },
+    {
+      "type": "Camera",
+      "espace_globalId": "2gRXFgjRn2HPE$YoDLX3FV",
+      "x": 5.167,
+      "y": -7.133,
+      "z": 5.49,
+      "orientation_deg": 45.0,
+      "inclinaison_deg": 45.0,
+      "id": "CAM-18"
+    }
+  ]
+}

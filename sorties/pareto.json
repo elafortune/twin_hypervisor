@@ -1,0 +1,578 @@
+[
+  {
+    "scenario": "avec jumeau, mu=0",
+    "parametres_algo": {
+      "technologie": "WiFi 2.4GHz",
+      "P_TX_dBm": 20.0,
+      "S_RX_dBm": -65.0,
+      "alpha": 1.0,
+      "beta": 1.0,
+      "n_it": 300,
+      "n_pop": 40,
+      "n_mu": 160,
+      "gamma_m": 2.0,
+      "n_max": 10,
+      "lecture_L_obs": "voxel",
+      "facteur_attenuation": 1.0,
+      "shadowing": true,
+      "facteurs_supplementaires": [
+        30
+      ],
+      "max_positions": null,
+      "mu": 0,
+      "graine": 0
+    },
+    "temps_cpu_s": 11.64,
+    "front": [
+      {
+        "n_equipements": 1,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -33.33,
+        "qualite_voxels_couverts_dBm": -33.33,
+        "connectivite": 0,
+        "f_obj_jumeau": 11117.85,
+        "f_obj_optimise": 11117.85,
+        "fichier_solution": "iwcmc/avec_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.44,
+          "qualite_lien_moyenne_dBm": -45.1
+        }
+      },
+      {
+        "n_equipements": 2,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -28.6,
+        "qualite_voxels_couverts_dBm": -28.6,
+        "connectivite": 1,
+        "f_obj_jumeau": 11568.55,
+        "f_obj_optimise": 11568.55,
+        "fichier_solution": "iwcmc/avec_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.775,
+          "qualite_lien_moyenne_dBm": -35.7
+        }
+      },
+      {
+        "n_equipements": 3,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -27.28,
+        "qualite_voxels_couverts_dBm": -27.28,
+        "connectivite": 2,
+        "f_obj_jumeau": 11694.37,
+        "f_obj_optimise": 11694.37,
+        "fichier_solution": "iwcmc/avec_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.905,
+          "qualite_lien_moyenne_dBm": -31.9
+        }
+      },
+      {
+        "n_equipements": 4,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -26.06,
+        "qualite_voxels_couverts_dBm": -26.06,
+        "connectivite": 3,
+        "f_obj_jumeau": 11810.63,
+        "f_obj_optimise": 11810.63,
+        "fichier_solution": "iwcmc/avec_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.95,
+          "qualite_lien_moyenne_dBm": -29.5
+        }
+      },
+      {
+        "n_equipements": 5,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -25.34,
+        "qualite_voxels_couverts_dBm": -25.34,
+        "connectivite": 4,
+        "f_obj_jumeau": 11879.27,
+        "f_obj_optimise": 11879.27,
+        "fichier_solution": "iwcmc/avec_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.985,
+          "qualite_lien_moyenne_dBm": -28.5
+        }
+      },
+      {
+        "n_equipements": 6,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -24.72,
+        "qualite_voxels_couverts_dBm": -24.72,
+        "connectivite": 5,
+        "f_obj_jumeau": 11938.14,
+        "f_obj_optimise": 11938.14,
+        "fichier_solution": "iwcmc/avec_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.99,
+          "qualite_lien_moyenne_dBm": -27.8
+        }
+      },
+      {
+        "n_equipements": 7,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -24.13,
+        "qualite_voxels_couverts_dBm": -24.13,
+        "connectivite": 6,
+        "f_obj_jumeau": 11994.98,
+        "f_obj_optimise": 11994.98,
+        "fichier_solution": "iwcmc/avec_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.99,
+          "qualite_lien_moyenne_dBm": -27.2
+        }
+      },
+      {
+        "n_equipements": 8,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -23.6,
+        "qualite_voxels_couverts_dBm": -23.6,
+        "connectivite": 7,
+        "f_obj_jumeau": 12045.35,
+        "f_obj_optimise": 12045.35,
+        "fichier_solution": "iwcmc/avec_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.995,
+          "qualite_lien_moyenne_dBm": -26.6
+        }
+      },
+      {
+        "n_equipements": 9,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -23.19,
+        "qualite_voxels_couverts_dBm": -23.19,
+        "connectivite": 8,
+        "f_obj_jumeau": 12084.68,
+        "f_obj_optimise": 12084.68,
+        "fichier_solution": "iwcmc/avec_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.997,
+          "qualite_lien_moyenne_dBm": -26.2
+        }
+      },
+      {
+        "n_equipements": 10,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -22.8,
+        "qualite_voxels_couverts_dBm": -22.8,
+        "connectivite": 9,
+        "f_obj_jumeau": 12121.86,
+        "f_obj_optimise": 12121.86,
+        "fichier_solution": "iwcmc/avec_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.998,
+          "qualite_lien_moyenne_dBm": -25.8
+        }
+      }
+    ]
+  },
+  {
+    "scenario": "sans jumeau, mu=0",
+    "parametres_algo": {
+      "technologie": "WiFi 2.4GHz",
+      "P_TX_dBm": 20.0,
+      "S_RX_dBm": -65.0,
+      "alpha": 1.0,
+      "beta": 1.0,
+      "n_it": 300,
+      "n_pop": 40,
+      "n_mu": 160,
+      "gamma_m": 2.0,
+      "n_max": 10,
+      "lecture_L_obs": "voxel",
+      "facteur_attenuation": 1.0,
+      "shadowing": true,
+      "facteurs_supplementaires": [
+        30
+      ],
+      "max_positions": null,
+      "mu": 0,
+      "graine": 0
+    },
+    "temps_cpu_s": 12.34,
+    "front": [
+      {
+        "n_equipements": 1,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -33.36,
+        "qualite_voxels_couverts_dBm": -33.36,
+        "connectivite": 0,
+        "f_obj_jumeau": 11114.73,
+        "f_obj_optimise": 11081.73,
+        "fichier_solution": "iwcmc/sans_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.35,
+          "qualite_lien_moyenne_dBm": -48.6
+        }
+      },
+      {
+        "n_equipements": 2,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -28.6,
+        "qualite_voxels_couverts_dBm": -28.6,
+        "connectivite": 1,
+        "f_obj_jumeau": 11568.55,
+        "f_obj_optimise": 11548.76,
+        "fichier_solution": "iwcmc/sans_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.67,
+          "qualite_lien_moyenne_dBm": -38.9
+        }
+      },
+      {
+        "n_equipements": 3,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -27.28,
+        "qualite_voxels_couverts_dBm": -27.28,
+        "connectivite": 2,
+        "f_obj_jumeau": 11694.37,
+        "f_obj_optimise": 11676.38,
+        "fichier_solution": "iwcmc/sans_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.825,
+          "qualite_lien_moyenne_dBm": -33.9
+        }
+      },
+      {
+        "n_equipements": 4,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -26.06,
+        "qualite_voxels_couverts_dBm": -26.06,
+        "connectivite": 3,
+        "f_obj_jumeau": 11810.63,
+        "f_obj_optimise": 11794.09,
+        "fichier_solution": "iwcmc/sans_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.92,
+          "qualite_lien_moyenne_dBm": -31.0
+        }
+      },
+      {
+        "n_equipements": 5,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -25.36,
+        "qualite_voxels_couverts_dBm": -25.36,
+        "connectivite": 4,
+        "f_obj_jumeau": 11877.48,
+        "f_obj_optimise": 11864.47,
+        "fichier_solution": "iwcmc/sans_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.965,
+          "qualite_lien_moyenne_dBm": -29.4
+        }
+      },
+      {
+        "n_equipements": 6,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -24.7,
+        "qualite_voxels_couverts_dBm": -24.7,
+        "connectivite": 5,
+        "f_obj_jumeau": 11940.8,
+        "f_obj_optimise": 11930.9,
+        "fichier_solution": "iwcmc/sans_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.97,
+          "qualite_lien_moyenne_dBm": -28.6
+        }
+      },
+      {
+        "n_equipements": 7,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -24.13,
+        "qualite_voxels_couverts_dBm": -24.13,
+        "connectivite": 6,
+        "f_obj_jumeau": 11994.85,
+        "f_obj_optimise": 11982.78,
+        "fichier_solution": "iwcmc/sans_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.975,
+          "qualite_lien_moyenne_dBm": -27.8
+        }
+      },
+      {
+        "n_equipements": 8,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -23.59,
+        "qualite_voxels_couverts_dBm": -23.59,
+        "connectivite": 7,
+        "f_obj_jumeau": 12046.35,
+        "f_obj_optimise": 12036.57,
+        "fichier_solution": "iwcmc/sans_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.98,
+          "qualite_lien_moyenne_dBm": -27.1
+        }
+      },
+      {
+        "n_equipements": 9,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -23.19,
+        "qualite_voxels_couverts_dBm": -23.19,
+        "connectivite": 8,
+        "f_obj_jumeau": 12083.93,
+        "f_obj_optimise": 12074.3,
+        "fichier_solution": "iwcmc/sans_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.985,
+          "qualite_lien_moyenne_dBm": -26.6
+        }
+      },
+      {
+        "n_equipements": 10,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -22.81,
+        "qualite_voxels_couverts_dBm": -22.81,
+        "connectivite": 9,
+        "f_obj_jumeau": 12120.29,
+        "f_obj_optimise": 12110.74,
+        "fichier_solution": "iwcmc/sans_jumeau_mu0.json",
+        "article": {
+          "couverture": 0.988,
+          "qualite_lien_moyenne_dBm": -26.3
+        }
+      }
+    ]
+  },
+  {
+    "scenario": "avec jumeau, mu=3",
+    "parametres_algo": {
+      "technologie": "WiFi 2.4GHz",
+      "P_TX_dBm": 20.0,
+      "S_RX_dBm": -65.0,
+      "alpha": 1.0,
+      "beta": 1.0,
+      "n_it": 300,
+      "n_pop": 40,
+      "n_mu": 160,
+      "gamma_m": 2.0,
+      "n_max": 10,
+      "lecture_L_obs": "voxel",
+      "facteur_attenuation": 1.0,
+      "shadowing": true,
+      "facteurs_supplementaires": [
+        30
+      ],
+      "max_positions": null,
+      "mu": 3,
+      "graine": 0
+    },
+    "temps_cpu_s": 38.02,
+    "front": [
+      {
+        "n_equipements": 4,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -26.06,
+        "qualite_voxels_couverts_dBm": -26.06,
+        "connectivite": 3,
+        "f_obj_jumeau": 11810.63,
+        "f_obj_optimise": 11810.63,
+        "fichier_solution": "iwcmc/avec_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.939,
+          "qualite_lien_moyenne_dBm": -29.5
+        }
+      },
+      {
+        "n_equipements": 5,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -25.34,
+        "qualite_voxels_couverts_dBm": -25.34,
+        "connectivite": 4,
+        "f_obj_jumeau": 11878.96,
+        "f_obj_optimise": 11878.96,
+        "fichier_solution": "iwcmc/avec_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.98,
+          "qualite_lien_moyenne_dBm": -28.6
+        }
+      },
+      {
+        "n_equipements": 6,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -24.69,
+        "qualite_voxels_couverts_dBm": -24.69,
+        "connectivite": 5,
+        "f_obj_jumeau": 11940.9,
+        "f_obj_optimise": 11940.9,
+        "fichier_solution": "iwcmc/avec_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.986,
+          "qualite_lien_moyenne_dBm": -27.7
+        }
+      },
+      {
+        "n_equipements": 7,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -24.11,
+        "qualite_voxels_couverts_dBm": -24.11,
+        "connectivite": 6,
+        "f_obj_jumeau": 11996.59,
+        "f_obj_optimise": 11996.59,
+        "fichier_solution": "iwcmc/avec_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.992,
+          "qualite_lien_moyenne_dBm": -27.2
+        }
+      },
+      {
+        "n_equipements": 8,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -23.59,
+        "qualite_voxels_couverts_dBm": -23.59,
+        "connectivite": 7,
+        "f_obj_jumeau": 12046.14,
+        "f_obj_optimise": 12046.14,
+        "fichier_solution": "iwcmc/avec_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.993,
+          "qualite_lien_moyenne_dBm": -26.7
+        }
+      },
+      {
+        "n_equipements": 9,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -23.18,
+        "qualite_voxels_couverts_dBm": -23.18,
+        "connectivite": 8,
+        "f_obj_jumeau": 12084.72,
+        "f_obj_optimise": 12084.72,
+        "fichier_solution": "iwcmc/avec_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.997,
+          "qualite_lien_moyenne_dBm": -26.3
+        }
+      },
+      {
+        "n_equipements": 10,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -22.81,
+        "qualite_voxels_couverts_dBm": -22.81,
+        "connectivite": 9,
+        "f_obj_jumeau": 12120.43,
+        "f_obj_optimise": 12120.43,
+        "fichier_solution": "iwcmc/avec_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.998,
+          "qualite_lien_moyenne_dBm": -25.9
+        }
+      }
+    ]
+  },
+  {
+    "scenario": "sans jumeau, mu=3",
+    "parametres_algo": {
+      "technologie": "WiFi 2.4GHz",
+      "P_TX_dBm": 20.0,
+      "S_RX_dBm": -65.0,
+      "alpha": 1.0,
+      "beta": 1.0,
+      "n_it": 300,
+      "n_pop": 40,
+      "n_mu": 160,
+      "gamma_m": 2.0,
+      "n_max": 10,
+      "lecture_L_obs": "voxel",
+      "facteur_attenuation": 1.0,
+      "shadowing": true,
+      "facteurs_supplementaires": [
+        30
+      ],
+      "max_positions": null,
+      "mu": 3,
+      "graine": 0
+    },
+    "temps_cpu_s": 32.66,
+    "front": [
+      {
+        "n_equipements": 4,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -26.06,
+        "qualite_voxels_couverts_dBm": -26.06,
+        "connectivite": 3,
+        "f_obj_jumeau": 11810.63,
+        "f_obj_optimise": 11794.09,
+        "fichier_solution": "iwcmc/sans_jumeau_mu3.json"
+      },
+      {
+        "n_equipements": 5,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -25.36,
+        "qualite_voxels_couverts_dBm": -25.36,
+        "connectivite": 4,
+        "f_obj_jumeau": 11877.66,
+        "f_obj_optimise": 11864.33,
+        "fichier_solution": "iwcmc/sans_jumeau_mu3.json"
+      },
+      {
+        "n_equipements": 6,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -24.7,
+        "qualite_voxels_couverts_dBm": -24.7,
+        "connectivite": 5,
+        "f_obj_jumeau": 11940.8,
+        "f_obj_optimise": 11930.9,
+        "fichier_solution": "iwcmc/sans_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.957,
+          "qualite_lien_moyenne_dBm": -29.2
+        }
+      },
+      {
+        "n_equipements": 7,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -24.11,
+        "qualite_voxels_couverts_dBm": -24.11,
+        "connectivite": 6,
+        "f_obj_jumeau": 11996.59,
+        "f_obj_optimise": 11986.59,
+        "fichier_solution": "iwcmc/sans_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.966,
+          "qualite_lien_moyenne_dBm": -28.4
+        }
+      },
+      {
+        "n_equipements": 8,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -23.59,
+        "qualite_voxels_couverts_dBm": -23.59,
+        "connectivite": 7,
+        "f_obj_jumeau": 12046.35,
+        "f_obj_optimise": 12036.57,
+        "fichier_solution": "iwcmc/sans_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.968,
+          "qualite_lien_moyenne_dBm": -27.7
+        }
+      },
+      {
+        "n_equipements": 9,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -23.19,
+        "qualite_voxels_couverts_dBm": -23.19,
+        "connectivite": 8,
+        "f_obj_jumeau": 12084.34,
+        "f_obj_optimise": 12074.85,
+        "fichier_solution": "iwcmc/sans_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.986,
+          "qualite_lien_moyenne_dBm": -26.9
+        }
+      },
+      {
+        "n_equipements": 10,
+        "couverture": 1.0,
+        "qualite_lien_moyenne_dBm": -22.84,
+        "qualite_voxels_couverts_dBm": -22.84,
+        "connectivite": 9,
+        "f_obj_jumeau": 12117.88,
+        "f_obj_optimise": 12109.83,
+        "fichier_solution": "iwcmc/sans_jumeau_mu3.json",
+        "article": {
+          "couverture": 0.993,
+          "qualite_lien_moyenne_dBm": -26.3
+        }
+      }
+    ]
+  }
+]

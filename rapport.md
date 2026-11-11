@@ -106,7 +106,7 @@ Portable AMD Ryzen 7 7730U (8 cœurs), 15,4 Go de RAM, sans GPU (inférence sur 
 | M4 | 19 s (+ 4 s) | 165 s |
 | M5 | 20 s (+ 21 s) | 93 s (+ 130 s de validation finale) |
 | **M1 → M5** | **4 min 20** | **≈ 9 min 15** |
-| M6 (LLM) | ≈ 1 400 s (questions 680 s, demandes 710 s) | non mesuré (mémoire) |
+| M6 (LLM) | 1 192 s (questions 607 s, demandes 568 s, 8 validations SHACL) | non mesuré (mémoire) |
 
 Banc d'essai des modèles locaux : qwen2.5:14b 20 / 20 ; llama3.1:8b 2 / 4 sur un sous-ensemble (mauvais outil, booléen envoyé en texte) ; mistral et qwen3:4b écartés à l'essai initial. Limite pour l'entretien : M6 sur CPU dure plus de 10 minutes ; le journal permet de le rejouer en quelques secondes.
 

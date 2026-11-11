@@ -1,0 +1,467 @@
+{
+  "hypotheses": {
+    "detecteur_chaleur_statique_degC": [
+      54.0,
+      65.0
+    ],
+    "detecteur_chaleur_vitesse_degC_en_60s": 10.0,
+    "detecteur_chaleur_rayons_m": null
+  },
+  "par_espace": [
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXr$",
+      "espace": "A103",
+      "nom_long": "Kitchen",
+      "niveau": "Level 1",
+      "fumee_s": 70,
+      "chaleur_statique_bas_s": 110,
+      "chaleur_statique_haut_s": 130,
+      "chaleur_vitesse_s": 80,
+      "danger_s": 120,
+      "temperature_max_degC": 626.3,
+      "marge_fumee_s": 50,
+      "marge_chaleur_statique_bas_s": 10,
+      "marge_chaleur_statique_haut_s": -10,
+      "marge_chaleur_vitesse_s": 40
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXr2",
+      "espace": "A102",
+      "nom_long": "Living Room",
+      "niveau": "Level 1",
+      "fumee_s": 120,
+      "chaleur_statique_bas_s": 170,
+      "chaleur_statique_haut_s": 190,
+      "chaleur_vitesse_s": 130,
+      "danger_s": 180,
+      "temperature_max_degC": 446.4,
+      "marge_fumee_s": 60,
+      "marge_chaleur_statique_bas_s": 10,
+      "marge_chaleur_statique_haut_s": -10,
+      "marge_chaleur_vitesse_s": 50
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrb",
+      "espace": "A203",
+      "nom_long": "Bedroom 2",
+      "niveau": "Level 2",
+      "fumee_s": 330,
+      "chaleur_statique_bas_s": 440,
+      "chaleur_statique_haut_s": 480,
+      "chaleur_vitesse_s": 390,
+      "danger_s": 460,
+      "temperature_max_degC": 115.5,
+      "marge_fumee_s": 130,
+      "marge_chaleur_statique_bas_s": 20,
+      "marge_chaleur_statique_haut_s": -20,
+      "marge_chaleur_vitesse_s": 70
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrc",
+      "espace": "A202",
+      "nom_long": "Bedroom 1",
+      "niveau": "Level 2",
+      "fumee_s": 330,
+      "chaleur_statique_bas_s": 440,
+      "chaleur_statique_haut_s": 480,
+      "chaleur_vitesse_s": 390,
+      "danger_s": 460,
+      "temperature_max_degC": 116.0,
+      "marge_fumee_s": 130,
+      "marge_chaleur_statique_bas_s": 20,
+      "marge_chaleur_statique_haut_s": -20,
+      "marge_chaleur_vitesse_s": 70
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXre",
+      "espace": "A204",
+      "nom_long": "Bathroom 2",
+      "niveau": "Level 2",
+      "fumee_s": 330,
+      "chaleur_statique_bas_s": 440,
+      "chaleur_statique_haut_s": 480,
+      "chaleur_vitesse_s": 390,
+      "danger_s": 460,
+      "temperature_max_degC": 116.0,
+      "marge_fumee_s": 130,
+      "marge_chaleur_statique_bas_s": 20,
+      "marge_chaleur_statique_haut_s": -20,
+      "marge_chaleur_vitesse_s": 70
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXri",
+      "espace": "A201",
+      "nom_long": "Hallway",
+      "niveau": "Level 2",
+      "fumee_s": 200,
+      "chaleur_statique_bas_s": 280,
+      "chaleur_statique_haut_s": 300,
+      "chaleur_vitesse_s": 220,
+      "danger_s": 290,
+      "temperature_max_degC": 261.4,
+      "marge_fumee_s": 90,
+      "marge_chaleur_statique_bas_s": 10,
+      "marge_chaleur_statique_haut_s": -10,
+      "marge_chaleur_vitesse_s": 70
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXrr",
+      "espace": "A101",
+      "nom_long": "Foyer",
+      "niveau": "Level 1",
+      "fumee_s": 120,
+      "chaleur_statique_bas_s": 170,
+      "chaleur_statique_haut_s": 190,
+      "chaleur_vitesse_s": 130,
+      "danger_s": 180,
+      "temperature_max_degC": 446.4,
+      "marge_fumee_s": 60,
+      "marge_chaleur_statique_bas_s": 10,
+      "marge_chaleur_statique_haut_s": -10,
+      "marge_chaleur_vitesse_s": 50
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dlXru",
+      "espace": "A104",
+      "nom_long": "Bathroom 1",
+      "niveau": "Level 1",
+      "fumee_s": 230,
+      "chaleur_statique_bas_s": 310,
+      "chaleur_statique_haut_s": 340,
+      "chaleur_vitesse_s": 260,
+      "danger_s": 330,
+      "temperature_max_degC": 215.1,
+      "marge_fumee_s": 100,
+      "marge_chaleur_statique_bas_s": 20,
+      "marge_chaleur_statique_haut_s": -10,
+      "marge_chaleur_vitesse_s": 70
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_39",
+      "espace": "B202",
+      "nom_long": "Bedroom 2",
+      "niveau": "Level 2",
+      "fumee_s": null,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 26.4,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3A",
+      "espace": "B202",
+      "nom_long": "Bedroom 1",
+      "niveau": "Level 2",
+      "fumee_s": null,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 26.4,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3C",
+      "espace": "B204",
+      "nom_long": "Bathroom 2",
+      "niveau": "Level 2",
+      "fumee_s": null,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 26.4,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3G",
+      "espace": "B201",
+      "nom_long": "Hallway",
+      "niveau": "Level 2",
+      "fumee_s": null,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 26.4,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3P",
+      "espace": "B104",
+      "nom_long": "Bathroom 1",
+      "niveau": "Level 1",
+      "fumee_s": null,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 26.4,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3Q",
+      "espace": "B101",
+      "nom_long": "Foyer",
+      "niveau": "Level 1",
+      "fumee_s": null,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 26.4,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_3S",
+      "espace": "B103",
+      "nom_long": "Kitchen",
+      "niveau": "Level 1",
+      "fumee_s": null,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 26.4,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    },
+    {
+      "espace_globalId": "0BTBFw6f90Nfh9rP1dl_CZ",
+      "espace": "B102",
+      "nom_long": "Living Room",
+      "niveau": "Level 1",
+      "fumee_s": null,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 26.4,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    },
+    {
+      "espace_globalId": "10mjSDZJj9gPS2PrQaxa3z",
+      "espace": "A105",
+      "nom_long": "Stair",
+      "niveau": "Level 1",
+      "fumee_s": 170,
+      "chaleur_statique_bas_s": 230,
+      "chaleur_statique_haut_s": 250,
+      "chaleur_vitesse_s": 180,
+      "danger_s": 250,
+      "temperature_max_degC": 320.4,
+      "marge_fumee_s": 80,
+      "marge_chaleur_statique_bas_s": 20,
+      "marge_chaleur_statique_haut_s": 0,
+      "marge_chaleur_vitesse_s": 70
+    },
+    {
+      "espace_globalId": "10mjSDZJj9gPS2PrQaxa4o",
+      "espace": "B105",
+      "nom_long": "Room",
+      "niveau": "Level 1",
+      "fumee_s": null,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 26.4,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    },
+    {
+      "espace_globalId": "2gRXFgjRn2HPE$YoDLX3FC",
+      "espace": "B205",
+      "nom_long": "Utility",
+      "niveau": "Level 2",
+      "fumee_s": null,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 26.4,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    },
+    {
+      "espace_globalId": "2gRXFgjRn2HPE$YoDLX3FV",
+      "espace": "A205",
+      "nom_long": "Utility",
+      "niveau": "Level 2",
+      "fumee_s": 470,
+      "chaleur_statique_bas_s": null,
+      "chaleur_statique_haut_s": null,
+      "chaleur_vitesse_s": null,
+      "danger_s": null,
+      "temperature_max_degC": 49.8,
+      "marge_fumee_s": null,
+      "marge_chaleur_statique_bas_s": null,
+      "marge_chaleur_statique_haut_s": null,
+      "marge_chaleur_vitesse_s": null
+    }
+  ],
+  "scenarios": [
+    {
+      "cas": "tout fumée (M4)",
+      "espaces_en_chaleur": 0,
+      "premiere_alarme_chaleur_vitesse_s": 70,
+      "par_niveau_chaleur_vitesse_s": {
+        "Level 1": 70,
+        "Level 2": 200
+      },
+      "premiere_alarme_chaleur_statique_bas_s": 70,
+      "par_niveau_chaleur_statique_bas_s": {
+        "Level 1": 70,
+        "Level 2": 200
+      },
+      "premiere_alarme_chaleur_statique_haut_s": 70,
+      "par_niveau_chaleur_statique_haut_s": {
+        "Level 1": 70,
+        "Level 2": 200
+      }
+    },
+    {
+      "cas": "origine du feu en chaleur (D1)",
+      "espaces_en_chaleur": 1,
+      "premiere_alarme_chaleur_vitesse_s": 80,
+      "par_niveau_chaleur_vitesse_s": {
+        "Level 1": 80,
+        "Level 2": 200
+      },
+      "premiere_alarme_chaleur_statique_bas_s": 110,
+      "par_niveau_chaleur_statique_bas_s": {
+        "Level 1": 110,
+        "Level 2": 200
+      },
+      "premiere_alarme_chaleur_statique_haut_s": 120,
+      "par_niveau_chaleur_statique_haut_s": {
+        "Level 1": 120,
+        "Level 2": 200
+      }
+    },
+    {
+      "cas": "Level 1 en chaleur (D3 si niveau des travaux)",
+      "espaces_en_chaleur": 10,
+      "premiere_alarme_chaleur_vitesse_s": 80,
+      "par_niveau_chaleur_vitesse_s": {
+        "Level 1": 80,
+        "Level 2": 200
+      },
+      "premiere_alarme_chaleur_statique_bas_s": 110,
+      "par_niveau_chaleur_statique_bas_s": {
+        "Level 1": 110,
+        "Level 2": 200
+      },
+      "premiere_alarme_chaleur_statique_haut_s": 130,
+      "par_niveau_chaleur_statique_haut_s": {
+        "Level 1": 130,
+        "Level 2": 200
+      }
+    },
+    {
+      "cas": "Level 2 en chaleur (D3 si niveau des travaux)",
+      "espaces_en_chaleur": 10,
+      "premiere_alarme_chaleur_vitesse_s": 70,
+      "par_niveau_chaleur_vitesse_s": {
+        "Level 1": 70,
+        "Level 2": 220
+      },
+      "premiere_alarme_chaleur_statique_bas_s": 70,
+      "par_niveau_chaleur_statique_bas_s": {
+        "Level 1": 70,
+        "Level 2": 280
+      },
+      "premiere_alarme_chaleur_statique_haut_s": 70,
+      "par_niveau_chaleur_statique_haut_s": {
+        "Level 1": 70,
+        "Level 2": 300
+      }
+    },
+    {
+      "cas": "tout chaleur",
+      "espaces_en_chaleur": 20,
+      "premiere_alarme_chaleur_vitesse_s": 80,
+      "par_niveau_chaleur_vitesse_s": {
+        "Level 1": 80,
+        "Level 2": 220
+      },
+      "premiere_alarme_chaleur_statique_bas_s": 110,
+      "par_niveau_chaleur_statique_bas_s": {
+        "Level 1": 110,
+        "Level 2": 280
+      },
+      "premiere_alarme_chaleur_statique_haut_s": 130,
+      "par_niveau_chaleur_statique_haut_s": {
+        "Level 1": 130,
+        "Level 2": 300
+      }
+    }
+  ],
+  "nombre_detecteurs": [
+    {
+      "rayon_m": 5.0,
+      "detecteurs": 20,
+      "statut": "Optimal",
+      "gap_relatif": 0.0,
+      "par_niveau": {
+        "T/FDN": 0,
+        "Level 1": 10,
+        "Level 2": 10,
+        "Roof": 0
+      }
+    },
+    {
+      "rayon_m": 3.54,
+      "detecteurs": 24,
+      "statut": "Optimal",
+      "gap_relatif": 0.0,
+      "par_niveau": {
+        "T/FDN": 0,
+        "Level 1": 14,
+        "Level 2": 10,
+        "Roof": 0
+      }
+    },
+    {
+      "rayon_m": 2.74,
+      "detecteurs": 34,
+      "statut": "Optimal",
+      "gap_relatif": 0.0,
+      "par_niveau": {
+        "T/FDN": 0,
+        "Level 1": 18,
+        "Level 2": 16,
+        "Roof": 0
+      }
+    }
+  ]
+}

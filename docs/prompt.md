@@ -249,4 +249,4 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 
 > crée reste_a_faire.md pour que j'ai en tête ce qu'il reste à faire puis commence l'étape 1 qui prend le plus de temps, une fois que le calcul long est lancé si tu as assez de place coté cpu commence le rapport également en parallèle pendant que le calcul de l'étape 1 est en fond l'objectif actuellement est d'aller à l'essentiel pour finaliser au plus vite ce rapport et idéalement l'envoyer ce soir et pas attendre demain après midi
 
-**Résultat :** (en cours)
+**Résultat :** `reste_a_faire.md` ; run final du duplex avec le code final (M1 → M5 en 4 min 20, M6 en 1 192 s : 20 / 20 conformes, mêmes décisions, `valider` 8 × OK) ; sorties commitées sans les caches de M3 ; `rapport.md` / `rapport.pdf` (4 pages, figure générée depuis `pareto.json`) ; `declaration_ia.md` ; points ouverts de `choix.md` mis à jour ; test depuis un clone neuf (99 tests rapides OK).

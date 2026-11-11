@@ -1,0 +1,59 @@
+{
+  "modele": "qwen2.5:14b",
+  "digest": "7cdf5a0187d5c58cc5d369b255592f7841d1c4696d45a8c8a9489440385b22f6",
+  "rejeu": false,
+  "options": {
+    "temperature": 0,
+    "graine": 0
+  },
+  "questions": 20,
+  "reference_disponible": true,
+  "conformes_reference": 20,
+  "ecarts": [],
+  "iterations_totales": 21,
+  "decisions": [
+    {
+      "demande": "D1",
+      "espace": null,
+      "decision": "acceptee"
+    },
+    {
+      "demande": "D2",
+      "espace": null,
+      "decision": "refusee"
+    },
+    {
+      "demande": "D3",
+      "espace": null,
+      "decision": "acceptee_avec_adaptation"
+    },
+    {
+      "demande": "D4",
+      "espace": "0BTBFw6f90Nfh9rP1dlXri",
+      "decision": "refusee"
+    },
+    {
+      "demande": "D4",
+      "espace": "0BTBFw6f90Nfh9rP1dlXrc",
+      "decision": "refusee"
+    },
+    {
+      "demande": "D4",
+      "espace": "0BTBFw6f90Nfh9rP1dlXrb",
+      "decision": "refusee"
+    },
+    {
+      "demande": "D4",
+      "espace": "0BTBFw6f90Nfh9rP1dlXre",
+      "decision": "refusee"
+    },
+    {
+      "demande": "D4",
+      "espace": "2gRXFgjRn2HPE$YoDLX3FV",
+      "decision": "refusee"
+    }
+  ],
+  "validations_shacl": 8,
+  "duree_questions_s": 606.9,
+  "duree_demandes_s": 568.1
+}

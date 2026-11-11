@@ -1,0 +1,42 @@
+{
+  "twinhyp": "0.1.0",
+  "debut": "2026-11-11T22:43:23+00:00",
+  "entrees": {
+    "ifc": "data\\duplex_TwinHypervisor.ifc",
+    "parametres": "data\\parametres.json",
+    "observations": "data\\observations.csv"
+  },
+  "graine": 0,
+  "machine": {
+    "systeme": "Windows-10-10.0.26200-SP0",
+    "processeur": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "coeurs_logiques": 16,
+    "python": "3.11.18",
+    "paquets": {
+      "ifcopenshell": "0.9.0.post1",
+      "numpy": "2.4.6",
+      "shapely": "2.2.0",
+      "networkx": "3.6.1",
+      "rdflib": "7.6.0",
+      "pyshacl": "0.40.2",
+      "jsonschema": "4.26.0",
+      "plotly": "7.1.0"
+    }
+  },
+  "etapes": {
+    "m6": {
+      "duree_s": 1191.637,
+      "validation_s": 20.367,
+      "sorties": [
+        "answers",
+        "audit",
+        "kg"
+      ],
+      "validees": [
+        "answers",
+        "audit",
+        "kg"
+      ]
+    }
+  }
+}

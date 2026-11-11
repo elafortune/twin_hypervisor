@@ -5,20 +5,20 @@ Livrables (`docs/feuille_de_route.md`) : dépôt Git avec historique et tests ·
 
 ## 1. Run final sur le duplex et sorties dans le dépôt — bloquant
 
-- [ ] M1 → M5 avec le code final (en cours)
-- [ ] M6 avec qwen2.5:14b (≈ 25 min, ≈ 9 Go de RAM : **fermer Chrome**)
-- [ ] `python -m twinhyp valider --out sorties` → 8 × OK
-- [ ] Commiter `sorties/` : les 8 sorties, `llm_journal.jsonl` (rejeu), `agent_resume.json`, `execution.json`, figures ; **sans** les caches `.npz` de M3 (57 Mo, régénérés)
+- [x] M1 → M5 avec le code final (4 min 20)
+- [x] M6 avec qwen2.5:14b (≈ 25 min, ≈ 9 Go de RAM : **fermer Chrome**)
+- [x] `python -m twinhyp valider --out sorties` → 8 × OK
+- [x] Commiter `sorties/` : les 8 sorties, `llm_journal.jsonl` (rejeu), `agent_resume.json`, `execution.json`, figures ; **sans** les caches `.npz` de M3 (57 Mo, régénérés)
 
 ## 2. Rapport (6 pages maximum) — obligatoire
 
-- [ ] `rapport.md` : architecture ; écarts à l'IWCMC (figures, hypothèses) ; incohérences de la maquette ; comparaison à l'ontologie de Pang ; pénalité ou contrainte dure ; décisions de l'agent ; matériel et temps
+- [x] `rapport.md` : architecture ; écarts à l'IWCMC (figures, hypothèses) ; incohérences de la maquette ; comparaison à l'ontologie de Pang ; pénalité ou contrainte dure ; décisions de l'agent ; matériel et temps
 - [ ] Relecture (toi)
-- [ ] Export PDF éventuel (`*.pdf` est dans `.gitignore` : `git add -f rapport.pdf`)
+- [x] Export PDF éventuel (`*.pdf` est dans `.gitignore` : `git add -f rapport.pdf`)
 
 ## 3. Déclaration IA — obligatoire
 
-- [ ] `declaration_ia.md` : outils utilisés et pour quoi ; ce qui a été vérifié à la main (`docs/verification_bimvision.md`, validation à chaque étape) ; agent M6 sur LLM local ; renvoi vers `docs/prompt.md`
+- [x] `declaration_ia.md` : outils utilisés et pour quoi ; ce qui a été vérifié à la main (`docs/verification_bimvision.md`, validation à chaque étape) ; agent M6 sur LLM local ; renvoi vers `docs/prompt.md`
 - [ ] Relecture (toi)
 
 ## 4. Décisions à prendre (toi)
@@ -32,9 +32,9 @@ Livrables (`docs/feuille_de_route.md`) : dépôt Git avec historique et tests ·
 
 ## 5. Nettoyage — rapide
 
-- [ ] Tableau « Points ouverts » de `choix.md` (périmé)
+- [x] Tableau « Points ouverts » de `choix.md` (périmé)
 - [ ] Relire `main.md` et le README
-- [ ] Test depuis un clone neuf (environnement, tests, commande unique)
+- [x] Test depuis un clone neuf : 99 tests rapides OK (environnement conda non recréé, commande complète non relancée depuis le clone)
 
 ## 6. Envoi (toi)
 
