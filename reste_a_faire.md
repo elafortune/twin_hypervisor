@@ -21,7 +21,7 @@ Livrables (`docs/feuille_de_route.md`) : dépôt Git avec historique et tests ·
 - [x] `declaration_ia.md` : outils utilisés et pour quoi ; ce qui a été vérifié à la main (`docs/verification_bimvision.md`, validation à chaque étape) ; agent M6 sur LLM local ; renvoi vers `docs/prompt.md`
 - [ ] Relecture (toi)
 
-## 4. Décisions à prendre (toi)
+## 4. Décisions — tranchées le 12/11 : choix par défaut gardés
 
 | Sujet | Options | Défaut actuel |
 |---|---|---|
