@@ -174,3 +174,18 @@ def test_booleen_en_texte_converti(boite):
     a = O.appeler(boite, "itineraire", {"depart": "A202", "arrivee": "A101", "mesure": "espaces_traverses", "inclure_depart": "False"})
     b = O.appeler(boite, "itineraire", {"depart": "A202", "arrivee": "A101", "mesure": "espaces_traverses", "inclure_depart": False})
     assert a.valeur == b.valeur
+
+
+@pytest.mark.integration
+def test_d1_d3_quand_les_detecteurs_sont_deja_de_chaleur(boite):
+    """Variante chaleur : D1 n'a rien à changer, D3 n'a rien à remplacer (refus, détection maintenue)."""
+    g = Graph()
+    for t in boite.g:
+        g.add(t)
+    for d in list(g.subjects(D.RDF.type, D.SSI.SmokeDetector)):
+        g.remove((d, D.RDF.type, D.SSI.SmokeDetector))
+        g.add((d, D.RDF.type, D.SSI.HeatDetector))
+    c = D.changer_type(g, {"espace": "A103", "nouveau_type": "HeatDetector"})[0]
+    assert not c.ajouts and not c.retraits
+    cands = D.retirer(g, {"niveau": "Level 2"}, O.Boite(g, boite.params, geometrie=boite.geometrie))
+    assert [x.nom for x in cands] == ["demande", "refus"]

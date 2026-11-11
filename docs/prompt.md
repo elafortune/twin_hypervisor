@@ -226,3 +226,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > 4 une fois que les questions précédentes sont faites et répondues on peut faire l'étape 10 si un autre ifc en particulier est demandé ou conseillé dans les consignes
 
 **Résultat :** consignes relues : type de détecteur libre → comparaison mesurée (`detecteurs`) : la fumée alarme 10 à 60 s avant la chaleur A1R et 40 à 150 s avant la chaleur statique, qui alarme au moment du danger ; D1 retarde la 1re alarme (70 → 80–120 s), D3 non (alarme du Level 2 200 → 220–280 s) ; adaptation D3 maintenue, classe A1R recommandée. qwen2.5:14b déjà en Q4_K_M. Étape 10 : le kit conseille un autre bâtiment des Common BIM Files (NIBS), par exemple de bureaux.
+
+---
+
+## 26 — 2026-11-11 — Chaîne complète avec détecteurs de chaleur
+
+> fais le test avec détecteur de chaleur et compare à détecteur de fuméee, fais cela pour étape
+
+**Résultat :** chaîne rejouée en 4 variantes (fumée, chaleur A1R, A1, A1R à rayon réduit), comparées étape par étape (`comparer`, `fumee_chaleur.md`) : alarme 70 / 80 / 130 / 80 s, marge avant perte de route sûre 110 / 100 / 50 / 100 s, mêmes réponses ; deux défauts de M6 (D1, D3) corrigés. Run réel de M6 sur la variante arrêté par manque de mémoire après les 20 questions (20 / 20) ; demandes rejouées depuis le journal.

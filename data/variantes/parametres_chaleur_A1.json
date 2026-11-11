@@ -1,0 +1,18 @@
+{
+  "note": "Variante : détecteurs de chaleur statiques EN 54-5 classe A1 (alarme à 65 °C, borne haute prudente).",
+  "pas_grille_m": 0.5,
+  "camera_champ_horizontal_deg": 90,
+  "camera_champ_vertical_deg": 60,
+  "camera_portee_m": 8.0,
+  "camera_hauteur_pose_m": 2.4,
+  "detecteur_rayon_m": 5.0,
+  "declencheur_distance_max_m": 10.0,
+  "couverture_video_min": 1.0,
+  "origine_feu": {
+    "globalId": "0BTBFw6f90Nfh9rP1dlXr$",
+    "description": "cuisine A103"
+  },
+  "observations": "observations.csv",
+  "detecteur_type": "HeatDetector",
+  "detecteur_chaleur_classe": "A1"
+}

@@ -44,6 +44,7 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 8 – Déploiement SSI | 42 équipements, chaque sous-problème optimal (HiGHS, gap 0) : 20 détecteurs de fumée (un par espace occupable), 4 déclencheurs manuels, un par sortie (0,4 m), 18 caméras couvrant 100 % des 20 chemins (69 % des cellules vues de face ; compromis full-view : +2 caméras → minimum 62,5 % par chemin), 4 zones de détection ; réseau connexe. |
 | 9 – Agent : questions | `qwen2.5:14b` (local, Ollama) choisit parmi 19 outils génériques : 20 / 20 réponses identiques à la référence calculée sans LLM (Q08 auto-corrigée après « B202 ambigu ») ; 11 min sur CPU. |
 | 9 – Agent : demandes | D1 acceptée · D2 refusée (veto F3) · D3 acceptée avec détecteurs de chaleur temporaires · D4 refusée (F8 : à 200 s les deux sorties du logement A sont dangereuses → mise à l'abri) ; chaque appel LLM journalisé et rejouable sans Ollama. |
+| 9 – Fumée ou chaleur | Chaîne rejouée avec des détecteurs de chaleur : alarme 70 s → 80 s (A1R) → 130 s (A1, après que la cuisine est devenue dangereuse) ; marge avant la perte des routes sûres 110 → 100 → 50 s ; mêmes routes et mêmes réponses ; fumée gardée par défaut, chaleur A1R seulement pour D1 et D3 (`fumee_chaleur.md`). |
 | 8 – Graphe complet | `kg.ttl` conforme aux 8 formes publiques F1–F8 et aux 11 formes maison, sans plus rien différer. |
 
 ## Écarts de la maquette à présenter au jury
@@ -83,6 +84,7 @@ Liste complète, avec les options écartées : `choix.md`.
 - Tous les choix, options écartées et quand y revenir : `choix.md`
 - Mes doutes, à vérifier ou trancher : `doutes.md`
 - Résumé de l'IWCMC, lectures des ambiguïtés et décalages chiffrés : `iwcmc.md`
+- Fumée ou chaleur, chaîne complète comparée étape par étape : `fumee_chaleur.md`
 - Campagne de comparaison à l'IWCMC (tests, scénarios, résultats commentés) : `comparaison.md`
 - Décisions et résultats des étapes 0 à 2 : `docs/etape0a2.md`
 - Journal daté (y compris impasses) : `docs/carnet_de_bord.md`

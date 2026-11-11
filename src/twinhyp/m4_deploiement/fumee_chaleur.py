@@ -34,6 +34,31 @@ def _p(params: dict, cle: str):
     return params.get(cle, DEFAUTS[cle])
 
 
+def declencheur_alarme(params: dict):
+    """Condition d'alarme d'un détecteur du type déployé (`detecteur_type`), appliquée aux observations de M5.
+
+    Renvoie f(observation, historique) -> bool ; historique = {(capteur, t_s): valeur} des pas précédents.
+    - SmokeDetector (défaut) : obscurcissement > seuil de M5 ;
+    - HeatDetector, classe A1R (défaut) : élévation ≥ X °C en 60 s OU température ≥ borne haute de la réponse
+      statique A1 (65 °C : hypothèse prudente) ; classe A1 : statique seule.
+    """
+    from twinhyp.m5_evacuation import seuils
+
+    if params.get("detecteur_type", "SmokeDetector") == "SmokeDetector":
+        seuil = seuils(params)["seuil_alarme_obscurcissement_par_m"]
+        return lambda o, h: o["type"] == "SmokeAlarm" and o["valeur"] > seuil
+    statique = float(_p(params, "detecteur_chaleur_statique_degC")[1])
+    dv = float(_p(params, "detecteur_chaleur_vitesse_degC_en_60s"))
+    vitesse = params.get("detecteur_chaleur_classe", "A1R") == "A1R"
+
+    def chaleur(o, h):
+        if o["type"] != "TemperatureSensor":
+            return False
+        avant = h.get((o["capteur"], o["t_s"] - 60))
+        return o["valeur"] >= statique or (vitesse and avant is not None and o["valeur"] - avant >= dv)
+    return chaleur
+
+
 def series(chemin_obs: Path) -> dict[tuple[str, str], dict[int, float]]:
     s = defaultdict(dict)
     with open(chemin_obs, encoding="utf-8", newline="") as f:

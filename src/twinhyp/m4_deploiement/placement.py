@@ -51,7 +51,12 @@ def cellules_espace(e: dict, pas: float, origine_xy) -> np.ndarray:
 
 # Détecteurs ----------------------------------------------------------------------------
 def detecteurs(geometrie: dict, params: dict, origine_xy) -> tuple[list[dict], dict]:
-    rayon, pas = float(params["detecteur_rayon_m"]), float(params.get("pas_grille_m", 0.5))
+    type_ = params.get("detecteur_type", "SmokeDetector")  # facultatif : "HeatDetector" (variante, cf. fumee_chaleur)
+    if type_ not in ("SmokeDetector", "HeatDetector"):
+        raise ValueError(f"detecteur_type inconnu : {type_}")
+    rayon = float(params.get("detecteur_chaleur_rayon_m", params["detecteur_rayon_m"]) if type_ == "HeatDetector"
+                  else params["detecteur_rayon_m"])
+    pas = float(params.get("pas_grille_m", 0.5))
     positions = geometrie["positions_autorisees"]
     couvrants, cellules_info, sans_candidat = [], [], []
     for e in geometrie["espaces"]:
@@ -69,7 +74,7 @@ def detecteurs(geometrie: dict, params: dict, origine_xy) -> tuple[list[dict], d
                 sans_candidat.append(e["nom"])
     sol = couverture_ensemble(len(positions), couvrants)
     choisis = [j for j in np.flatnonzero(sol.x)]
-    eqs = [{"type": "SmokeDetector", "espace_globalId": positions[j]["espace_globalId"],
+    eqs = [{"type": type_, "espace_globalId": positions[j]["espace_globalId"],
             "x": positions[j]["xyz"][0], "y": positions[j]["xyz"][1], "z": positions[j]["xyz"][2]} for j in choisis]
     return eqs, {"variables": len(positions), "contraintes": len(couvrants), "valeur": sol.objectif,
                  "statut": sol.statut, "gap_relatif": sol.gap_relatif, "temps_s": sol.temps_s,

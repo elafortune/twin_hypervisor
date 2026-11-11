@@ -155,3 +155,16 @@ def test_fumee_plus_precoce_que_chaleur(tmp_path):
     assert (l["fumee_s"], l["chaleur_statique_bas_s"], l["chaleur_statique_haut_s"], l["danger_s"]) == (10, 30, 40, 40)
     assert l["chaleur_vitesse_s"] is None  # pas 60 s d'historique avant t = 60
     assert l["marge_fumee_s"] == 30 and l["marge_chaleur_statique_haut_s"] == 0
+
+
+def test_declencheur_alarme_selon_le_type_deploye():
+    from twinhyp.m4_deploiement.fumee_chaleur import declencheur_alarme
+
+    fumee = {"type": "SmokeAlarm", "capteur": "S", "t_s": 60, "valeur": 0.05}
+    chaud = {"type": "TemperatureSensor", "capteur": "T", "t_s": 60, "valeur": 40.0}
+    h = {("T", 0): 25.0}  # +15 °C en 60 s
+    assert declencheur_alarme({})(fumee, h) and not declencheur_alarme({})(chaud, h)
+    a1r = declencheur_alarme({"detecteur_type": "HeatDetector"})
+    a1 = declencheur_alarme({"detecteur_type": "HeatDetector", "detecteur_chaleur_classe": "A1"})
+    assert a1r(chaud, h) and not a1r(fumee, h)
+    assert not a1(chaud, h) and a1({**chaud, "valeur": 65.0}, h)

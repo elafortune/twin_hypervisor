@@ -182,3 +182,10 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - D1 retarde la 1re alarme du bâtiment (70 → 80 s en A1R, 110–120 s en A1) ; D3 ne la retarde pas (feu au Level 1) mais retarde l'alarme du Level 2 (200 → 220 s A1R, 280 s A1).
 - Rayon : 20 détecteurs à 5 m, 24 à 3,54 m, 34 à 2,74 m (MILP optimal).
 - Quantification : `ollama show` → qwen2.5:14b est déjà en Q4_K_M (14,8 G paramètres, 9 Go) ; pas de gain de temps à attendre de ce côté.
+
+## 2026-11-11 – Chaîne complète avec détecteurs de chaleur
+
+- `detecteur_type` (M4 : type et rayon ; M5 : condition d'alarme via `fumee_chaleur.declencheur_alarme`), `detecteur_chaleur_classe` (A1R / A1) ; variantes dans `data/variantes/` ; commande `comparer`.
+- Fumée / A1R / A1 / A1R rayon 3,54 m : alarme 70 / 80 / 130 / 80 s ; marge avant perte de route sûre 110 / 100 / 50 / 100 s ; 20 / 20 / 20 / 24 détecteurs ; réponses de référence identiques.
+- **Impasse** : run réel de M6 sur la variante A1R arrêté par manque de mémoire pendant les demandes (les 20 questions étaient faites : 20 / 20) → M6 rejoué à partir du journal du run fumée (`TWINHYP_LLM_REJEU`), ~110 s par variante.
+- Défauts révélés et corrigés : D1 comptait un triplet ajouté déjà présent ; D3 remplaçait des détecteurs déjà de chaleur (90 triplets retirés puis remis) → refus, détection maintenue. Test ajouté.

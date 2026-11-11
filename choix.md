@@ -216,6 +216,8 @@ Lecture : un détecteur de chaleur statique alarme **au moment où l'espace devi
 - **D3** : l'adaptation chaleur ne retarde pas la 1re alarme du bâtiment dans ce scénario (feu au Level 1) ; elle retarde l'alarme locale du Level 2 de 20 s (A1R) ou 80 s (A1). Pour un feu qui naîtrait au Level 2 pendant les travaux, le retard serait celui du tableau par espace. L'alternative « refus » laisse le Level 2 sans détection. Adaptation maintenue, en A1R.
 - Les rayons 3,54 / 2,74 m sont des ordres de grandeur (surface surveillée par un détecteur de chaleur environ deux à trois fois plus petite selon les règles d'installation) : à vérifier dans NF S 61-970 / CEN/TS 54-14.
 
+Chaîne complète rejouée avec des détecteurs de chaleur (A1R, A1, rayon réduit) : `fumee_chaleur.md`. Alarme 70 s (fumée) · 80 s (A1R) · 130 s (A1) ; délai avant la première perte de route sûre 110 · 100 · 50 s ; réponses Q01–Q20 identiques ; D3 refusée quand les détecteurs sont déjà de chaleur. Le type est un paramètre (`detecteur_type`, défaut fumée).
+
 ### Run réel de M6 (qwen2.5:14b, 2026-11-11)
 
 - Questions : 20 / 20 conformes, 21 itérations, 678 s (LLM 663 s).

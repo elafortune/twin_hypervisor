@@ -57,6 +57,10 @@ def construire_parseur() -> argparse.ArgumentParser:
     det.add_argument("--params", type=Path, default=DONNEES_PAR_DEFAUT / "parametres.json")
     det.add_argument("--obs", type=Path, default=DONNEES_PAR_DEFAUT / "observations.csv")
 
+    cmpd = sous.add_parser("comparer", help="comparer des dossiers de sorties étape par étape (au premier)")
+    cmpd.add_argument("dossiers", nargs="+", type=Path, help="référence puis variantes")
+    cmpd.add_argument("--json", type=Path, help="fichier JSON de sortie (défaut : <référence>/comparaison.json)")
+
     qst = sous.add_parser("questions", help="réponses Q01–Q14 obtenues par SPARQL sur <out>/kg.ttl")
     qst.add_argument("--out", required=True, type=Path)
     qst.add_argument("--sparql", action="store_true", help="afficher aussi les requêtes")
@@ -107,6 +111,36 @@ def commande_detecteurs(args: argparse.Namespace) -> int:
     print("\nrayon(m)  détecteurs  par niveau")
     for n in r["nombre_detecteurs"]:
         print(f"{n['rayon_m']:9}  {n['detecteurs']:10}  {n['par_niveau']}  ({n['statut']})")
+    return 0
+
+
+def commande_comparer(args: argparse.Namespace) -> int:
+    from twinhyp.comparer import comparer
+    from twinhyp.io_schemas import ecrire_json
+
+    ref, autres = args.dossiers[0], args.dossiers[1:]
+    res = [comparer(ref, b) for b in autres] if autres else [comparer(ref, ref)]
+    ecrire_json(args.json or ref / "comparaison.json", res)
+    cols = [ref] + autres
+    lig = lambda nom, vals: print(f"{nom:44}" + "".join(f"{str(v):>22}" for v in vals))
+    lig("", [c.name for c in cols])
+    lig("M4 détecteurs", [", ".join(f"{k} {v}" for k, v in res[0]["m4"]["a"]["par_type"].items() if "Detector" in k)]
+        + [", ".join(f"{k} {v}" for k, v in r["m4"]["b"]["par_type"].items() if "Detector" in k) for r in res])
+    lig("M4 équipements", [res[0]["m4"]["a"]["total"]] + [r["m4"]["b"]["total"] for r in res])
+    for k in ("alarme_s", "delai_alarme_avant_premiere_perte_de_route_s", "personnes_x_pas_sans_alarme",
+              "routes_nulles_strategie_2"):
+        lig("M5 " + k, [res[0]["m5"]["a"][k]] + [r["m5"]["b"][k] for r in res])
+    ecarts = sorted({q for r in res for q, v in r["reponses_reference"].items() if not v["identiques"]})
+    lig("Réponses de référence différentes", [""] + [sum(not v["identiques"] for v in r["reponses_reference"].values()) for r in res])
+    for q in ecarts:
+        lig("  " + q, [res[0]["reponses_reference"][q]["a"]] + [r["reponses_reference"][q]["b"] for r in res])
+    for r in res:
+        for cote in ("a", "b") if r is res[0] else ("b",):
+            m = r["m6"][cote]
+            if m["decisions"]:
+                print(f"\nM6 ({r[cote]}) :", m["resume"])
+                for d in m["decisions"]:
+                    print("   ", d)
     return 0
 
 
@@ -206,6 +240,8 @@ def main(argv: list[str] | None = None) -> int:
             return commande_questions(args)
         if args.commande == "detecteurs":
             return commande_detecteurs(args)
+        if args.commande == "comparer":
+            return commande_comparer(args)
         if args.commande == "sensibilite":
             return commande_sensibilite(args)
         if args.commande == "campagne":

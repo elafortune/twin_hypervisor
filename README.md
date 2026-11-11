@@ -37,6 +37,8 @@ Agent (M6) : prérequis [Ollama](https://ollama.com) lancé (`ollama serve`) et 
 
 Fumée ou chaleur : `python -m twinhyp detecteurs --out sorties/` compare les délais d'alarme (fumée, chaleur A1 / A1R) et le nombre de détecteurs selon le rayon ; écrit `sorties/comparaison_detecteurs.json`.
 
+Variantes : `data/variantes/` contient des copies de `parametres.json` qui ne changent qu'une clé (ex. `detecteur_type = HeatDetector`) ; `python -m twinhyp comparer sorties sorties_chaleur …` compare des dossiers de sorties étape par étape (M4 équipements, M5 alarme et routes, réponses de référence, décisions de M6) et écrit `comparaison.json`. Détail : `fumee_chaleur.md`.
+
 Chaque exécution écrit `sorties/execution.json` : versions des paquets, machine, graine et durée de chaque étape.
 
 ## Sorties

@@ -158,9 +158,11 @@ def changer_type(g: Graph, plan: dict) -> list[Candidat]:
     esp = _espace(g, plan["espace"])
     nouveau = SSI[plan["nouveau_type"] or "HeatDetector"]
     cibles = detecteurs(g, esp)
-    c = Candidat("demande", f"{len(cibles)} détecteur(s) couvrant {plan['espace']} -> {nouveau.split('#')[-1]}",
+    a_changer = [d for d in cibles if (d, RDF.type, nouveau) not in g]
+    c = Candidat("demande", f"{len(a_changer)} détecteur(s) couvrant {plan['espace']} -> {nouveau.split('#')[-1]}"
+                 + (f" ({len(cibles) - len(a_changer)} déjà de ce type)" if len(a_changer) < len(cibles) else ""),
                  satisfaction=1.0)
-    for d in cibles:
+    for d in a_changer:  # seulement les changements effectifs (déploiement déjà en chaleur : delta vide)
         for cls in DETECTEURS:
             if (d, RDF.type, cls) in g and cls != nouveau:
                 c.retraits.add((d, RDF.type, cls))
@@ -213,6 +215,10 @@ def retirer(g: Graph, plan: dict, boite: O.Boite) -> list[Candidat]:
                        satisfaction=1.0)
     for d in cibles:
         demande.retraits |= _triplets(g, d)
+    fumee = [d for d in cibles if (d, RDF.type, SSI.HeatDetector) not in g]
+    if not fumee:  # niveau déjà en détecteurs de chaleur : insensibles aux poussières, rien à remplacer
+        return [demande, Candidat("refus", "aucune modification : les détecteurs du niveau sont déjà des détecteurs "
+                                  "de chaleur, insensibles aux poussières de chantier (détection maintenue)")]
     refus = Candidat("refus", "aucune modification (détection maintenue pendant les travaux)")
     # adaptation : détection temporaire par détecteurs de CHALEUR (insensibles aux poussières de chantier),
     # placés par l'optimiseur de M4 (MILP de couverture) sur les espaces du niveau
@@ -237,8 +243,7 @@ def placer_detecteurs_niveau(g: Graph, boite: O.Boite, niveau: URIRef, anciens: 
     gid_niveau = str(g.value(niveau, SSI.ifcGlobalId))
     sous = {**geo, "espaces": [e for e in geo["espaces"] if e["niveau_globalId"] == gid_niveau],
             "positions_autorisees": [p for p in geo["positions_autorisees"] if p["niveau_globalId"] == gid_niveau]}
-    rayon = boite.params.get("detecteur_chaleur_rayon_m", boite.params["detecteur_rayon_m"])
-    eqs, _ = placement.detecteurs(sous, {**boite.params, "detecteur_rayon_m": rayon}, geo["voxels"]["origine_m"][:2])
+    eqs, _ = placement.detecteurs(sous, {**boite.params, "detecteur_type": "HeatDetector"}, geo["voxels"]["origine_m"][:2])
     zone_de = {g.value(d, SSI.coversSpace): g.value(d, SSI.inDetectionZone) for d in anciens}
     return [(iri("space", e["espace_globalId"]), e["x"], e["y"], e["z"], zone_de.get(iri("space", e["espace_globalId"])))
             for e in eqs]

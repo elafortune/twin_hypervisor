@@ -212,16 +212,19 @@ def action(strategie: int, route: dict | None, depart: str, interdits: set[str],
             "avec la position et le nombre de personnes.")
 
 
-def rejouer(g: Graph, observations: dict[int, list[dict]], s: dict) -> list[dict]:
+def rejouer(g: Graph, observations: dict[int, list[dict]], s: dict, declenche=None) -> list[dict]:
+    """`declenche(observation, historique)` : condition d'alarme du détecteur déployé (défaut : fumée > seuil)."""
+    declenche = declenche or (lambda o, h: o["type"] == "SmokeAlarm" and o["valeur"] > s["seuil_alarme_obscurcissement_par_m"])
+    historique = {}
     G = graphe_routage(g)
     statique = {}  # stratégie 1 : calculée une fois, sans tenir compte du feu
     lignes, alarme = [], None
     for t, obs in observations.items():
         inserer(g, obs)
         mettre_a_jour(g, t, obs[0]["horodatage"], s)
-        if alarme is None and any(o["type"] == "SmokeAlarm" and o["valeur"] > s["seuil_alarme_obscurcissement_par_m"]
-                                  for o in obs):
+        if alarme is None and any(declenche(o, historique) for o in obs):
             alarme = t
+        historique.update({(o["capteur"], o["t_s"]): o["valeur"] for o in obs})
         danger, presents, inconnus = dangereux(g), occupes(g), dangereux_sans_comptage(g)
         for espace in sorted(presents):
             if espace not in statique:
@@ -311,7 +314,9 @@ FICHIER_KG_AVANT_AGENT = "kg_avant_agent.ttl"
 
 def executer(ctx: Contexte) -> list[str]:
     g = Graph().parse(ctx.chemin_sortie("kg"), format="turtle")
-    lignes = rejouer(g, lire_observations(ctx.obs), seuils(ctx.params))
+    from twinhyp.m4_deploiement.fumee_chaleur import declencheur_alarme
+
+    lignes = rejouer(g, lire_observations(ctx.obs), seuils(ctx.params), declencheur_alarme(ctx.params))
     ecrire_routes(g, lignes)
     ecrire_jsonl(ctx.chemin_sortie("evacuation"), lignes)
     g.serialize(ctx.chemin_sortie("kg"), format="turtle", encoding="utf-8")
