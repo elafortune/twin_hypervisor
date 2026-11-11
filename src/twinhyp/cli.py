@@ -52,6 +52,11 @@ def construire_parseur() -> argparse.ArgumentParser:
     cmp_.add_argument("--out", required=True, type=Path)
     cmp_.add_argument("--rapide", action="store_true", help="2 graines au lieu de 5")
 
+    det = sous.add_parser("detecteurs", help="M4 : comparaison fumée / chaleur sur le scénario (D1, D3)")
+    det.add_argument("--out", required=True, type=Path)
+    det.add_argument("--params", type=Path, default=DONNEES_PAR_DEFAUT / "parametres.json")
+    det.add_argument("--obs", type=Path, default=DONNEES_PAR_DEFAUT / "observations.csv")
+
     qst = sous.add_parser("questions", help="réponses Q01–Q14 obtenues par SPARQL sur <out>/kg.ttl")
     qst.add_argument("--out", required=True, type=Path)
     qst.add_argument("--sparql", action="store_true", help="afficher aussi les requêtes")
@@ -78,6 +83,30 @@ def commande_sensibilite(args: argparse.Namespace) -> int:
         print(f"{l['lecture']:7}  {l['facteur']:7}  {l['couverture_1_avec']:11}  {l['couverture_1_sans_evaluee_avec']:11}"
               f"  {l['qualite_1_avec']:9}  {l['n_90_avec']}  {l['ecart_moyen_couverture_fig4']:7}")
     print("Article (fig. 4) : couv.1 avec 0,44 · sans 0,35 · qualité 1 −45,1 dBm · n(90 %) = 3")
+    return 0
+
+
+def commande_detecteurs(args: argparse.Namespace) -> int:
+    import json
+
+    from twinhyp.io_schemas import ecrire_json
+    from twinhyp.m4_deploiement.fumee_chaleur import comparer
+
+    params = json.loads(args.params.read_text(encoding="utf-8"))
+    r = comparer(args.out / SORTIES["geometry"], args.obs, params)
+    ecrire_json(args.out / "comparaison_detecteurs.json", r)
+    f = lambda x: "—" if x is None else f"{x}"
+    print("espace  niveau    fumée  chaleur A1R  A1 54 °C  A1 65 °C  danger   (s)")
+    for l in r["par_espace"]:
+        print(f"{l['espace']:6}  {f(l['niveau']):8}  {f(l['fumee_s']):5}  {f(l['chaleur_vitesse_s']):11}  "
+              f"{f(l['chaleur_statique_bas_s']):8}  {f(l['chaleur_statique_haut_s']):8}  {f(l['danger_s'])}")
+    print("\ncas                                  1re alarme : A1R  A1 54 °C  A1 65 °C   (par niveau, A1 54 °C)")
+    for c in r["scenarios"]:
+        print(f"{c['cas']:38}  {f(c['premiere_alarme_chaleur_vitesse_s']):16}  {f(c['premiere_alarme_chaleur_statique_bas_s']):8}  "
+              f"{f(c['premiere_alarme_chaleur_statique_haut_s']):8}   {c['par_niveau_chaleur_statique_bas_s']}")
+    print("\nrayon(m)  détecteurs  par niveau")
+    for n in r["nombre_detecteurs"]:
+        print(f"{n['rayon_m']:9}  {n['detecteurs']:10}  {n['par_niveau']}  ({n['statut']})")
     return 0
 
 
@@ -175,6 +204,8 @@ def main(argv: list[str] | None = None) -> int:
             return commande_visualiser(args)
         if args.commande == "questions":
             return commande_questions(args)
+        if args.commande == "detecteurs":
+            return commande_detecteurs(args)
         if args.commande == "sensibilite":
             return commande_sensibilite(args)
         if args.commande == "campagne":

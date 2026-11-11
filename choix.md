@@ -161,7 +161,7 @@
 | # | Question | Options envisagées | Choix final | Pourquoi | Revenir dessus si… |
 |---|---|---|---|---|---|
 | 9.1 | Moteur d'inférence | **Ollama** · llama.cpp · vLLM | Ollama (déjà installé, API REST `/api/chat`, outils, sortie JSON contrainte) | CPU seulement (pas de CUDA) ; démontrable hors ligne | — |
-| 9.2 | Modèle | **qwen2.5:14b** · llama3.1:8b · mistral:7b · qwen3:4b | 🟡 qwen2.5:14b (Q4_K_M, 9 Go, Apache 2.0), choisi par le banc d'essai (voir tableau ci-dessous) | Seul à 20/20 et sans argument faux ; dans la borne 3–14 B | la latence est rédhibitoire à l'entretien (voir doutes A-6) |
+| 9.2 | Modèle | **qwen2.5:14b** · llama3.1:8b · mistral:7b · qwen3:4b | 🟡 qwen2.5:14b (déjà quantifié en 4 bits : Q4_K_M, 9 Go, 14,8 G paramètres nominaux « 14B », cité comme candidat par `theorie/M6` ; Apache 2.0), choisi par le banc d'essai (voir tableau ci-dessous) | Seul à 20/20 et sans argument faux ; dans la borne 3–14 B | la latence est rédhibitoire à l'entretien (voir doutes A-6) |
 | 9.3 | Cadre d'agent | LangChain / LangGraph · smolagents · **boucle écrite à la main** | Boucle ReAct bornée (~80 lignes, `agent.py`) | Journal exact de chaque appel, aucun appel caché, modifiable sans assistant | — |
 | 9.4 | Réponse aux questions | texte → SPARQL libre · **outils paramétrés (un par intention) + SPARQL libre en secours** | 19 outils génériques ; le LLM choisit l'outil et ses arguments ; la RÉPONSE est le résultat de l'outil | Le LLM ne recopie jamais un GlobalId ; requêtes réellement exécutées tracées ; marche sur un autre IFC (aucun nom en dur) | — |
 | 9.5 | Fin de la boucle | le LLM décide de s'arrêter · **arrêt symbolique** | Arrêt dès qu'un outil réussit avec le bon type (ensemble/valeur) ; sinon l'erreur est renvoyée au LLM (≤ 3 tours) | Un appel LLM par question au lieu de deux : temps divisé par 2 sur CPU | une question demande plusieurs outils |
@@ -185,6 +185,36 @@
 | llama3.1:8b | Q07, Q08, Q12, Q17 | 2 / 4 | ~20 s | Q12 : mauvais outil ; Q08 : booléen envoyé en texte (« False »), bug de mon côté corrigé depuis |
 | mistral:7b | essai initial | — | — | appels d'outils dupliqués ; banc arrêté par manque de mémoire |
 | qwen3:4b | essai initial | — | — | raisonnement (« thinking ») trop long ; banc arrêté par manque de mémoire |
+
+### Fumée ou chaleur : comparaison mesurée (`python -m twinhyp detecteurs --out sorties`)
+
+Le kit laisse le type libre (`theorie/M4` §1 : « détecteurs automatiques (fumée ou chaleur) » ; l'ontologie et `devices.schema.json` acceptent les deux ; `theorie/M6` propose pour D3 « détection temporaire (chaleur, autonome) »). Comparaison sur les mesures de `observations.csv` (signal de l'espace = signal vu par un détecteur placé dans l'espace) ; fumée : seuil de M5 (0,0328 /m) ; chaleur statique EN 54-5 classe A1 (réponse entre 54 et 65 °C) ; chaleur thermovélocimétrique A1R approchée par +10 °C en 60 s (approximation) ; danger : seuils de M5.
+
+| Espace | Fumée | Chaleur A1R | Chaleur A1 (54–65 °C) | Danger | Marge fumée / A1 |
+|---|---|---|---|---|---|
+| A103 Kitchen (feu) | 70 s | 80 s | 110–130 s | 120 s | 50 s / 10 à −10 s |
+| A101, A102 | 120 s | 130 s | 170–190 s | 180 s | 60 s / 10 à −10 s |
+| A201 Hallway (Level 2) | 200 s | 220 s | 280–300 s | 290 s | 90 s / 10 à −10 s |
+| A202–A204 (Level 2) | 330 s | 390 s | 440–480 s | 460 s | 130 s / 20 à −20 s |
+| A205 Utility | 470 s | jamais (49,8 °C max) | jamais | jamais | — |
+
+| Déploiement | 1re alarme du bâtiment (A1R / A1 54 °C / A1 65 °C) | 1re alarme du Level 2 (A1 54 °C) |
+|---|---|---|
+| Tout fumée (M4) | 70 s | 200 s |
+| Cuisine en chaleur (D1) | 80 / 110 / 120 s | 200 s |
+| Level 2 en chaleur (D3) | 70 s (inchangée : le feu est au Level 1) | 280 s (A1R : 220 s) |
+
+| Rayon de couverture | Détecteurs (MILP M4, optimal) |
+|---|---|
+| 5,0 m (kit, fumée) | 20 |
+| 3,54 m (surface surveillée ÷ 2) | 24 |
+| 2,74 m (surface × 0,3) | 34 |
+
+Lecture : un détecteur de chaleur statique alarme **au moment où l'espace devient dangereux** (marge −20 à +20 s) ; la fumée laisse 50 à 130 s. Le thermovélocimétrique est intermédiaire (10 à 60 s après la fumée).
+- **Fumée par défaut dans M4** : justifiée par les mesures (marge ASET la plus grande) et par le nombre de détecteurs (rayon plus grand).
+- **D1** : acceptée (F3 reste vraie, demande du kit « a priori acceptable »), mais elle a un coût mesuré : la 1re alarme passe de 70 s à 80 s (A1R) ou 110–120 s (A1). Recommandation à joindre à la décision : classe **A1R**.
+- **D3** : l'adaptation chaleur ne retarde pas la 1re alarme du bâtiment dans ce scénario (feu au Level 1) ; elle retarde l'alarme locale du Level 2 de 20 s (A1R) ou 80 s (A1). Pour un feu qui naîtrait au Level 2 pendant les travaux, le retard serait celui du tableau par espace. L'alternative « refus » laisse le Level 2 sans détection. Adaptation maintenue, en A1R.
+- Les rayons 3,54 / 2,74 m sont des ordres de grandeur (surface surveillée par un détecteur de chaleur environ deux à trois fois plus petite selon les règles d'installation) : à vérifier dans NF S 61-970 / CEN/TS 54-14.
 
 ### Run réel de M6 (qwen2.5:14b, 2026-11-11)
 

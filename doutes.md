@@ -94,14 +94,15 @@
 
 | # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |
 |---|---|---|---|---|---|
-| A-1 | 🟠 | D3 : remplacer les détecteurs de fumée par des détecteurs de chaleur temporaires pendant les travaux | Adaptation retenue (F3 reste vraie, 10 détecteurs placés par le MILP de M4) | Un détecteur de chaleur réagit plus tard à un feu couvant ; si le jury juge cela insuffisant : refus pur | ☐ |
+| A-1 | 🟡 | D3 : détecteurs de chaleur temporaires au lieu du refus | Comparaison mesurée (`choix.md`, « Fumée ou chaleur ») : 1re alarme du bâtiment inchangée (70 s), alarme locale du Level 2 retardée de 20 s (A1R) ou 80 s (A1) ; le refus laisserait le Level 2 sans détection → adaptation maintenue, classe A1R recommandée | La classe A1R n'est pas représentée dans l'ontologie (seulement `HeatDetector`) ; l'indiquer dans la justification de l'audit (nécessite un nouveau run de M6) | ☐ |
 | A-2 | 🟡 | D4 : refus pour les 5 espaces et mise à l'abri sur place | À 200 s, A101, A102, A103 sont dangereux : les deux sorties du logement A sont perdues ; aucune route sûre | Vérifier qu'aucune sortie par le logement B n'est attendue (Q13 : aucun passage A ↔ B) | ☐ |
 | A-3 | 🟡 | D2 : « l'équipement qui couvre A201 » = le détecteur DF-14 | Seuls les détecteurs sont considérés (pas les caméras qui voient aussi A201) | Relire la demande ; sinon les caméras donneraient d'autres candidats | ☐ |
 | A-4 | 🟡 | `kg.ttl` modifié par D1 et D3, mais `devices.json` reste le déploiement de M4 | « Modifications appliquées » lues sur le graphe | Demander si `devices.json` doit refléter l'état après l'agent | ☐ |
 | A-5 | 🟢 | Validations SHACL sur une copie SANS les observations SOSA (vitesse) | Aucun delta ne touche les observations ; M10 vérifiée sur le graphe initial | Une demande qui porterait sur les observations | ☐ |
 | A-6 | 🟠 | Latence : M6 dure ~23 min sur ce CPU (questions 11 min), plus que les 10 min de l'entretien | Journal + rejeu (`TWINHYP_LLM_REJEU`) ; M6 en arrière-plan pendant la présentation | Modèle plus petit (banc incomplet : llama3.1 2/4) ; ou machine avec GPU | ☐ |
-| A-7 | 🟢 | Rayon des détecteurs de chaleur = rayon des détecteurs de fumée | `detecteur_chaleur_rayon_m` facultatif, par défaut `detecteur_rayon_m` | Valeur normative (EN 54-5 : souvent plus petit) | ☐ |
+| A-7 | 🟡 | Rayon des détecteurs de chaleur = rayon des détecteurs de fumée (5 m) | `detecteur_chaleur_rayon_m` facultatif ; sensibilité : 20 détecteurs à 5 m, 24 à 3,54 m, 34 à 2,74 m | Valeur des règles d'installation (NF S 61-970 / CEN/TS 54-14) | ☐ |
 | A-8 | 🟢 | Les justifications rédigées par le LLM restent approximatives (D1 parle d'« adaptation » alors qu'il n'y en a pas ; formulations maladroites) | Les décisions, formes violées et adaptations sont écrites par le code ; la justification est un texte d'accompagnement | Relire les 4 justifications de `audit_log.jsonl` | ☐ |
+| A-9 | 🟡 | D1 acceptée alors que la 1re alarme du bâtiment passe de 70 s à 80 s (A1R) ou 110–120 s (A1 statique), car le feu naît dans la cuisine | Décision symbolique conservée (F3 vraie, attendu du kit) ; coût mesuré documenté ; A1R recommandé | Demander au jury si la marge ASET doit entrer dans la décision (critère de sécurité chiffré, pas seulement SHACL) | ☐ |
 
 ## Énoncé
 

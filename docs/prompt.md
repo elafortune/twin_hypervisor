@@ -216,3 +216,13 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > tu peux relancer
 
 **Résultat :** run final : 20 / 20 conformes, mêmes décisions D1–D4, justifications plaçant la sécurité en premier, journal complet (29 appels), 1 400 s ; `valider` OK. Documentation de l'étape 9 (`choix.md` 9.1–9.16 + banc d'essai, `doutes.md` A-1 à A-8, `main.md`, README, carnet).
+
+---
+
+## 25 — 2026-11-11 — D3 selon les consignes, quantification, étape 10
+
+> D3 : il faut que tu regardes par rapport aux consignes dans ~/Kit_candidat_TwinHypervisor pour savoir si le detecteur de fumée est fixé ou si on peut choisir entre detecteur de fumée et détecteur de chaleur, puis si le choix est indiqué comme libre faire une comparaison de performance entre les deux pour justifier le choix via les résultats
+> le modèle choisit est il bien quantifié en 4 bits ? si non cela amélierera le temps pris par M6
+> 4 une fois que les questions précédentes sont faites et répondues on peut faire l'étape 10 si un autre ifc en particulier est demandé ou conseillé dans les consignes
+
+**Résultat :** consignes relues : type de détecteur libre → comparaison mesurée (`detecteurs`) : la fumée alarme 10 à 60 s avant la chaleur A1R et 40 à 150 s avant la chaleur statique, qui alarme au moment du danger ; D1 retarde la 1re alarme (70 → 80–120 s), D3 non (alarme du Level 2 200 → 220–280 s) ; adaptation D3 maintenue, classe A1R recommandée. qwen2.5:14b déjà en Q4_K_M. Étape 10 : le kit conseille un autre bâtiment des Common BIM Files (NIBS), par exemple de bureaux.

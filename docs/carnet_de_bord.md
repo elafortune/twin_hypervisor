@@ -174,3 +174,11 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - **Impasse** : justifications « la politique qui privilégie l'accessibilité et la sobriété » : le modèle lisait `a > b > c` à l'envers → ordre écrit en liste numérotée.
 - **Impasse** : une relance arrêtée (mémoire) avait vidé `llm_journal.jsonl` (troncature au démarrage) ; rejouer `sorties/` vers `sorties/` le vidait aussi → journal écrit en `.partiel`, renommé en fin de run.
 - Run final : 20 / 20, 21 itérations, 12 validations SHACL, 1 400 s (questions 678 s, demandes 706 s dont 600 s de LLM) ; `valider` : 8 sorties OK.
+
+## 2026-11-11 – Fumée ou chaleur (D1, D3) et quantification
+
+- Consignes relues : type de détecteur libre (theorie/M4 §1, ontologie, schéma) ; D3 « détection temporaire (chaleur, autonome) » proposée par theorie/M6.
+- `m4_deploiement/fumee_chaleur.py` + commande `detecteurs` : délais par espace depuis observations.csv. Fumée 70 s dans la cuisine contre 110–130 s en chaleur statique (danger à 120 s) ; au Level 2 la chaleur statique alarme au moment du danger.
+- D1 retarde la 1re alarme du bâtiment (70 → 80 s en A1R, 110–120 s en A1) ; D3 ne la retarde pas (feu au Level 1) mais retarde l'alarme du Level 2 (200 → 220 s A1R, 280 s A1).
+- Rayon : 20 détecteurs à 5 m, 24 à 3,54 m, 34 à 2,74 m (MILP optimal).
+- Quantification : `ollama show` → qwen2.5:14b est déjà en Q4_K_M (14,8 G paramètres, 9 Go) ; pas de gain de temps à attendre de ce côté.

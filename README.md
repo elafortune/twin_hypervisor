@@ -35,6 +35,8 @@ Questions statiques : `python -m twinhyp questions --out sorties/` affiche les r
 
 Agent (M6) : prérequis [Ollama](https://ollama.com) lancé (`ollama serve`) et `ollama pull qwen2.5:14b` (~9 Go de RAM, CPU suffisant ; ~23 min). Chaque appel est journalisé dans `sorties/llm_journal.jsonl` ; `agent_resume.json` compare chaque réponse à la référence sans LLM. Variables d'environnement : `TWINHYP_LLM_REJEU=<journal>` rejoue un run sans Ollama (copier le journal hors de `sorties/` n'est pas nécessaire), `TWINHYP_LLM_MODELE=<modèle>` change de modèle, `TWINHYP_LLM=factice` pour les tests de plomberie. Options dans `parametres.json`, clé facultative `agent` (`modele`, `url`, `graine`, `max_iterations`, `contexte`).
 
+Fumée ou chaleur : `python -m twinhyp detecteurs --out sorties/` compare les délais d'alarme (fumée, chaleur A1 / A1R) et le nombre de détecteurs selon le rayon ; écrit `sorties/comparaison_detecteurs.json`.
+
 Chaque exécution écrit `sorties/execution.json` : versions des paquets, machine, graine et durée de chaque étape.
 
 ## Sorties

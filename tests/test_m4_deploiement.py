@@ -140,3 +140,18 @@ def test_full_view_max_min_avec_une_camera_de_plus(deploiement):
     assert len(eqs) == sous["cameras"]["valeur"] + 1
     assert res["full_view_min_par_chemin"] > 0 and min(c["full_view"] for c in par.values()) > 0
     assert all(c["couverture"] >= params["couverture_video_min"] for c in par.values())
+
+
+def test_fumee_plus_precoce_que_chaleur(tmp_path):
+    """Comparaison fumée / chaleur sur des séries synthétiques (aucune dépendance au duplex)."""
+    from twinhyp.m4_deploiement import fumee_chaleur as FC
+
+    geo = {"niveaux": [{"globalId": "N", "nom": "N1"}],
+           "espaces": [{"globalId": "E", "nom": "E1", "niveau_globalId": "N", "occupable": True}]}
+    obs = {("E", "SmokeAlarm"): {0: 0.0, 10: 0.05, 20: 0.1, 30: 0.2},
+           ("E", "TemperatureSensor"): {0: 20.0, 10: 25.0, 20: 40.0, 30: 56.0, 40: 70.0},
+           ("E", "COSensor"): {0: 0.0}}
+    l = FC.delais(geo, obs, {})[0]
+    assert (l["fumee_s"], l["chaleur_statique_bas_s"], l["chaleur_statique_haut_s"], l["danger_s"]) == (10, 30, 40, 40)
+    assert l["chaleur_vitesse_s"] is None  # pas 60 s d'historique avant t = 60
+    assert l["marge_fumee_s"] == 30 and l["marge_chaleur_statique_haut_s"] == 0
