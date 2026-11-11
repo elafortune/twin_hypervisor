@@ -42,6 +42,8 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 7 – IWCMC, L_obs × 30 | Reproduit la figure 4 (couverture 49 % contre 44 % pour un équipement, Q20 = 3 comme l'article) ; l'écart avec / sans jumeau va dans le même sens mais est plus faible (part de plâtre 47 % contre 18 %). |
 | 7 – Campagne de comparaison | 12 expériences (`comparaison.md`) : ni la sensibilité S_RX, ni un domaine à un niveau, ni le shadowing n'expliquent l'écart ; seul l'ordre de grandeur de L_obs (× 30–40) le fait ; avec une part de plâtre proche des 18 % de l'article, le gain du jumeau triple à 2 équipements ; PREP-NSGA se bloque en optimum local à µ = 3. |
 | 8 – Déploiement SSI | 42 équipements, chaque sous-problème optimal (HiGHS, gap 0) : 20 détecteurs de fumée (un par espace occupable), 4 déclencheurs manuels, un par sortie (0,4 m), 18 caméras couvrant 100 % des 20 chemins (69 % des cellules vues de face ; compromis full-view : +2 caméras → minimum 62,5 % par chemin), 4 zones de détection ; réseau connexe. |
+| 9 – Agent : questions | `qwen2.5:14b` (local, Ollama) choisit parmi 19 outils génériques : 20 / 20 réponses identiques à la référence calculée sans LLM (Q08 auto-corrigée après « B202 ambigu ») ; 11 min sur CPU. |
+| 9 – Agent : demandes | D1 acceptée · D2 refusée (veto F3) · D3 acceptée avec détecteurs de chaleur temporaires · D4 refusée (F8 : à 200 s les deux sorties du logement A sont dangereuses → mise à l'abri) ; chaque appel LLM journalisé et rejouable sans Ollama. |
 | 8 – Graphe complet | `kg.ttl` conforme aux 8 formes publiques F1–F8 et aux 11 formes maison, sans plus rien différer. |
 
 ## Écarts de la maquette à présenter au jury
@@ -71,6 +73,8 @@ Liste complète, avec les options écartées : `choix.md`.
 |---|---|
 | Un désaccord entre sources n'est une anomalie que si la source IFC est minoritaire ou absente | Sinon la chaîne de Pang crée seule 2 fausses anomalies (cages A105/B105 citées à cause du chevauchement de 0,15 m²) |
 | Une paire reliée à la fois par un escalier et une limite virtuelle ne garde que « escalier » | La limite virtuelle A105–A201 matérialise l'arrivée de la volée, ce n'est pas un second passage |
+| Le LLM choisit un outil, l'outil calcule la réponse | Le LLM ne recopie jamais un identifiant ; les requêtes exécutées sont tracées ; aucun nom du duplex dans le code |
+| Veto symbolique (SHACL sur copie) puis ordre lexicographique sécurité > accessibilité > sobriété | Le LLM ne peut pas contourner une forme ; la décision ne dépend pas du texte du LLM |
 | `surface_m2` = « GSA BIM Area » (pas la surface géométrique) | Q05 et Q10 la citent ; l'écart de 7–23 % est une convention de mesure |
 | Espace non occupable = mot-clé dans le nom (roof, gaine, plenum…) uniquement | Le critère « niveau le plus haut » proposé au départ classerait à tort un dernier étage habité |
 

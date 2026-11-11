@@ -156,6 +156,43 @@
 | 8.11 | Réseau | ignoré · **modèle de M3 + relais si non connexe** | λ = 39 (tableau I) et 1 (× 30) : connexe, aucun relais | Réutilise M3 | — |
 | 8.12 | Formes F3–F6 dans la chaîne | toujours · selon `devices.json` · **selon l'étape** | Différées pour M1–M3 seulement ; actives dès M4 | Corrigé après un échec : un `devices.json` d'un run précédent activait F3–F6 dès M2 | — |
 
+## Étape 9 – Agent neuro-symbolique (M6)
+
+| # | Question | Options envisagées | Choix final | Pourquoi | Revenir dessus si… |
+|---|---|---|---|---|---|
+| 9.1 | Moteur d'inférence | **Ollama** · llama.cpp · vLLM | Ollama (déjà installé, API REST `/api/chat`, outils, sortie JSON contrainte) | CPU seulement (pas de CUDA) ; démontrable hors ligne | — |
+| 9.2 | Modèle | **qwen2.5:14b** · llama3.1:8b · mistral:7b · qwen3:4b | 🟡 qwen2.5:14b (Q4_K_M, 9 Go, Apache 2.0), choisi par le banc d'essai (voir tableau ci-dessous) | Seul à 20/20 et sans argument faux ; dans la borne 3–14 B | la latence est rédhibitoire à l'entretien (voir doutes A-6) |
+| 9.3 | Cadre d'agent | LangChain / LangGraph · smolagents · **boucle écrite à la main** | Boucle ReAct bornée (~80 lignes, `agent.py`) | Journal exact de chaque appel, aucun appel caché, modifiable sans assistant | — |
+| 9.4 | Réponse aux questions | texte → SPARQL libre · **outils paramétrés (un par intention) + SPARQL libre en secours** | 19 outils génériques ; le LLM choisit l'outil et ses arguments ; la RÉPONSE est le résultat de l'outil | Le LLM ne recopie jamais un GlobalId ; requêtes réellement exécutées tracées ; marche sur un autre IFC (aucun nom en dur) | — |
+| 9.5 | Fin de la boucle | le LLM décide de s'arrêter · **arrêt symbolique** | Arrêt dès qu'un outil réussit avec le bon type (ensemble/valeur) ; sinon l'erreur est renvoyée au LLM (≤ 3 tours) | Un appel LLM par question au lieu de deux : temps divisé par 2 sur CPU | une question demande plusieurs outils |
+| 9.6 | Contexte donné au LLM | rien · **résumé du bâtiment généré par SPARQL** | Niveaux, logements, espaces (nom court, nom long), sorties : ~2 200 jetons, identiques d'une question à l'autre (cache de préfixe d'Ollama) | Le LLM doit relier « porte d'entrée du logement B » à B101 et lever « B202 » ambigu | bâtiment très grand (dépasser le contexte) |
+| 9.7 | Contrôle des réponses | aucun · **comparaison à la référence sans LLM** | `conforme_reference` dans answers.jsonl + `agent_resume.json` ; un écart est signalé, jamais corrigé | Honnêteté ; détecte une régression du modèle | — |
+| 9.8 | Demandes : pipeline | LLM décide · **LLM → plan JSON contraint → règles → SHACL sur copie → adaptations → ordre lexicographique → justification LLM** | `demandes.py` ; le veto est du code | Le LLM ne peut pas contourner une forme ; décision rejouable | — |
+| 9.9 | Ordre de décision | somme pondérée · **lexicographique** | (sécurité : conformité SHACL, part des espaces occupables détectés) > (accessibilité : F4/F8) > (sobriété : nombre d'équipements) > satisfaction de la demande | Politique imposée « sécurité > accessibilité > sobriété » ; la satisfaction ne départage qu'à égalité | — |
+| 9.10 | D1 – cuisine en chaleur | **accepter** · dédoubler · refuser | Acceptée : DF de A103 → HeatDetector (F3 toujours vraie : HeatDetector ⊑ Detector) | Aucune forme violée | un rayon de couverture propre aux détecteurs de chaleur est fourni (`detecteur_chaleur_rayon_m`, recalcul automatique) |
+| 9.11 | D2 – déplacer l'équipement de A201 | accepter · **refuser** · relais en plus | Refusée (veto F3 : le couloir A201 ne serait plus détecté) ; le relais est écarté par sobriété car le réseau est DÉJÀ connexe (M4) | Sécurité d'abord, puis sobriété | le réseau n'est pas connexe (le relais serait alors retenu) |
+| 9.12 | D3 – retirer les détecteurs du Level 2 | accepter · refuser · **détection de chaleur temporaire** | Acceptée avec adaptation : retrait (veto F3) remplacé par 10 détecteurs de chaleur temporaires placés par le MILP de M4 | Conformité maintenue ; les détecteurs de chaleur sont insensibles aux poussières de chantier, ce qui répond au motif ; à sécurité symbolique égale, la satisfaction départage | tu juges la détection de chaleur moins sûre (alors : refus) — doute A-1 |
+| 9.13 | D4 – route habituelle à 200 s | accepter · **refuser + route sûre** · aucune route → mise à l'abri | Refusée pour les 5 espaces du Level 2 du logement A : la route habituelle traverse A101 (Dangerous) → F8 violée ; à 200 s les deux sorties du logement A (A101, A102) sont dangereuses et aucune route sûre n'existe → mise à l'abri sur place, position signalée aux secours | F8 évaluée sur une copie du graphe dans l'état de t = 200 s | — |
+| 9.14 | Effet des demandes | simulé seulement · **appliqué à kg.ttl (commit)** | kg.ttl final = état après M5 + D1 + D3 ; routes de D4 non écrites (valables à 200 s, pas à l'état final) ; devices.json reste le déploiement de M4 | « Modifications appliquées » ; graphe final re-validé par SHACL | le jury attend devices.json mis à jour |
+| 9.15 | Reproductibilité | recalcul obligatoire · **journal + rejeu** | Température 0, graine 0, digest du modèle ; `llm_journal.jsonl` ; `TWINHYP_LLM_REJEU=<journal>` rejoue sans Ollama ; M6 repart de `kg_avant_agent.ttl` (idempotent) | Le jury recalcule à partir des sorties | — |
+| 9.16 | Vitesse de SHACL dans M6 | graphe complet · **copie sans observations SOSA** | Les ~20 000 triplets d'observations sont retirés des copies (aucun delta ne les touche ; M10 vérifiée sur le graphe initial) | Mesuré sur le run réel : 106 s hors LLM pour les 12 validations + le MILP de D3 (≤ 9 s par validation), contre 33 s pour une validation du graphe complet | une demande porte sur les observations |
+
+### Banc d'essai des modèles (CPU, Ollama 0.40, température 0)
+
+| Modèle | Questions testées | Conformes à la référence | Temps par appel (à chaud) | Remarques |
+|---|---|---|---|---|
+| **qwen2.5:14b** | 20 (run complet, deux fois) | **20 / 20** | 13–30 s (premier appel 240 s : chargement) | Q08 auto-corrigée après l'erreur « ambigu » |
+| llama3.1:8b | Q07, Q08, Q12, Q17 | 2 / 4 | ~20 s | Q12 : mauvais outil ; Q08 : booléen envoyé en texte (« False »), bug de mon côté corrigé depuis |
+| mistral:7b | essai initial | — | — | appels d'outils dupliqués ; banc arrêté par manque de mémoire |
+| qwen3:4b | essai initial | — | — | raisonnement (« thinking ») trop long ; banc arrêté par manque de mémoire |
+
+### Run réel de M6 (qwen2.5:14b, 2026-11-11)
+
+- Questions : 20 / 20 conformes, 21 itérations, 678 s (LLM 663 s).
+- Demandes : D1 acceptée · D2 refusée (veto F3) · D3 acceptée avec adaptation (F3) · D4 refusée pour les 5 espaces (F8) ; 12 validations SHACL ; 706 s (LLM : plans 227 s, justifications 373 s).
+- Total M6 : 1 400 s ; journal de 29 appels (`sorties/llm_journal.jsonl`), rejouable sans Ollama.
+- Justifications : au premier run, le modèle lisait « sécurité > accessibilité > sobriété » à l'envers ; ordre réécrit en liste numérotée dans le prompt.
+
 ## Points ouverts à trancher
 
 | Sujet | Options | Échéance |

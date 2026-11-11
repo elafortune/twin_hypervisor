@@ -200,3 +200,19 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > un déclencheur par sortie, S4 la question est est il possible d'avoir un full view non nul en changeant légèrement le positionne d'une caméra ? selon l'importance des éléments précédents modifie sinon passe à l'étape 9 après avoir vérifié ollama
 
 **Résultat :** 4 déclencheurs (un par sortie). S-4 : full-view atteignable pour B102/B103, mais à 18 caméras aucune configuration ne donne min > 0 (preuve MILP max-min) ; +1 caméra → 10 %, +2 → 62,5 %. Phase 2 en max-min puis somme. Ollama 0.40 présent avec qwen2.5:14b (outils).
+
+---
+
+## 23 — 2026-11-11 — Relance du run M6
+
+> réessaye de lancer le run j'ai libéré de l'espace
+
+**Résultat :** run réel M6 (qwen2.5:14b) : 20/20 conformes à la référence, 693 s pour les questions + 672 s pour les demandes ; décisions D1–D4 identiques aux plans écrits à la main ; `valider` OK. Justifications : la politique était lue à l'envers → prompt corrigé (liste ordonnée), vérifié sur D2 et D4. Relance arrêtée par manque de mémoire à Q08 ; journal LLM désormais écrit en `.partiel` pour ne plus être tronqué.
+
+---
+
+## 24 — 2026-11-11 — Dernière relance de M6
+
+> tu peux relancer
+
+**Résultat :** run final : 20 / 20 conformes, mêmes décisions D1–D4, justifications plaçant la sécurité en premier, journal complet (29 appels), 1 400 s ; `valider` OK. Documentation de l'étape 9 (`choix.md` 9.1–9.16 + banc d'essai, `doutes.md` A-1 à A-8, `main.md`, README, carnet).

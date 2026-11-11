@@ -90,6 +90,19 @@
 | S-4 | 🟡 | Full-view nul pour B102 et B103 (10 % pour A102). **Mon explication initiale (« aucune caméra ne peut faire face ») était fausse** : 88–93 % y sont atteignables ; c'est l'objectif « somme » qui sacrifiait les chemins courts | Phase 2 passée en max-min puis somme. À 18 caméras, le MILP prouve que min > 0 est impossible (déplacer une caméra ne suffit pas) : +1 caméra → min 10 %, +2 → 62,5 % (global 86 %), +3 → 79 % | Choisir k (`cameras_supplementaires_full_view`) : 0 par défaut (nombre minimal) | ☐ |
 | S-5 | 🟢 | Caméras du Level 2 posées à 5,49 m (sous le faux plafond) et non à 5,5 m (= 3,1 + 2,4, dans la couche du plafond) | Décalage de 1 cm | — | ☐ |
 
+## Agent (étape 9)
+
+| # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |
+|---|---|---|---|---|---|
+| A-1 | 🟠 | D3 : remplacer les détecteurs de fumée par des détecteurs de chaleur temporaires pendant les travaux | Adaptation retenue (F3 reste vraie, 10 détecteurs placés par le MILP de M4) | Un détecteur de chaleur réagit plus tard à un feu couvant ; si le jury juge cela insuffisant : refus pur | ☐ |
+| A-2 | 🟡 | D4 : refus pour les 5 espaces et mise à l'abri sur place | À 200 s, A101, A102, A103 sont dangereux : les deux sorties du logement A sont perdues ; aucune route sûre | Vérifier qu'aucune sortie par le logement B n'est attendue (Q13 : aucun passage A ↔ B) | ☐ |
+| A-3 | 🟡 | D2 : « l'équipement qui couvre A201 » = le détecteur DF-14 | Seuls les détecteurs sont considérés (pas les caméras qui voient aussi A201) | Relire la demande ; sinon les caméras donneraient d'autres candidats | ☐ |
+| A-4 | 🟡 | `kg.ttl` modifié par D1 et D3, mais `devices.json` reste le déploiement de M4 | « Modifications appliquées » lues sur le graphe | Demander si `devices.json` doit refléter l'état après l'agent | ☐ |
+| A-5 | 🟢 | Validations SHACL sur une copie SANS les observations SOSA (vitesse) | Aucun delta ne touche les observations ; M10 vérifiée sur le graphe initial | Une demande qui porterait sur les observations | ☐ |
+| A-6 | 🟠 | Latence : M6 dure ~23 min sur ce CPU (questions 11 min), plus que les 10 min de l'entretien | Journal + rejeu (`TWINHYP_LLM_REJEU`) ; M6 en arrière-plan pendant la présentation | Modèle plus petit (banc incomplet : llama3.1 2/4) ; ou machine avec GPU | ☐ |
+| A-7 | 🟢 | Rayon des détecteurs de chaleur = rayon des détecteurs de fumée | `detecteur_chaleur_rayon_m` facultatif, par défaut `detecteur_rayon_m` | Valeur normative (EN 54-5 : souvent plus petit) | ☐ |
+| A-8 | 🟢 | Les justifications rédigées par le LLM restent approximatives (D1 parle d'« adaptation » alors qu'il n'y en a pas ; formulations maladroites) | Les décisions, formes violées et adaptations sont écrites par le code ; la justification est un texte d'accompagnement | Relire les 4 justifications de `audit_log.jsonl` | ☐ |
+
 ## Énoncé
 
 | # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |

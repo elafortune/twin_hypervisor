@@ -33,6 +33,8 @@ Comparaison approfondie : `python -m twinhyp campagne --out sorties/` (≈ 33 mi
 
 Questions statiques : `python -m twinhyp questions --out sorties/` affiche les réponses Q01–Q19 obtenues par SPARQL sur `kg.ttl`. Les formes F3–F6 (équipements) ne sont différées que pour M1–M3 ; dès M4 (déploiement SSI, solveur MILP HiGHS), le graphe complet doit respecter F1–F8.
 
+Agent (M6) : prérequis [Ollama](https://ollama.com) lancé (`ollama serve`) et `ollama pull qwen2.5:14b` (~9 Go de RAM, CPU suffisant ; ~23 min). Chaque appel est journalisé dans `sorties/llm_journal.jsonl` ; `agent_resume.json` compare chaque réponse à la référence sans LLM. Variables d'environnement : `TWINHYP_LLM_REJEU=<journal>` rejoue un run sans Ollama (copier le journal hors de `sorties/` n'est pas nécessaire), `TWINHYP_LLM_MODELE=<modèle>` change de modèle, `TWINHYP_LLM=factice` pour les tests de plomberie. Options dans `parametres.json`, clé facultative `agent` (`modele`, `url`, `graine`, `max_iterations`, `contexte`).
+
 Chaque exécution écrit `sorties/execution.json` : versions des paquets, machine, graine et durée de chaque étape.
 
 ## Sorties

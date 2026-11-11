@@ -162,3 +162,15 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Phase 2 des caméras passée en lexicographique : max du full-view minimal par chemin, puis du total (variable continue ajoutée à `milp.resoudre`).
 - À 18 caméras, le MILP prouve qu'un minimum > 0 est impossible ; option `cameras_supplementaires_full_view` : k = 1 → 10 %, k = 2 → 62,5 % (global 86 %), k = 3 → 79 %, k = 4 → 80 %.
 - 2 tests ajoutés (12 tests M4).
+
+## 2026-11-10/11 – Étape 9 : agent neuro-symbolique
+
+- Ollama 0.40 vérifié, `qwen2.5:14b` présent (appels d'outils). Boucle ReAct bornée écrite à la main (`agent.py`), 19 outils génériques (`outils.py`), référence sans LLM (`reference.py`), demandes (`demandes.py`), client + journal + rejeu (`llm.py`).
+- Micro-banc : qwen2.5:14b juste ; llama3.1 argument faux ; mistral appels dupliqués ; qwen3:4b réflexion trop longue.
+- **Impasse** : routes candidates de D4 rejetées par M11 (`validAt` manquant) → horodatage à t = 200 s ajouté aux triplets candidats.
+- **Impasse** : banc d'essai (llama3.1, qwen3:4b, mistral) arrêté par manque de mémoire ; llama3.1 2/4 sur Q07, Q08, Q12, Q17.
+- **Impasse** : llama3.1 envoie `"False"` en texte, lu comme vrai en Python → conversion des booléens dans `outils.appeler` + test.
+- Run réel : 20 / 20 conformes ; décisions D1–D4 identiques aux plans écrits à la main.
+- **Impasse** : justifications « la politique qui privilégie l'accessibilité et la sobriété » : le modèle lisait `a > b > c` à l'envers → ordre écrit en liste numérotée.
+- **Impasse** : une relance arrêtée (mémoire) avait vidé `llm_journal.jsonl` (troncature au démarrage) ; rejouer `sorties/` vers `sorties/` le vidait aussi → journal écrit en `.partiel`, renommé en fin de run.
+- Run final : 20 / 20, 21 itérations, 12 validations SHACL, 1 400 s (questions 678 s, demandes 706 s dont 600 s de LLM) ; `valider` : 8 sorties OK.
