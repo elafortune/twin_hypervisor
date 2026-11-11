@@ -2,9 +2,14 @@
 articles/
 *.pdf
 
-# Sorties régénérables
-sorties/
+# Sorties : celles du duplex sont livrées (le jury recalcule à partir d'elles) ;
+# caches de M3 (matrices de perte, ~60 Mo, régénérés) et variantes exclus
+sorties/**/obstacles_*.npz
+sorties/**/comptes_*.npz
+sorties/*.partiel
 sorties_*/
+# Rapport : HTML intermédiaire
+rapport.html
 
 # Python
 __pycache__/

@@ -242,3 +242,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > télécharge et réalise l'étape 10
 
 **Résultat :** bâtiment de bureaux NIBS (`Office_A_20110811.ifc`, 99 espaces) téléchargé (miroir public, portail NIBS hors service) ; scénario synthétique (`scenario`), questions et demandes adaptées ; 7 corrections générales révélées par ce 2e IFC (duplex inchangé) ; M1 → M5 conformes en ≈ 9 min 15 (mode rapide) ; M6 : partie symbolique vérifiée (LLM scripté), run avec le LLM arrêté par manque de mémoire. `generalite.md`.
+
+---
+
+## 28 — 2026-11-11 — Finalisation : reste à faire, run final, rapport
+
+> crée reste_a_faire.md pour que j'ai en tête ce qu'il reste à faire puis commence l'étape 1 qui prend le plus de temps, une fois que le calcul long est lancé si tu as assez de place coté cpu commence le rapport également en parallèle pendant que le calcul de l'étape 1 est en fond l'objectif actuellement est d'aller à l'essentiel pour finaliser au plus vite ce rapport et idéalement l'envoyer ce soir et pas attendre demain après midi
+
+**Résultat :** (en cours)
