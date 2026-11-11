@@ -58,7 +58,7 @@ def executer(ctx: Contexte, llm=None) -> list[str]:
     g = Graph().parse(avant if avant.is_file() else ctx.chemin_sortie("kg"), format="turtle")
     boite = O.Boite(g, ctx.params, pareto=ctx.chemin_sortie("pareto"), devices=ctx.chemin_sortie("devices"),
                     geometrie=ctx.chemin_sortie("geometry"), ontologie=ctx.chemin_sortie("ontology"), formes=ctx.formes)
-    journal = Journal(ctx.sortie / FICHIER_JOURNAL)
+    journal = Journal(ctx.sortie / (FICHIER_JOURNAL + ".partiel"))  # un run interrompu n'écrase pas le journal précédent
     llm = llm or client(cfg, journal)
     resume = agent.resume_batiment(g)
     systeme = agent.SYSTEME.format(resume=resume)
@@ -95,4 +95,5 @@ def executer(ctx: Contexte, llm=None) -> list[str]:
                       for l in audit],
         "validations_shacl": valider.appels, "duree_questions_s": round(t_questions, 1),
         "duree_demandes_s": round(t_demandes, 1)})
+    journal.chemin.replace(ctx.sortie / FICHIER_JOURNAL)
     return ["answers", "audit", "kg"]
