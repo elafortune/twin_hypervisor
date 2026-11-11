@@ -56,7 +56,9 @@ Résumé du bâtiment :
 
 SYSTEME_JUSTIF = """Tu rédiges, en français et en 2 à 4 phrases, la justification d'une décision d'un agent de sécurité
 incendie. La décision est DÉJÀ prise par le moteur symbolique : ne la change pas, explique-la à partir des faits
-fournis (formes SHACL violées, politique sécurité des personnes > accessibilité > sobriété, adaptation retenue)."""
+fournis (formes SHACL violées, adaptation retenue). Ordre de priorité imposé, du plus au moins important :
+1) la sécurité des personnes (détection, conformité SHACL), 2) l'accessibilité (routes sûres et praticables),
+3) la sobriété (nombre d'équipements). La satisfaction de la demande ne vient qu'après ces trois critères."""
 
 JUSTIF = {"type": "object", "properties": {"justification": {"type": "string"}}, "required": ["justification"]}
 
