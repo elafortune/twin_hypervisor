@@ -34,7 +34,11 @@ GABARITS = {
         ?n rdfs:label "{niveau}" ; bot:hasSpace ?s . ?s ssi:ifcGlobalId ?gid .
         {{ SELECT ?s (COUNT(DISTINCT ?p) AS ?nb) WHERE {{ ?p a ssi:Door ; ssi:connects ?s }} GROUP BY ?s }}
         FILTER (?nb = 1) }}""",
-    "Q09": """SELECT DISTINCT ?gid WHERE {{ ?s bot:containsElement ?e . ?e a ssi:Stair . ?s ssi:ifcGlobalId ?gid }}""",
+    # cage d'escalier qui contient la volée ; à défaut (cage découpée par niveau, ex. bureaux NIBS), espaces reliés
+    "Q09": """SELECT DISTINCT ?gid WHERE {{
+        {{ ?s bot:containsElement ?e . ?e a ssi:Stair }}
+        UNION {{ ?e a ssi:Stair ; ssi:linksSpace ?s . FILTER NOT EXISTS {{ ?c bot:containsElement ?e }} }}
+        ?s ssi:ifcGlobalId ?gid }}""",
     "Q10": """SELECT (SUM(?surf) AS ?total) WHERE {{ ?n rdfs:label "{niveau}" ; bot:hasSpace ?s . ?s ssi:area ?surf }}""",
     "Q11": """SELECT ?gid WHERE {{
         ?s ssi:inDwelling ?z ; ssi:area ?surf ; ssi:ifcGlobalId ?gid .

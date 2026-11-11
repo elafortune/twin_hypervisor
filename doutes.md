@@ -104,6 +104,16 @@
 | A-8 | 🟢 | Les justifications rédigées par le LLM restent approximatives (D1 parle d'« adaptation » alors qu'il n'y en a pas ; formulations maladroites) | Les décisions, formes violées et adaptations sont écrites par le code ; la justification est un texte d'accompagnement | Relire les 4 justifications de `audit_log.jsonl` | ☐ |
 | A-9 | 🟡 | D1 acceptée alors que la 1re alarme du bâtiment passe de 70 s à 80 s (A1R) ou 110–120 s (A1 statique), car le feu naît dans la cuisine | Décision symbolique conservée (F3 vraie, attendu du kit) ; coût mesuré documenté ; A1R recommandé | Demander au jury si la marge ASET doit entrer dans la décision (critère de sécurité chiffré, pas seulement SHACL) | ☐ |
 
+## Généricité (étape 10)
+
+| # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |
+|---|---|---|---|---|---|
+| G-1 | 🟡 | Les sanitaires 135 / 136 / 207 / 209 contiennent des portes de cabines : écartées des liaisons | Règle « porte au milieu de son espace » (> 0,40 m du contour) | Vérifier dans BIMvision les 9 portes `M_Toilet Partition` | ☐ |
+| G-2 | 🟡 | Local technique 219 sans plafond : positions posées au sommet de l'espace | Repli seulement s'il n'y a aucune position | Regarder la maquette (toiture technique ouverte ?) | ☐ |
+| G-3 | 🟠 | M6 avec le LLM non mesuré sur les bureaux (arrêt mémoire au chargement du modèle) | Partie symbolique validée avec le LLM scripté | Relancer quand ~10 Go sont libres | ☐ |
+| G-4 | 🟡 | Scénario synthétique : 31 espaces dangereux à 300 s (atténuation 0,65 par liaison, couloirs très connectés) | Paramètres du générateur dans `scenario.DEFAUTS` | Comparer à un scénario fourni par le jury | ☐ |
+| G-5 | 🟢 | « Logements » des bureaux = composantes calculées par M2 (Logement 1, 2, 3) : notion sans objet ici | Laissé tel quel (générique) | — | ☐ |
+
 ## Énoncé
 
 | # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |

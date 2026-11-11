@@ -62,7 +62,11 @@ def executer(ctx: Contexte, llm=None) -> list[str]:
     llm = llm or client(cfg, journal)
     resume = agent.resume_batiment(g)
     systeme = agent.SYSTEME.format(resume=resume)
-    ref = reference.reponses(g, boite.pareto)
+    try:  # la référence porte les noms du duplex du kit : absente sur un autre bâtiment (étape 10)
+        ref = reference.reponses(g, boite.pareto)
+    except Exception as exc:  # noqa: BLE001
+        log.warning("m6 : pas de réponses de référence pour ce bâtiment (%s) : réponses non contrôlées", exc)
+        ref = {}
 
     t0 = time.perf_counter()
     questions = json.loads(ctx.questions.read_text(encoding="utf-8"))["questions"]
@@ -88,7 +92,7 @@ def executer(ctx: Contexte, llm=None) -> list[str]:
     ecrire_json(ctx.sortie / FICHIER_RESUME, {
         "modele": getattr(llm, "modele", None), "digest": getattr(llm, "digest", None),
         "rejeu": bool(os.environ.get("TWINHYP_LLM_REJEU")), "options": {"temperature": 0, "graine": cfg["graine"]},
-        "questions": len(reponses), "conformes_reference": sum(bool(r.get("conforme_reference")) for r in reponses),
+        "questions": len(reponses), "reference_disponible": bool(ref), "conformes_reference": sum(bool(r.get("conforme_reference")) for r in reponses),
         "ecarts": [r["id"] for r in reponses if r["id"] in ref and not r.get("conforme_reference")],
         "iterations_totales": sum(r["iterations"] for r in reponses),
         "decisions": [{"demande": l["demande_id"], "espace": l.get("espace_globalId"), "decision": l["decision"]}

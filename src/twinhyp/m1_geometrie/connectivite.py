@@ -142,6 +142,15 @@ def connecter_portes(f, geometrie: dict, idx: Index):
                              "element_globalId": porte.GlobalId, "largeur_m": p["largeur_m"],
                              "sources": sorted({s for g in retenus for s in citations[g]})})
             p["sortie"] = False
+        elif len(retenus) == 1 and idx.poly[retenus[0]].boundary.distance(Point(c[0], c[1])) > TOL_PORTE_M \
+                and idx.poly[retenus[0]].contains(Point(c[0], c[1])):
+            # porte au milieu de son unique espace (cabine de sanitaires, placard) : ni liaison ni sortie.
+            # Découvert sur le 2e IFC (bureaux NIBS : portes de cabines des sanitaires prises pour des sorties).
+            p["sortie"] = False
+            anomalies.append(anomalie(
+                porte.GlobalId, f"Porte {porte.GlobalId} à l'intérieur de {nom(retenus[0])}, à plus de "
+                f"{TOL_PORTE_M} m de son contour (porte de cabine ou de placard).",
+                "Ni liaison ni sortie.", "porte_interieure_espace"))
         elif len(retenus) == 1:
             p["sortie"] = True
         else:
@@ -309,7 +318,14 @@ def controler_evacuabilite(geometrie: dict) -> list[dict]:
     G = graphe(geometrie)
     sortie = []
     for e in geometrie["espaces"]:
-        if e["occupable"] and not nx.has_path(G, e["globalId"], "EXTERIEUR"):
+        if e["occupable"] and G.degree(e["globalId"]) == 0:
+            # aucune porte, ouverture ni escalier : inaccessible (gaine d'ascenseur, local fermé) -> non occupable.
+            # Découvert sur le 2e IFC (bureaux NIBS : « ELEV ») ; un espace RELIÉ sans sortie reste une anomalie bloquante.
+            e["occupable"] = False
+            sortie.append(anomalie(e["globalId"], f"Espace {e['nom']} ({e.get('nom_long')}) sans aucune liaison "
+                                   "(porte, ouverture, escalier).", "Requalifié non occupable (inaccessible).",
+                                   "espace_isole"))
+        elif e["occupable"] and not nx.has_path(G, e["globalId"], "EXTERIEUR"):
             sortie.append(anomalie(e["globalId"], f"Espace occupable {e['nom']} sans chemin vers une sortie.",
                                    "Signalé ; à traiter avant tout calcul d'évacuation.", "espace_evacuable"))
     return sortie

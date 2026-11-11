@@ -1,0 +1,431 @@
+<title>Architecture twinhyp</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout : une colonne de lecture ; chaque schéma dans son propre conteneur défilant ; schéma = plan d'ingénieur (fils fins, deux couleurs de sens : graphe/symbolique et LLM) */
+:root {
+  --bg: #F2F5F6; --panel: #FFFFFF; --fg: #13212A; --muted: #586A73; --line: #A3B3BA;
+  --inp: #E4EBEE;
+  --kg: #0B7480; --kg-soft: #D3ECEF;
+  --llm: #A86200; --llm-soft: #F6E6CC;
+  --ok: #24804F; --veto: #B93C0E;
+  --f-display: "Archivo", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0D1417; --panel: #152027; --fg: #E2EAED; --muted: #94A6AE; --line: #4B5D65;
+  --inp: #1B272D; --kg: #52C4CE; --kg-soft: #11353B; --llm: #F0A83C; --llm-soft: #3A2A11;
+  --ok: #5CCB8C; --veto: #FA8A59; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0D1417; --panel: #152027; --fg: #E2EAED; --muted: #94A6AE; --line: #4B5D65;
+  --inp: #1B272D; --kg: #52C4CE; --kg-soft: #11353B; --llm: #F0A83C; --llm-soft: #3A2A11;
+  --ok: #5CCB8C; --veto: #FA8A59; color-scheme: dark }
+
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 48px; }
+header { display: grid; gap: 8px; max-width: 72ch; }
+.eyebrow { font: 500 12px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--kg); }
+h1 { font: 700 clamp(28px, 4vw, 40px)/1.1 var(--f-display); margin: 0; text-wrap: balance; }
+h2 { font: 600 22px/1.2 var(--f-display); margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.lede { color: var(--muted); }
+section { display: grid; gap: 16px; }
+section > p { max-width: 75ch; }
+code { font-family: var(--f-mono); font-size: .9em; }
+
+figure { margin: 0; display: grid; gap: 12px; }
+.sheet { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; padding: 12px; }
+.sheet svg { display: block; width: 100%; min-width: 940px; height: auto; }
+figcaption { color: var(--muted); font-size: 14px; max-width: 80ch; }
+
+/* --- SVG --- */
+.t-head { font: 500 11px var(--f-mono); letter-spacing: .07em; fill: var(--muted); }
+.t-title { font: 600 14px var(--f-display); fill: var(--fg); }
+.t-mono { font: 400 11.5px var(--f-mono); fill: var(--fg); }
+.t-bold { font: 500 11.5px var(--f-mono); fill: var(--fg); }
+.t-small { font: 400 11.5px var(--f-body); fill: var(--muted); }
+.t-kg { font: 500 11px var(--f-body); fill: var(--kg); }
+.t-llm { font: 500 11px var(--f-body); fill: var(--llm); }
+.t-veto { font: 500 11px var(--f-body); fill: var(--veto); }
+.t-ok { font: 500 11px var(--f-body); fill: var(--ok); }
+.inp { fill: var(--inp); stroke: var(--line); }
+.mod { fill: var(--panel); stroke: var(--fg); stroke-width: 1.3; }
+.pill { fill: var(--panel); stroke: var(--line); }
+.kgblk { fill: var(--kg-soft); stroke: var(--kg); }
+.llmblk { fill: var(--llm-soft); stroke: var(--llm); }
+.symblk { fill: var(--kg-soft); stroke: var(--kg); }
+.vetoblk { fill: var(--kg-soft); stroke: var(--veto); stroke-width: 1.6; }
+.shp { fill: var(--panel); stroke: var(--ok); stroke-dasharray: 4 3; }
+.a { stroke: var(--fg); stroke-width: 1.3; fill: none; }
+.a-kg { stroke: var(--kg); stroke-width: 1.6; fill: none; }
+.a-ok { stroke: var(--ok); stroke-width: 1.3; fill: none; stroke-dasharray: 4 3; }
+.a-veto { stroke: var(--veto); stroke-width: 1.3; fill: none; }
+.a-llm { stroke: var(--llm); stroke-width: 1.3; fill: none; }
+.bus { stroke: var(--muted); stroke-width: 1.6; fill: none; }
+.gap { stroke: var(--panel); stroke-width: 8; }
+.m-fg { fill: var(--fg); } .m-kg { fill: var(--kg); } .m-ok { fill: var(--ok); } .m-llm { fill: var(--llm); } .m-muted { fill: var(--muted); }
+.gate { fill: var(--panel); stroke: var(--ok); stroke-width: 1.4; }
+.tick { stroke: var(--ok); stroke-width: 1.8; fill: none; }
+.sep { stroke: var(--line); stroke-dasharray: 2 4; }
+
+/* --- décisions --- */
+.decisions { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.dec { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.dec b { font: 600 13px var(--f-mono); }
+.chip { justify-self: start; font: 500 12px var(--f-mono); padding: 2px 8px; border-radius: 99px; border: 1px solid currentColor; }
+.chip.ok { color: var(--ok); } .chip.adapt { color: var(--llm); } .chip.no { color: var(--veto); }
+.dec p { font-size: 13.5px; color: var(--muted); }
+
+/* --- niveaux d'adaptabilité --- */
+.levels { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.lvl { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.lvl h3 { margin: 0; font: 600 16px/1.25 var(--f-display); }
+.lvl .tag { font: 500 11px var(--f-mono); letter-spacing: .07em; text-transform: uppercase; }
+.lvl.l1 .tag { color: var(--ok); } .lvl.l2 .tag { color: var(--llm); } .lvl.l3 .tag { color: var(--veto); } .lvl.l0 .tag { color: var(--kg); }
+.lvl.l0 { border-color: var(--kg); }
+.lvl ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; }
+.lvl li::marker { color: var(--muted); }
+footer { color: var(--muted); font-size: 13.5px; }
+</style>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">twin_hypervisor · src/twinhyp</span>
+  <h1>Du fichier IFC à l'agent : la chaîne twinhyp</h1>
+  <p class="lede">Une commande, <code>python -m twinhyp run</code>, enchaîne six modules. Ils ne se parlent que par des fichiers, chaque fichier est validé dès qu'il est écrit, et un même graphe de connaissances, <code>kg.ttl</code>, s'enrichit de module en module jusqu'à l'agent.</p>
+</header>
+
+<section>
+  <h2>1. La chaîne complète : scripts, entrées, sorties</h2>
+  <figure>
+    <div class="sheet">
+<svg viewBox="0 0 1160 920" role="img" aria-label="Pipeline twinhyp : les entrées alimentent six modules M1 à M6 exécutés dans l'ordre ; geometry.json et la grille de voxels produits par M1 sont relus par M2, M3, M4 et M6 ; kg.ttl est créé par M2 puis enrichi par M4, M5 et M6 et validé par les formes SHACL.">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="m-fg"/></marker>
+    <marker id="ahk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="m-kg"/></marker>
+    <marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="m-ok"/></marker>
+    <marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="m-muted"/></marker>
+  </defs>
+
+  <!-- en-têtes de colonnes -->
+  <text x="20" y="24" class="t-head">ENTRÉES · data/</text>
+  <text x="300" y="24" class="t-head">MODULES · pipeline.py exécute M1 → M6</text>
+  <text x="690" y="24" class="t-head">FICHIERS PRODUITS · sorties/</text>
+  <text x="960" y="24" class="t-head">kg.ttl, ENRICHI À CHAQUE ÉTAPE</text>
+
+  <!-- bus geometry.json + voxels -->
+  <path d="M300 128 H262 V870" class="bus"/>
+  <line x1="262" y1="270" x2="298" y2="270" class="bus" marker-end="url(#ahm)"/>
+  <line x1="262" y1="404" x2="298" y2="404" class="bus" marker-end="url(#ahm)"/>
+  <line x1="262" y1="548" x2="298" y2="548" class="bus" marker-end="url(#ahm)"/>
+  <line x1="262" y1="870" x2="298" y2="870" class="bus" marker-end="url(#ahm)"/>
+  <text transform="translate(252 470) rotate(-90)" text-anchor="middle" class="t-small">geometry.json + grille_voxels.npz (relus)</text>
+
+  <!-- coupures du bus aux croisements -->
+  <line x1="255" y1="222" x2="269" y2="222" class="gap"/>
+  <line x1="255" y1="366" x2="269" y2="366" class="gap"/>
+  <line x1="255" y1="654" x2="269" y2="654" class="gap"/>
+  <line x1="255" y1="792" x2="269" y2="792" class="gap"/>
+  <line x1="255" y1="848" x2="269" y2="848" class="gap"/>
+
+  <!-- entrées -->
+  <rect x="20" y="50" width="190" height="56" rx="6" class="inp"/>
+  <text x="32" y="73" class="t-bold">duplex_TwinHypervisor.ifc</text>
+  <text x="32" y="93" class="t-small">maquette BIM (IFC)</text>
+  <line x1="210" y1="78" x2="298" y2="78" class="a" marker-end="url(#ah)"/>
+
+  <rect x="20" y="194" width="190" height="56" rx="6" class="inp"/>
+  <text x="32" y="217" class="t-bold">ssi_socle.ttl</text>
+  <text x="32" y="237" class="t-small">ontologie socle du kit</text>
+  <line x1="210" y1="222" x2="298" y2="222" class="a" marker-end="url(#ah)"/>
+
+  <rect x="20" y="334" width="190" height="72" rx="6" class="inp"/>
+  <text x="32" y="357" class="t-bold">parametres.json</text>
+  <text x="32" y="376" class="t-small">rayons, seuils, caméras, iwcmc</text>
+  <text x="32" y="394" class="t-small">lu par tous les modules</text>
+  <line x1="210" y1="366" x2="298" y2="366" class="a" marker-end="url(#ah)"/>
+
+  <rect x="20" y="626" width="190" height="56" rx="6" class="inp"/>
+  <text x="32" y="649" class="t-bold">observations.csv</text>
+  <text x="32" y="669" class="t-small">capteurs, t = 0 → 600 s</text>
+  <line x1="210" y1="654" x2="298" y2="654" class="a" marker-end="url(#ah)"/>
+
+  <rect x="20" y="770" width="190" height="44" rx="6" class="inp"/>
+  <text x="32" y="790" class="t-bold">questions.json</text>
+  <text x="32" y="806" class="t-small">Q01–Q20</text>
+  <line x1="210" y1="792" x2="298" y2="792" class="a" marker-end="url(#ah)"/>
+
+  <rect x="20" y="826" width="190" height="44" rx="6" class="inp"/>
+  <text x="32" y="846" class="t-bold">demandes_modification.json</text>
+  <text x="32" y="862" class="t-small">D1–D4</text>
+  <line x1="210" y1="848" x2="298" y2="848" class="a" marker-end="url(#ah)"/>
+
+  <!-- modules -->
+  <rect x="300" y="44" width="340" height="104" rx="8" class="mod"/>
+  <text x="318" y="70" class="t-title">M1 · Jumeau géométrique</text>
+  <text x="318" y="92" class="t-mono">extraction.py → anomalies.py</text>
+  <text x="318" y="110" class="t-mono">connectivite.py → distances.py → voxels.py</text>
+  <text x="318" y="132" class="t-small">16 anomalies · 20 liaisons · 4 sorties · 932 positions</text>
+
+  <rect x="300" y="188" width="340" height="104" rx="8" class="mod"/>
+  <text x="318" y="214" class="t-title">M2 · Graphe de connaissances</text>
+  <text x="318" y="236" class="t-mono">construction.py + ontologie_extension.ttl</text>
+  <text x="318" y="254" class="t-mono">requetes.py (gabarits SPARQL)</text>
+  <text x="318" y="276" class="t-small">BOT · isConnectedTo · EvacuationDistance</text>
+
+  <rect x="300" y="332" width="340" height="104" rx="8" class="mod"/>
+  <text x="318" y="358" class="t-title">M3 · Nœuds IoT optimaux (IWCMC)</text>
+  <text x="318" y="380" class="t-mono">radio.py → score.py → prep_nsga.py</text>
+  <text x="318" y="398" class="t-mono">perte multi-murs · µ-connexité · NSGA-II</text>
+  <text x="318" y="420" class="t-small">4 fronts : {avec, sans jumeau} × {µ = 0, µ = 3}</text>
+
+  <rect x="300" y="476" width="340" height="104" rx="8" class="mod"/>
+  <text x="318" y="502" class="t-title">M4 · Déploiement SSI (MILP)</text>
+  <text x="318" y="524" class="t-mono">placement.py ⇄ milp.py (HiGHS)</text>
+  <text x="318" y="542" class="t-mono">reseau.py → graphe.py</text>
+  <text x="318" y="564" class="t-small">20 détecteurs · 4 déclencheurs · 18 caméras · 4 zones</text>
+
+  <rect x="300" y="620" width="340" height="104" rx="8" class="mod"/>
+  <text x="318" y="646" class="t-title">M5 · Évacuation dynamique</text>
+  <text x="318" y="668" class="t-mono">SOSA → SPARQL UPDATE → Dijkstra</text>
+  <text x="318" y="686" class="t-mono">stratégie 1 statique · stratégie 2 sûre</text>
+  <text x="318" y="708" class="t-small">alarme 70 s · A202 et A203 confinés dès 180 s</text>
+
+  <rect x="300" y="764" width="340" height="130" rx="8" class="mod"/>
+  <text x="318" y="790" class="t-title">M6 · Agent neuro-symbolique</text>
+  <text x="318" y="812" class="t-mono">llm.py · agent.py · outils.py (19 outils)</text>
+  <text x="318" y="830" class="t-mono">demandes.py (veto SHACL) · reference.py</text>
+  <text x="318" y="852" class="t-small">lit aussi pareto.json, devices.json, geometry.json</text>
+  <text x="318" y="874" class="t-small">20/20 réponses conformes · D1–D4 tracées</text>
+
+  <!-- portes de validation entre modules -->
+  <g>
+    <line x1="470" y1="148" x2="470" y2="159" class="a"/><circle cx="470" cy="168" r="9" class="gate"/><path d="M466 168 l3 3 l5 -6" class="tick"/><line x1="470" y1="177" x2="470" y2="186" class="a" marker-end="url(#ah)"/>
+    <line x1="470" y1="292" x2="470" y2="303" class="a"/><circle cx="470" cy="312" r="9" class="gate"/><path d="M466 312 l3 3 l5 -6" class="tick"/><line x1="470" y1="321" x2="470" y2="330" class="a" marker-end="url(#ah)"/>
+    <line x1="470" y1="436" x2="470" y2="447" class="a"/><circle cx="470" cy="456" r="9" class="gate"/><path d="M466 456 l3 3 l5 -6" class="tick"/><line x1="470" y1="465" x2="470" y2="474" class="a" marker-end="url(#ah)"/>
+    <line x1="470" y1="580" x2="470" y2="591" class="a"/><circle cx="470" cy="600" r="9" class="gate"/><path d="M466 600 l3 3 l5 -6" class="tick"/><line x1="470" y1="609" x2="470" y2="618" class="a" marker-end="url(#ah)"/>
+    <line x1="470" y1="724" x2="470" y2="735" class="a"/><circle cx="470" cy="744" r="9" class="gate"/><path d="M466 744 l3 3 l5 -6" class="tick"/><line x1="470" y1="753" x2="470" y2="762" class="a" marker-end="url(#ah)"/>
+  </g>
+  <text x="486" y="172" class="t-ok">sortie validée, sinon arrêt</text>
+  <text x="486" y="460" class="t-ok">F3–F6 exigées à partir d'ici</text>
+
+  <!-- fichiers produits -->
+  <g>
+    <line x1="640" y1="75" x2="688" y2="75" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="60" width="210" height="30" rx="15" class="pill"/><text x="705" y="79" class="t-mono">geometry.json</text>
+    <line x1="640" y1="115" x2="688" y2="115" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="100" width="210" height="30" rx="15" class="pill"/><text x="705" y="119" class="t-mono">grille_voxels.npz</text>
+
+    <line x1="640" y1="219" x2="688" y2="219" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="204" width="210" height="30" rx="15" class="pill"/><text x="705" y="223" class="t-mono">ontology.ttl</text>
+
+    <line x1="640" y1="363" x2="688" y2="363" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="348" width="210" height="30" rx="15" class="pill"/><text x="705" y="367" class="t-mono">pareto.json</text>
+    <line x1="640" y1="403" x2="688" y2="403" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="388" width="210" height="30" rx="15" class="pill"/><text x="705" y="407" class="t-mono">iwcmc/ variantes, cache</text>
+
+    <line x1="640" y1="507" x2="688" y2="507" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="492" width="210" height="30" rx="15" class="pill"/><text x="705" y="511" class="t-mono">devices.json</text>
+
+    <line x1="640" y1="651" x2="688" y2="651" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="636" width="210" height="30" rx="15" class="pill"/><text x="705" y="655" class="t-mono">evacuation_dynamique.jsonl</text>
+    <line x1="640" y1="691" x2="688" y2="691" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="676" width="210" height="30" rx="15" class="pill"/><text x="705" y="695" class="t-mono">kg_avant_agent.ttl</text>
+
+    <line x1="640" y1="809" x2="688" y2="809" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="794" width="210" height="30" rx="15" class="pill"/><text x="705" y="813" class="t-mono">answers.jsonl</text>
+    <line x1="640" y1="845" x2="688" y2="845" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="830" width="210" height="30" rx="15" class="pill"/><text x="705" y="849" class="t-mono">audit_log.jsonl</text>
+    <line x1="640" y1="881" x2="688" y2="881" class="a" marker-end="url(#ah)"/>
+    <rect x="690" y="866" width="210" height="30" rx="15" class="pill"/><text x="705" y="885" class="t-mono">llm_journal.jsonl</text>
+  </g>
+
+  <!-- liens modules ↔ kg.ttl -->
+  <line x1="640" y1="262" x2="958" y2="262" class="a-kg" marker-end="url(#ahk)"/>
+  <text x="930" y="255" text-anchor="end" class="t-kg">crée</text>
+  <line x1="642" y1="548" x2="958" y2="548" class="a-kg" marker-start="url(#ahk)" marker-end="url(#ahk)"/>
+  <text x="930" y="541" text-anchor="end" class="t-kg">lit + enrichit</text>
+  <line x1="642" y1="712" x2="958" y2="712" class="a-kg" marker-start="url(#ahk)" marker-end="url(#ahk)"/>
+  <text x="930" y="728" text-anchor="end" class="t-kg">lit + enrichit</text>
+  <line x1="642" y1="780" x2="958" y2="780" class="a-kg" marker-start="url(#ahk)" marker-end="url(#ahk)"/>
+  <text x="930" y="773" text-anchor="end" class="t-kg">Δ validés</text>
+
+  <!-- états successifs de kg.ttl -->
+  <rect x="960" y="236" width="180" height="64" rx="6" class="kgblk"/>
+  <text x="972" y="256" class="t-bold">M2 · ~880 triplets</text>
+  <text x="972" y="274" class="t-small">topologie, distances,</text>
+  <text x="972" y="290" class="t-small">anomalies, paramètres</text>
+  <line x1="1050" y1="300" x2="1050" y2="514" class="a-kg" marker-end="url(#ahk)"/>
+  <text x="1060" y="410" class="t-kg">même fichier</text>
+
+  <rect x="960" y="516" width="180" height="64" rx="6" class="kgblk"/>
+  <text x="972" y="536" class="t-bold">M4 · + équipements</text>
+  <text x="972" y="554" class="t-small">détecteurs, caméras,</text>
+  <text x="972" y="570" class="t-small">zones, chemins</text>
+  <line x1="1050" y1="580" x2="1050" y2="678" class="a-kg" marker-end="url(#ahk)"/>
+
+  <rect x="960" y="680" width="180" height="64" rx="6" class="kgblk"/>
+  <text x="972" y="700" class="t-bold">M5 · + scénario</text>
+  <text x="972" y="718" class="t-small">observations SOSA,</text>
+  <text x="972" y="734" class="t-small">Dangerous, alarme, routes</text>
+  <line x1="1050" y1="744" x2="1050" y2="762" class="a-kg" marker-end="url(#ahk)"/>
+
+  <rect x="960" y="764" width="180" height="56" rx="6" class="kgblk"/>
+  <text x="972" y="784" class="t-bold">M6 · + Δ acceptés</text>
+  <text x="972" y="804" class="t-small">D1 et D3 appliquées</text>
+
+  <rect x="960" y="848" width="180" height="56" rx="6" class="shp"/>
+  <text x="972" y="868" class="t-bold">formes SHACL</text>
+  <text x="972" y="888" class="t-small">F1–F8 kit · M1–M11 maison</text>
+  <line x1="1050" y1="847" x2="1050" y2="823" class="a-ok" marker-end="url(#aho)"/>
+  <text x="1060" y="840" class="t-ok">valide + veto</text>
+</svg>
+    </div>
+    <figcaption>Flèches noires : un fichier lu ou écrit. Bus gris : <code>geometry.json</code> et la grille de voxels de M1, relus par M2, M3, M4 et M6 (M2 ne relit jamais l'IFC). Ronds verts : contrôle JSON Schema ou SHACL après chaque module. Colonne bleue : <code>kg.ttl</code> est un seul fichier, créé par M2 puis enrichi par M4, M5 et M6.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>2. À l'intérieur de l'agent (M6) : qui calcule, qui décide</h2>
+  <figure>
+    <div class="sheet">
+<svg viewBox="0 0 1160 430" role="img" aria-label="Agent M6 : pour une question, le LLM choisit un outil et l'outil calcule la réponse, avec correction en cas d'erreur ; pour une demande, le LLM produit un plan, puis les règles, le veto SHACL et l'ordre de priorité décident, et le LLM rédige seulement la justification.">
+  <defs>
+    <marker id="bh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="m-fg"/></marker>
+    <marker id="bhl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="m-llm"/></marker>
+  </defs>
+
+  <!-- légende -->
+  <rect x="790" y="12" width="14" height="14" rx="3" class="llmblk"/><text x="810" y="23" class="t-small">LLM local (qwen2.5:14b)</text>
+  <rect x="980" y="12" width="14" height="14" rx="3" class="symblk"/><text x="1000" y="23" class="t-small">code symbolique</text>
+
+  <!-- couloir questions -->
+  <text x="20" y="24" class="t-head">QUESTIONS → answers.jsonl</text>
+  <rect x="20" y="48" width="200" height="72" rx="6" class="inp"/>
+  <text x="34" y="76" class="t-title">Question Qxx</text>
+  <text x="34" y="98" class="t-small">attend un ensemble ou un nombre</text>
+  <line x1="220" y1="84" x2="248" y2="84" class="a" marker-end="url(#bh)"/>
+
+  <rect x="250" y="48" width="200" height="72" rx="6" class="llmblk"/>
+  <text x="264" y="76" class="t-title">choisit un outil</text>
+  <text x="264" y="98" class="t-small">et ses arguments</text>
+  <line x1="450" y1="84" x2="478" y2="84" class="a" marker-end="url(#bh)"/>
+
+  <rect x="480" y="48" width="200" height="72" rx="6" class="symblk"/>
+  <text x="494" y="76" class="t-title">l'outil calcule</text>
+  <text x="494" y="98" class="t-small">SPARQL · Dijkstra · Pareto</text>
+  <line x1="680" y1="84" x2="708" y2="84" class="a" marker-end="url(#bh)"/>
+
+  <rect x="710" y="48" width="200" height="72" rx="6" class="symblk"/>
+  <text x="724" y="76" class="t-title">contrôle</text>
+  <text x="724" y="98" class="t-small">comparé à la référence sans LLM</text>
+  <line x1="910" y1="84" x2="938" y2="84" class="a" marker-end="url(#bh)"/>
+
+  <rect x="940" y="48" width="200" height="72" rx="6" class="pill"/>
+  <text x="954" y="76" class="t-bold">answers.jsonl</text>
+  <text x="954" y="98" class="t-small">valeur, requêtes, trace</text>
+
+  <path d="M580 120 V150 H350 V123" class="a-llm" marker-end="url(#bhl)"/>
+  <text x="465" y="168" text-anchor="middle" class="t-llm">erreur (nom ambigu, type faux) : le LLM corrige, 3 tours au plus</text>
+
+  <line x1="20" y1="196" x2="1140" y2="196" class="sep"/>
+
+  <!-- couloir demandes -->
+  <text x="20" y="220" class="t-head">DEMANDES DE MODIFICATION → audit_log.jsonl + kg.ttl</text>
+  <rect x="20" y="236" width="160" height="84" rx="6" class="inp"/>
+  <text x="32" y="262" class="t-title">Demande Dx</text>
+  <text x="32" y="284" class="t-small">texte de l'opérateur</text>
+  <line x1="180" y1="278" x2="210" y2="278" class="a" marker-end="url(#bh)"/>
+
+  <rect x="212" y="236" width="160" height="84" rx="6" class="llmblk"/>
+  <text x="224" y="262" class="t-title">plan JSON</text>
+  <text x="224" y="284" class="t-small">une des 4 actions</text>
+  <text x="224" y="302" class="t-small">sinon « autre » : refus</text>
+  <line x1="372" y1="278" x2="402" y2="278" class="a" marker-end="url(#bh)"/>
+
+  <rect x="404" y="236" width="160" height="84" rx="6" class="symblk"/>
+  <text x="416" y="262" class="t-title">candidats</text>
+  <text x="416" y="284" class="t-small">demande, refus,</text>
+  <text x="416" y="302" class="t-small">adaptations (règles)</text>
+  <line x1="564" y1="278" x2="594" y2="278" class="a" marker-end="url(#bh)"/>
+
+  <rect x="596" y="236" width="160" height="84" rx="6" class="vetoblk"/>
+  <text x="608" y="262" class="t-title">veto SHACL</text>
+  <text x="608" y="284" class="t-small">Δ appliqué sur une copie</text>
+  <text x="608" y="302" class="t-small">F1–F8 + M1–M11</text>
+  <line x1="756" y1="278" x2="786" y2="278" class="a" marker-end="url(#bh)"/>
+  <line x1="676" y1="320" x2="676" y2="346" class="a-veto"/>
+  <line x1="668" y1="338" x2="684" y2="354" class="a-veto"/><line x1="684" y1="338" x2="668" y2="354" class="a-veto"/>
+  <text x="676" y="374" text-anchor="middle" class="t-veto">forme violée : candidat écarté</text>
+
+  <rect x="788" y="236" width="160" height="84" rx="6" class="symblk"/>
+  <text x="800" y="262" class="t-title">classement</text>
+  <text x="800" y="284" class="t-small">sécurité > accessibilité</text>
+  <text x="800" y="302" class="t-small">> sobriété</text>
+  <line x1="948" y1="278" x2="978" y2="278" class="a" marker-end="url(#bh)"/>
+
+  <rect x="980" y="236" width="160" height="84" rx="6" class="symblk"/>
+  <text x="992" y="262" class="t-title">décision</text>
+  <text x="992" y="284" class="t-small">commit dans kg.ttl</text>
+  <text x="992" y="302" class="t-small">si acceptée</text>
+  <line x1="1060" y1="320" x2="1060" y2="346" class="a" marker-end="url(#bh)"/>
+
+  <rect x="980" y="348" width="160" height="64" rx="6" class="llmblk"/>
+  <text x="992" y="372" class="t-title">justification</text>
+  <text x="992" y="394" class="t-small">texte seulement</text>
+  <line x1="980" y1="380" x2="952" y2="380" class="a" marker-end="url(#bh)"/>
+
+  <rect x="788" y="364" width="160" height="32" rx="16" class="pill"/>
+  <text x="802" y="384" class="t-mono">audit_log.jsonl</text>
+</svg>
+    </div>
+    <figcaption>Le LLM (orange) interprète et rédige. Le code (bleu) calcule et décide. Le LLM ne recopie jamais un identifiant : la réponse est la valeur rendue par l'outil. Il ne peut pas non plus changer une décision, car le veto SHACL et l'ordre de priorité sont dans le code.</figcaption>
+  </figure>
+
+  <div class="decisions">
+    <div class="dec"><b>D1 · cuisine A103 → chaleur</b><span class="chip ok">acceptée</span><p>Aucune forme violée : le détecteur passe en HeatDetector.</p></div>
+    <div class="dec"><b>D2 · équipement A201 → A202</b><span class="chip no">refusée · F3</span><p>A201 resterait sans détecteur. Le relais IoT est aussi valide, mais « refus » l'emporte par sobriété.</p></div>
+    <div class="dec"><b>D3 · retirer les détecteurs du Level 2</b><span class="chip adapt">acceptée avec adaptation</span><p>F3 violée : des détecteurs de chaleur temporaires sont placés par le MILP de M4.</p></div>
+    <div class="dec"><b>D4 · route habituelle à t = 200 s</b><span class="chip no">refusée · F8</span><p>La route traverse un espace dangereux : mise à l'abri recommandée.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>3. Ce qui change automatiquement</h2>
+  <p>On peut faire évoluer l'app sans toucher à sa logique, jusqu'à un certain point. Le niveau détermine ce qu'il faut modifier pour qu'un changement soit pris en compte partout.</p>
+  <div class="levels">
+    <div class="lvl l1"><span class="tag">Niveau 1 · changer une donnée</span><h3>Tout se recalcule</h3>
+      <ul>
+        <li>Un autre <code>.ifc</code> : toute la chaîne est refaite, déjà testé sur <code>Office_A</code> (<code>sorties_bureaux/</code>).</li>
+        <li><code>parametres.json</code> : rayons, seuils, caméras, type de détecteur, IWCMC, modèle LLM. Les valeurs vont aussi dans <code>ssi:Parameters</code>, ce qui règle F4 et F5.</li>
+        <li><code>observations.csv</code> : états, alarme, routes, décision D4.</li>
+        <li>De nouvelles questions, si l'un des 19 outils ou l'outil <code>sparql</code> les couvre.</li>
+        <li>De nouvelles demandes, si l'action est l'une des 4 connues.</li>
+      </ul></div>
+    <div class="lvl l2"><span class="tag">Niveau 2 · ajouter une déclaration</span><h3>Propagé partout</h3>
+      <ul>
+        <li>Une forme SHACL dans <code>formes_maison.ttl</code> : contrôlée après chaque module <b>et</b> appliquée comme veto par l'agent, sans toucher à son code. Les formes cachées du jury s'ajoutent de la même façon.</li>
+        <li>Un outil dans le registre <code>OUTILS</code> : proposé automatiquement au LLM.</li>
+        <li>Une expression dans <code>MATERIAUX</code> : nouveau matériau pris en compte dans les voxels et la radio.</li>
+      </ul></div>
+    <div class="lvl l3"><span class="tag">Niveau 3 · développement</span><h3>Logique à écrire</h3>
+      <ul>
+        <li>Une nouvelle action de demande : une valeur dans <code>PLAN</code> et un générateur de candidats. La suite (veto, classement, audit) est déjà générique.</li>
+        <li>Un nouveau type d'équipement : classe d'ontologie, sous-problème MILP, écriture dans le graphe.</li>
+        <li>L'ordre de priorité, les invariants de M1, le modèle radio.</li>
+      </ul></div>
+    <div class="lvl l0"><span class="tag">À l'exécution · l'agent seul</span><h3>Uniquement des triplets</h3>
+      <ul>
+        <li>Il modifie <code>kg.ttl</code> (type de détecteur, détecteurs temporaires, routes), seulement après validation SHACL.</li>
+        <li>Il n'écrit jamais de règle, d'outil ni d'ontologie, et il n'apprend pas.</li>
+        <li>Chaque modification est tracée dans <code>audit_log.jsonl</code>. Une réponse différente de la référence est signalée, jamais corrigée en silence.</li>
+      </ul></div>
+  </div>
+</section>
+
+<footer>Le détail module par module (scripts, règles d'anomalie, outils, flux I/O) est dans <code>docs/architecture.md</code>.</footer>
+</div>

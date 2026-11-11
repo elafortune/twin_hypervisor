@@ -218,14 +218,22 @@ def positions_plafond(f, geometrie: dict, grille: Grille) -> list[dict]:
             continue
         z0 = n["altitude_m"] + HAUTEUR_DEPART_PLAFOND_M
         for e in espaces:
-            dedans = contains_xy(Polygon(e["polygone_xy"]), centres[:, 0], centres[:, 1])
-            for k in np.flatnonzero(dedans):
+            dedans = np.flatnonzero(contains_xy(Polygon(e["polygone_xy"]), centres[:, 0], centres[:, 1]))
+            avant = len(positions)
+            for k in dedans:
                 z = impacts[k][impacts[k] > z0]
                 if len(z):
                     positions.append({"niveau_globalId": n["globalId"], "espace_globalId": e["globalId"],
                                       "xyz": [round(float(centres[k, 0] - DECALAGE[0]), 3),
                                               round(float(centres[k, 1] - DECALAGE[1]), 3),
                                               round(float(z[0]), 3)]})
+            if len(positions) == avant:
+                # aucun plafond modélisé au-dessus de l'espace (2e IFC : local technique 219 ouvert) :
+                # repli sur le sommet de l'espace (z_bas + hauteur), pour ne pas laisser un espace occupable sans détecteur
+                haut = round(float(e["z_bas_m"] + e["hauteur_m"]), 3)
+                positions += [{"niveau_globalId": n["globalId"], "espace_globalId": e["globalId"],
+                               "xyz": [round(float(centres[k, 0] - DECALAGE[0]), 3),
+                                       round(float(centres[k, 1] - DECALAGE[1]), 3), haut]} for k in dedans]
     return positions
 
 

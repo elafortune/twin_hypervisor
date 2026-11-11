@@ -39,6 +39,16 @@ Fumée ou chaleur : `python -m twinhyp detecteurs --out sorties/` compare les d�
 
 Variantes : `data/variantes/` contient des copies de `parametres.json` qui ne changent qu'une clé (ex. `detecteur_type = HeatDetector`) ; `python -m twinhyp comparer sorties sorties_chaleur …` compare des dossiers de sorties étape par étape (M4 équipements, M5 alarme et routes, réponses de référence, décisions de M6) et écrit `comparaison.json`. Détail : `fumee_chaleur.md`.
 
+Second IFC (étape 10) : `data/bureaux/` contient le bâtiment de bureaux NIBS, ses paramètres (mode rapide), un scénario synthétique et des questions / demandes adaptées :
+
+```bash
+python -m twinhyp run --ifc data/bureaux/Office_A_20110811.ifc --params data/bureaux/parametres_bureaux.json \
+    --obs data/bureaux/observations_bureaux.csv --questions data/bureaux/questions_bureaux.json \
+    --demandes data/bureaux/demandes_bureaux.json --out sorties_bureaux/
+```
+
+Scénario pour un autre bâtiment : `python -m twinhyp scenario --geometrie <out>/geometry.json --origine <espace> --sortie obs.csv`. Mode rapide : `"validation_kg_intermediaire": false` (graphe validé une fois, en fin de chaîne), `"pas_grille_m": 1.0`, `"iwcmc": {"max_positions": 40, "facteurs_supplementaires": []}`. Détail : `generalite.md`.
+
 Chaque exécution écrit `sorties/execution.json` : versions des paquets, machine, graine et durée de chaque étape.
 
 ## Sorties

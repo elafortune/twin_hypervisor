@@ -225,6 +225,18 @@ Chaîne complète rejouée avec des détecteurs de chaleur (A1R, A1, rayon rédu
 - Total M6 : 1 400 s ; journal de 29 appels (`sorties/llm_journal.jsonl`), rejouable sans Ollama.
 - Justifications : au premier run, le modèle lisait « sécurité > accessibilité > sobriété » à l'envers ; ordre réécrit en liste numérotée dans le prompt.
 
+## Étape 10 – Généricité (second IFC)
+
+| # | Question | Options envisagées | Choix final | Pourquoi | Revenir dessus si… |
+|---|---|---|---|---|---|
+| 10.1 | Second IFC | **bureaux NIBS (Office_A_20110811)** · clinique NIBS · FZK-Haus | Bureaux, comme le conseille le kit (même série que le duplex, 5 fois plus d'espaces) | Conseil explicite de `plan_execution.md` | le jury fournit un autre fichier |
+| 10.2 | Source du fichier | portail NIBS · Wayback Machine · **miroir public identique** | `ThatOpen/engine_web-ifc`, SHA-256 noté | Portail hors service ; la Wayback Machine bloque les téléchargements automatiques (pas de contournement) | — |
+| 10.3 | Observations | aucune · **générateur synthétique sur le graphe** | `python -m twinhyp scenario` : retard et atténuation par liaison, profils du kit | Réutilisable pour tout IFC ; reproductible (graine) | le jury fournit un scénario |
+| 10.4 | Questions et demandes | celles du kit telles quelles · **reformulées avec les noms du bâtiment** | `data/bureaux/questions_bureaux.json`, `demandes_bureaux.json` | Les questions du kit nomment A202, B101… | — |
+| 10.5 | Échecs révélés | paramétrer au cas par cas · **règles générales** | G-1 à G-7 (`generalite.md`) ; duplex identique avant / après | Le jury apportera un IFC inconnu : il faut des règles, pas des exceptions | — |
+| 10.6 | Tenir 10 min | tout recalculer · **mode rapide par paramètres** | grille 1 m, M3 sur 40 positions sans ×30, `validation_kg_intermediaire = false` | Le kit prévoit « un mode rapide paramétrable pour M3 » ; le graphe final reste validé en entier | machine plus rapide (repasser en mode complet) |
+| 10.7 | D4 sur un grand bâtiment | une validation par route · **validation en lot** | une passe SHACL pour toutes les routes ; violations attribuées par `sh:focusNode` ; repli unitaire si une violation n'est pas attribuable | 42 s par validation × ~80 → 8 validations | — |
+
 ## Points ouverts à trancher
 
 | Sujet | Options | Échéance |

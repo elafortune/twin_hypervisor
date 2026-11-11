@@ -1,0 +1,22 @@
+{
+  "note": "Paramètres du 2e IFC (bureaux NIBS, étape 10) : ceux du kit, sauf l'origine du feu (salle de pause 125) et un MODE RAPIDE pour tenir dans les 10 min (grille de 1 m, M3 sur 40 positions et 100 itérations, sans la variante ×30). kg.ttl validé une seule fois, en fin de chaîne.",
+  "pas_grille_m": 1.0,
+  "camera_champ_horizontal_deg": 90,
+  "camera_champ_vertical_deg": 60,
+  "camera_portee_m": 8.0,
+  "camera_hauteur_pose_m": 2.4,
+  "detecteur_rayon_m": 5.0,
+  "declencheur_distance_max_m": 10.0,
+  "couverture_video_min": 1.0,
+  "origine_feu": {
+    "globalId": "04Sq57eS5FffNezn2ilgs1",
+    "description": "salle de pause 125 (BREAK RM), Level 1"
+  },
+  "observations": "observations_bureaux.csv",
+  "iwcmc": {
+    "max_positions": 40,
+    "n_it": 100,
+    "facteurs_supplementaires": []
+  },
+  "validation_kg_intermediaire": false
+}

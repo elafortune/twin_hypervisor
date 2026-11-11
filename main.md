@@ -45,6 +45,7 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | 9 – Agent : questions | `qwen2.5:14b` (local, Ollama) choisit parmi 19 outils génériques : 20 / 20 réponses identiques à la référence calculée sans LLM (Q08 auto-corrigée après « B202 ambigu ») ; 11 min sur CPU. |
 | 9 – Agent : demandes | D1 acceptée · D2 refusée (veto F3) · D3 acceptée avec détecteurs de chaleur temporaires · D4 refusée (F8 : à 200 s les deux sorties du logement A sont dangereuses → mise à l'abri) ; chaque appel LLM journalisé et rejouable sans Ollama. |
 | 9 – Fumée ou chaleur | Chaîne rejouée avec des détecteurs de chaleur : alarme 70 s → 80 s (A1R) → 130 s (A1, après que la cuisine est devenue dangereuse) ; marge avant la perte des routes sûres 110 → 100 → 50 s ; mêmes routes et mêmes réponses ; fumée gardée par défaut, chaleur A1R seulement pour D1 et D3 (`fumee_chaleur.md`). |
+| 10 – Second IFC (bureaux NIBS) | 99 espaces, 6 sorties, 149 détecteurs, 75 caméras, tout conforme sans changer de code après 7 corrections générales (gaine sans liaison, portes de cabines, local sans plafond, cages d'escalier par niveau, synonymes, référence facultative, validation en lot) ; M1 → M5 en ≈ 9 min 15 en mode rapide (`generalite.md`). |
 | 8 – Graphe complet | `kg.ttl` conforme aux 8 formes publiques F1–F8 et aux 11 formes maison, sans plus rien différer. |
 
 ## Écarts de la maquette à présenter au jury
@@ -84,6 +85,7 @@ Liste complète, avec les options écartées : `choix.md`.
 - Tous les choix, options écartées et quand y revenir : `choix.md`
 - Mes doutes, à vérifier ou trancher : `doutes.md`
 - Résumé de l'IWCMC, lectures des ambiguïtés et décalages chiffrés : `iwcmc.md`
+- Second IFC (bureaux NIBS), corrections et temps : `generalite.md`
 - Fumée ou chaleur, chaîne complète comparée étape par étape : `fumee_chaleur.md`
 - Campagne de comparaison à l'IWCMC (tests, scénarios, résultats commentés) : `comparaison.md`
 - Décisions et résultats des étapes 0 à 2 : `docs/etape0a2.md`

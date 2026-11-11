@@ -189,3 +189,13 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Fumée / A1R / A1 / A1R rayon 3,54 m : alarme 70 / 80 / 130 / 80 s ; marge avant perte de route sûre 110 / 100 / 50 / 100 s ; 20 / 20 / 20 / 24 détecteurs ; réponses de référence identiques.
 - **Impasse** : run réel de M6 sur la variante A1R arrêté par manque de mémoire pendant les demandes (les 20 questions étaient faites : 20 / 20) → M6 rejoué à partir du journal du run fumée (`TWINHYP_LLM_REJEU`), ~110 s par variante.
 - Défauts révélés et corrigés : D1 comptait un triplet ajouté déjà présent ; D3 remplaçait des détecteurs déjà de chaleur (90 triplets retirés puis remis) → refus, détection maintenue. Test ajouté.
+
+## 2026-11-11 – Étape 10 : second IFC (bureaux NIBS)
+
+- **Impasse** : WBDG est une application JavaScript (pages vides en lecture directe) ; portail NIBS hors service ; la Wayback Machine bloque les téléchargements automatiques (je n'ai pas contourné). Fichier repris du miroir `ThatOpen/engine_web-ifc` (même nom, SHA-256 noté).
+- Premier run sans rien changer : M1 OK (52 s), **M2 refusé** (gaine ELEV sans liaison). Corrections générales G-1 à G-7 (voir `generalite.md`), duplex identique avant / après.
+- **Impasse** : 15 sorties dont 4 au Level 2 → portes de cabines de toilettes vues comme sorties.
+- **Impasse** : F3 violée (local 219 sans plafond) ; F5 violée (chemins des fausses sorties du Level 2), disparue avec la correction des portes de cabines.
+- M1 → M5 : 655 s au premier essai ; mode rapide (grille 1 m, M3 40 positions, validation finale seule) ≈ 554 s.
+- **Impasse** : M6 avec le LLM arrêté par manque de mémoire pendant le chargement du modèle ; partie symbolique vérifiée avec le LLM scripté (20 outils, D1–D4, 345 s).
+- **Impasse** : D4 > 25 min (42 s par validation SHACL × ~80) → validation en lot (8 validations).

@@ -96,6 +96,35 @@ class Validateur:
         c.formes_violees = formes_violees_graphe(copie, self.formes, self.ontologie)[0]
         return c.formes_violees
 
+    def lot(self, g: Graph, candidats: list[Candidat]) -> None:
+        """Valide des candidats INDÉPENDANTS (ajouts seuls, sujets distincts) en une seule passe SHACL :
+        chaque violation est attribuée au candidat dont un triplet ajouté a pour sujet le nœud fautif.
+        Violation non attribuable, retraits ou un seul candidat -> repli sur une validation par candidat."""
+        from twinhyp.io_schemas import violations_par_noeud
+
+        if len(candidats) <= 1 or any(c.retraits for c in candidats):
+            for c in candidats:
+                self(g, c)
+            return
+        obs = set(g.subjects(RDF.type, SOSA.Observation))
+        copie = Graph()
+        for t in g:
+            if t[0] not in obs:
+                copie.add(t)
+        proprietaire = {}
+        for c in candidats:
+            for t in c.ajouts:
+                copie.add(t)
+                proprietaire.setdefault(t[0], c)
+        self.appels += 1
+        par_noeud, _ = violations_par_noeud(copie, self.formes, self.ontologie)
+        if any(n not in proprietaire for n in par_noeud):
+            for c in candidats:
+                self(g, c)
+            return
+        for c in candidats:
+            c.formes_violees = sorted({f for n, fs in par_noeud.items() if proprietaire[n] is c for f in fs})
+
 
 # Lecture du graphe ------------------------------------------------------------------------------
 def _triplets(g: Graph, s) -> set:
@@ -297,36 +326,50 @@ def diriger(g: Graph, plan: dict, valider: Validateur) -> list[dict]:
     h = etat_a(g, t)
     quand = horodatage_a(g, t)
     decisions = []
+    lib = O.libelles(g)
+    # passe 1 : routes habituelles de tous les espaces, validées EN LOT (une passe SHACL au lieu d'une par espace)
+    prep = []
     for e in sorted(esp, key=lambda e: e["nom"]):
         gid = e["gid"]
         habituelle = route_sure(G, gid, set())  # stratégie 1 : route statique, sans tenir compte du danger
         cand_h = Candidat("route_habituelle", "", satisfaction=1.0)
+        if habituelle is not None:
+            cand_h.ajouts = triplets_route(f"M6_{gid}_{t}_habituelle", gid, habituelle, quand)
+            cand_h.description = "route habituelle : " + " → ".join(lib.get(x, x) for x in habituelle["route"])
+        prep.append((e, habituelle, cand_h))
+    valider.lot(h, [c for _, hab, c in prep if hab is not None])
+    # passe 2 : routes sûres des espaces dont la route habituelle est refusée, en lot également
+    sures = {}
+    for e, hab, c in prep:
+        if hab is not None and c.formes_violees:
+            sure = route_sure(G, e["gid"], danger)  # stratégie 2 : contrainte dure
+            if sure is not None:
+                desc = "route sûre : " + " → ".join(lib.get(x, x) for x in sure["route"])
+                sures[e["gid"]] = (sure, Candidat("route_sure", desc, triplets_route(
+                    f"M6_{e['gid']}_{t}_sure", e["gid"], sure, quand), satisfaction=0.5))
+    valider.lot(h, [c for _, c in sures.values()])
+    for e, habituelle, cand_h in prep:
+        gid = e["gid"]
         occ = occupation.get(gid)
         faits = {"espace": f"{e['nom']} ({e['nom_long']})", "t_s": t,
                  "occupants": occ if occ is not None else "inconnu (aucun comptage dans cet espace)",
-                 "espaces_dangereux": sorted(O.libelles(g).get(x, x) for x in danger)}
+                 "espaces_dangereux": sorted(lib.get(x, x) for x in danger)}
         if habituelle is None:
             decisions.append({"espace": e, "decision": "refusee", "candidat": None, "formes": [], "faits": faits})
             continue
-        cand_h.ajouts = triplets_route(f"M6_{gid}_{t}_habituelle", gid, habituelle, quand)
-        cand_h.description = "route habituelle : " + " → ".join(O.libelles(g).get(x, x) for x in habituelle["route"])
-        valider(h, cand_h)
         faits["route_habituelle"] = cand_h.description
         faits["passe_par_escalier"] = bool(set(habituelle["route"]) & escaliers)
         if not cand_h.formes_violees:
             decisions.append({"espace": e, "decision": "acceptee", "candidat": cand_h, "formes": [], "faits": faits,
                               "route": habituelle})
             continue
-        sure = route_sure(G, gid, danger)  # stratégie 2 : contrainte dure
+        sure, cand_s = sures.get(gid, (None, None))
         if sure is None:
             faits["route_sure"] = None
             decisions.append({"espace": e, "decision": "refusee", "candidat": None, "formes": cand_h.formes_violees,
                               "faits": faits, "adaptation": "aucune route sûre : mise à l'abri sur place (porte "
                               "fermée), position signalée aux secours"})
             continue
-        cand_s = Candidat("route_sure", "route sûre : " + " → ".join(O.libelles(g).get(x, x) for x in sure["route"]),
-                          triplets_route(f"M6_{gid}_{t}_sure", gid, sure, quand), satisfaction=0.5)
-        valider(h, cand_s)
         faits["route_sure"] = cand_s.description
         decisions.append({"espace": e, "decision": "acceptee_avec_adaptation" if not cand_s.formes_violees else "refusee",
                           "candidat": cand_s, "formes": cand_h.formes_violees, "faits": faits, "route": sure})

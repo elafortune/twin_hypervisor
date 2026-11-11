@@ -61,6 +61,12 @@ def construire_parseur() -> argparse.ArgumentParser:
     cmpd.add_argument("dossiers", nargs="+", type=Path, help="référence puis variantes")
     cmpd.add_argument("--json", type=Path, help="fichier JSON de sortie (défaut : <référence>/comparaison.json)")
 
+    scn = sous.add_parser("scenario", help="observations synthétiques pour un autre bâtiment (étape 10)")
+    scn.add_argument("--geometrie", required=True, type=Path, help="geometry.json d'un run (M1)")
+    scn.add_argument("--origine", required=True, help="espace d'origine du feu (GlobalId ou nom)")
+    scn.add_argument("--sortie", required=True, type=Path, help="fichier CSV à écrire")
+    scn.add_argument("--graine", type=int, default=0)
+
     qst = sous.add_parser("questions", help="réponses Q01–Q14 obtenues par SPARQL sur <out>/kg.ttl")
     qst.add_argument("--out", required=True, type=Path)
     qst.add_argument("--sparql", action="store_true", help="afficher aussi les requêtes")
@@ -141,6 +147,14 @@ def commande_comparer(args: argparse.Namespace) -> int:
                 print(f"\nM6 ({r[cote]}) :", m["resume"])
                 for d in m["decisions"]:
                     print("   ", d)
+    return 0
+
+
+def commande_scenario(args: argparse.Namespace) -> int:
+    from twinhyp.scenario import depuis_fichiers
+
+    n = depuis_fichiers(args.geometrie, args.origine, args.sortie, {"graine": args.graine})
+    print(f"{n} observations écrites dans {args.sortie}")
     return 0
 
 
@@ -242,6 +256,8 @@ def main(argv: list[str] | None = None) -> int:
             return commande_detecteurs(args)
         if args.commande == "comparer":
             return commande_comparer(args)
+        if args.commande == "scenario":
+            return commande_scenario(args)
         if args.commande == "sensibilite":
             return commande_sensibilite(args)
         if args.commande == "campagne":

@@ -127,7 +127,7 @@ def _somme(b: Boite, cle: str, **p) -> Resultat:
 # Types d'espaces : le LLM nomme un type, l'outil le traduit en motif sur le nom long (FR/EN)
 TYPES_ESPACE = {
     "salle_de_bain": "bath|salle de bain|salle d'eau|sdb|shower|douche",
-    "toilettes": "toilet|wc|water",
+    "toilettes": "toilet|wc|water|restroom|lavatory|(^| )rr( |$)",  # « MENS RR » : bureaux NIBS (étape 10)
     "chambre": "bed|chambre",
     "cuisine": "kitchen|cuisine",
     "sejour": "living|séjour|salon",
@@ -135,6 +135,9 @@ TYPES_ESPACE = {
     "entree": "foyer|entrée|entry|lobby",
     "escalier": "stair|escalier",
     "buanderie": "utility|buanderie|cellier|laundry",
+    "bureau": "office|bureau",
+    "salle_de_reunion": "conference|meeting|réunion",
+    "local_technique": "mech|elec|server|tele|ups|technique",
 }
 
 

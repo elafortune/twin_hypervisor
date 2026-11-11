@@ -234,3 +234,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > fais le test avec détecteur de chaleur et compare à détecteur de fuméee, fais cela pour étape
 
 **Résultat :** chaîne rejouée en 4 variantes (fumée, chaleur A1R, A1, A1R à rayon réduit), comparées étape par étape (`comparer`, `fumee_chaleur.md`) : alarme 70 / 80 / 130 / 80 s, marge avant perte de route sûre 110 / 100 / 50 / 100 s, mêmes réponses ; deux défauts de M6 (D1, D3) corrigés. Run réel de M6 sur la variante arrêté par manque de mémoire après les 20 questions (20 / 20) ; demandes rejouées depuis le journal.
+
+---
+
+## 27 — 2026-11-11 — Étape 10
+
+> télécharge et réalise l'étape 10
+
+**Résultat :** bâtiment de bureaux NIBS (`Office_A_20110811.ifc`, 99 espaces) téléchargé (miroir public, portail NIBS hors service) ; scénario synthétique (`scenario`), questions et demandes adaptées ; 7 corrections générales révélées par ce 2e IFC (duplex inchangé) ; M1 → M5 conformes en ≈ 9 min 15 (mode rapide) ; M6 : partie symbolique vérifiée (LLM scripté), run avec le LLM arrêté par manque de mémoire. `generalite.md`.

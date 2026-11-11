@@ -133,6 +133,13 @@ def rapport_shacl(chemin_kg: Path, formes: Path | list[Path], ontologie: Path,
 def formes_violees_graphe(data, formes: Path | list[Path], ontologie: Path) -> tuple[list[str], str]:
     """Valide un graphe rdflib EN MÉMOIRE (copie modifiée par l'agent) ; renvoie les noms des NodeShapes
     ayant au moins une violation (sévérité sh:Violation) et le rapport texte."""
+    par_noeud, texte = violations_par_noeud(data, formes, ontologie)
+    return sorted({f for fs in par_noeud.values() for f in fs}), texte
+
+
+def violations_par_noeud(data, formes: Path | list[Path], ontologie: Path) -> tuple[dict, str]:
+    """Comme formes_violees_graphe, mais par nœud fautif (sh:focusNode) : {nœud: {NodeShape}}.
+    Sert à valider PLUSIEURS candidats en une passe (M6, D4 sur un grand bâtiment)."""
     from pyshacl import validate
     from rdflib import Graph
     from rdflib.namespace import RDF, SH
@@ -144,15 +151,15 @@ def formes_violees_graphe(data, formes: Path | list[Path], ontologie: Path) -> t
     for s, p, o in formes_g.triples((None, None, None)):
         if p in (SH.property, SH.sparql):
             parent[o] = s
-    noms = set()
+    par_noeud = {}
     for r in resultats.subjects(RDF.type, SH.ValidationResult):
         if resultats.value(r, SH.resultSeverity) != SH.Violation:
             continue
         forme = resultats.value(r, SH.sourceShape)
         while forme in parent:
             forme = parent[forme]
-        noms.add(str(forme).split("#")[-1])
-    return sorted(noms), texte
+        par_noeud.setdefault(resultats.value(r, SH.focusNode), set()).add(str(forme).split("#")[-1])
+    return par_noeud, texte
 
 
 # Point d'entrée commun -------------------------------------------------------
