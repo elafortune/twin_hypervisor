@@ -259,3 +259,19 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > dis moi où est le rapport rédigé afin que je le vois
 
 **Résultat :** Q20 = 1, 18 caméras, D3 sans mention A1R, `docs/architecture*` gardés ; emplacement du rapport indiqué (`rapport.pdf`, `rapport.md`).
+
+---
+
+## 30 — 2026-11-12 — Analyse du rapport face aux attendus
+
+> si tout est fait coté code et cotés tests allons se concentrer sur le rapport, déjà dis moi les différents éléments attendus pour le rapport et ensuite allons analyser les différentes parties du rapport et analyser chaque partie à quel point elle répond aux attendues
+
+**Résultat :** attendus relevés dans `Exercice_enonce.pdf` (barème, livrables), `feuille_de_route.md`, `plan_execution.md` et `theorie/` ; analyse section par section de `rapport.md` avec les manques (M4 sans section propre, µ = 3 / figure 5 peu traités, formulations d'optimisation absentes, outils M6 imposés non nommés).
+
+---
+
+## 31 — 2026-11-12 — Ajouts au rapport
+
+> fais les ajouts et modifications proposées, ensuite reconstruit le pdf et je te ferai un retour sur le pdf que tu auras construit de manière à l'améliorer
+
+**Résultat :** rapport à 5 pages : section M4 propre (formulations du *set cover*, des déclencheurs et du MILP caméras max-min), M3 µ = 3 / figure 5 (tableau et figure à deux panneaux, avec et sans jumeau), comparaison chiffrée des stratégies 1 et 2 (86 lignes divergentes), 4 outils imposés de M6 nommés, choix de modélisation défendu (distance réifiée), ASET/RSET. Angle du full-view et orientations des caméras rendus paramétrables (valeur en dur trouvée en relisant). PDF écrit via un fichier temporaire (rapport.pdf était ouvert).

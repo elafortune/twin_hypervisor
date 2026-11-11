@@ -223,6 +223,10 @@ def cameras(geometrie: dict, params: dict, env: Environnement, chem: list[dict])
     demi_v = math.radians(float(params["camera_champ_vertical_deg"]) / 2)
     hauteur = float(params["camera_hauteur_pose_m"])
     cmin = float(params["couverture_video_min"])
+    # discrétisation des orientations et angle Φ du full-view : facultatifs dans parametres.json (défauts ci-dessus)
+    azimuts = [float(x) for x in params.get("camera_azimuts_deg", AZIMUTS_DEG)]
+    inclinaisons = [float(x) for x in params.get("camera_inclinaisons_deg", INCLINAISONS_DEG)]
+    phi_fv = math.radians(float(params.get("camera_angle_full_view_deg", ANGLE_FULL_VIEW_DEG)))
     alt = {n["globalId"]: n["altitude_m"] for n in geometrie["niveaux"]}
     positions = geometrie["positions_autorisees"]
     # cellules uniques des chemins
@@ -260,16 +264,16 @@ def cameras(geometrie: dict, params: dict, env: Environnement, chem: list[dict])
         dv = d[visibles]
         az = np.arctan2(dv[:, 1], dv[:, 0])
         elev = np.arctan2(dv[:, 2], np.linalg.norm(dv[:, :2], axis=1))
-        for phi in AZIMUTS_DEG:
+        for phi in azimuts:
             dphi = np.abs((az - math.radians(phi) + np.pi) % (2 * np.pi) - np.pi)
-            for tau in INCLINAISONS_DEG:
+            for tau in inclinaisons:
                 ok = (dphi <= demi_h) & (np.abs(elev + math.radians(tau)) <= demi_v)
                 vus = visibles[ok]
                 if not len(vus):
                     continue
                 # full-view : la caméra est devant le marcheur (angle entre (caméra − cellule) et la marche ≤ Φ)
                 fv = [i for i in vus if any(abs((math.atan2(-d[i, 1], -d[i, 0]) - t + math.pi) % (2 * math.pi) - math.pi)
-                                            <= math.radians(ANGLE_FULL_VIEW_DEG) for t in dir_cellule[i])]
+                                            <= phi_fv for t in dir_cellule[i])]
                 candidats.append({"espace": a["espace_globalId"], "xyz": o, "azimut": phi, "inclinaison": tau})
                 voit.append(set(vus.tolist()))
                 voit_fv.append(set(fv))
