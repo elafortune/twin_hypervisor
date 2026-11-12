@@ -207,3 +207,7 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - Rejeu de M6 depuis `sorties/llm_journal.jsonl` : `answers.jsonl` et `audit_log.jsonl` identiques (hors horodatage), en 2 min sans Ollama.
 - Limite de temps des MILP rendue paramétrable (`milp_limite_s`, 600 s) avec avertissement si l'optimum n'est pas prouvé (les caméras des bureaux prenaient 116 s pour une limite de 120 s).
 - README : section « Retrouver nos résultats (jury) ».
+
+## 2026-11-12 – Remise
+
+- Rapport (6 pages) et déclaration IA validés ; dépôt rendu public ; mail envoyé au jury. Reste : préparation de l'entretien sans IA (`reste_a_faire.md`, point 7).

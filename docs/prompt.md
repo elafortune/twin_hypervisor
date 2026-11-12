@@ -309,3 +309,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > je valide ce pdf, maintenant regarde s'il y a des éléments à nettoyer ou d'autres éléments que je dois revoir avant de push sur github et valider le dépot de l'exercice
 
 **Résultat :** inventaire du dépôt (aucun fichier sensible, aucun article dans l'historique, seul PDF : `rapport.pdf`) ; `execution.json` ne gardait que M6 (chaque run écrasait la trace) → la trace fusionne désormais les étapes, celle livrée est complétée avec les durées du run final M1 → M5 ; temps des tests, doutes tranchés, déclaration IA et reste à faire mis à jour.
+
+---
+
+## 35 — 2026-11-12 — Clôture
+
+> je valide tout le mail a été envoyé et le dépot en public tu peux push et commit afin qu'on cloture ce projet
+
+**Résultat :** déclaration IA validée, dépôt public, mail envoyé au jury ; `reste_a_faire.md` clos (reste la préparation de l'entretien) ; dernier commit et push.

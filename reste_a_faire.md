@@ -1,5 +1,7 @@
 # Reste à faire avant l'envoi au jury
 
+**Remis le 12/11/2026 : dépôt public, mail envoyé au jury.** Seule reste la préparation de l'entretien (point 7).
+
 Échéance : **jeudi 12 novembre 2026, 16 h 00** (objectif : envoi le mercredi 11 au soir).
 Livrables (`docs/feuille_de_route.md`) : dépôt Git avec historique et tests · une commande unique · 8 sorties conformes · rapport de 6 pages maximum · carnet de bord et déclaration IA.
 
@@ -19,7 +21,7 @@ Livrables (`docs/feuille_de_route.md`) : dépôt Git avec historique et tests ·
 ## 3. Déclaration IA — obligatoire
 
 - [x] `declaration_ia.md` : outils utilisés et pour quoi ; ce qui a été vérifié à la main (`docs/verification_bimvision.md`, validation à chaque étape) ; agent M6 sur LLM local ; renvoi vers `docs/prompt.md`
-- [ ] Relecture (toi)
+- [x] Relecture (toi)
 
 ## 4. Décisions — tranchées le 12/11 : choix par défaut gardés
 
@@ -38,8 +40,8 @@ Livrables (`docs/feuille_de_route.md`) : dépôt Git avec historique et tests ·
 
 ## 6. Envoi (toi)
 
-- [ ] Accès au dépôt `elafortune/twin_hypervisor` (privé) : ajouter le jury comme collaborateur, ou rendre public (les articles et les PDF sont exclus)
-- [ ] Mail à abderrezak.rachedi@univ-eiffel.fr, objet « Exercice CIFRE TwinHypervisor », lien du dépôt et du rapport
+- [x] Accès au dépôt `elafortune/twin_hypervisor` (privé) : ajouter le jury comme collaborateur, ou rendre public (les articles et les PDF sont exclus)
+- [x] Mail à abderrezak.rachedi@univ-eiffel.fr, objet « Exercice CIFRE TwinHypervisor », lien du dépôt et du rapport
 
 ## 7. Préparation de l'entretien, sans IA (jeudi soir)
 
