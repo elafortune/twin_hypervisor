@@ -21,7 +21,7 @@ class Solution:
     temps_s: float
 
 
-def resoudre(couts, lignes, maximiser: bool = False, limite_s: float = 120.0, continues=()) -> Solution:
+def resoudre(couts, lignes, maximiser: bool = False, limite_s: float = 600.0, continues=()) -> Solution:
     """couts : (n,) ; lignes : liste de (indices, coefficients, borne_inf, borne_sup) ; x ∈ {0, 1}^n,
     sauf les indices `continues` (x ∈ [0, 1] réel, ex. un ratio minimal à maximiser)."""
     n = len(couts)
@@ -45,6 +45,10 @@ def resoudre(couts, lignes, maximiser: bool = False, limite_s: float = 120.0, co
     h.run()
     duree = time.perf_counter() - t0
     statut = h.modelStatusToString(h.getModelStatus())
+    if statut != "Optimal":
+        import logging
+        logging.getLogger("twinhyp").warning("MILP : statut « %s » après %.0f s (limite %.0f s) : solution non prouvée "
+                                             "optimale, donc pas forcément identique sur une autre machine", statut, time.perf_counter() - t0, limite_s)
     info = h.getInfo()
     brut = np.asarray(h.getSolution().col_value[:n]) if n else np.zeros(0)
     x = np.round(brut)

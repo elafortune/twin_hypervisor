@@ -51,6 +51,22 @@ Scénario pour un autre bâtiment : `python -m twinhyp scenario --geometrie <out
 
 Chaque exécution écrit `sorties/execution.json` : versions des paquets, machine, graine et durée de chaque étape.
 
+## Retrouver nos résultats (jury)
+
+Les sorties livrées dans `sorties/` ont été produites par la commande unique ci-dessus (graine 0). Vérifié le 12/11/2026 sur deux runs neufs, dans des dossiers vides, avec deux valeurs de `PYTHONHASHSEED` :
+
+| Sortie | Recalcul |
+|---|---|
+| `geometry.json`, `devices.json`, `evacuation_dynamique.jsonl`, `pareto.json` (+ `iwcmc/pareto_facteur30.json`) | **identiques** (hors durées `temps_s` / `temps_cpu_s`) |
+| `ontology.ttl`, `kg.ttl` | **isomorphes** (mêmes triplets) |
+| `answers.jsonl`, `audit_log.jsonl` | **identiques** (hors horodatage) en rejouant le journal du LLM : `TWINHYP_LLM_REJEU=sorties/llm_journal.jsonl python -m twinhyp run … --etapes m6` (≈ 2 min, sans Ollama) |
+
+- Tout l'aléa est tiré d'une graine (`--graine`, défaut 0) : PREP-NSGA, *shadowing* X_σ, HiGHS (`random_seed = 0`).
+- Les MILP de M4 sont résolus à l'optimum prouvé (statut « Optimal », gap 0, dans `devices.json`) ; si la limite `milp_limite_s` (défaut 600 s) était atteinte, un avertissement le signalerait.
+- Le cache des matrices de perte de M3 (`sorties/iwcmc/obstacles_*.npz`, non livré) est recalculé à l'identique (≈ 5 min).
+- M6 relancé **avec Ollama** (qwen2.5:14b, température 0, graine 0) : sur une autre machine, le texte des justifications peut varier ; les réponses sont contrôlées par une référence sans LLM (`conforme_reference` dans `answers.jsonl`) et les décisions sont prises par le moteur symbolique. Pour retrouver nos fichiers à l'identique, utiliser le rejeu ci-dessus.
+- Versions exactes : `requirements.lock` (Python 3.11).
+
 ## Sorties
 
 | Fichier | Module | Contrat |

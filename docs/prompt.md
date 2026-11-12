@@ -275,3 +275,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > fais les ajouts et modifications proposées, ensuite reconstruit le pdf et je te ferai un retour sur le pdf que tu auras construit de manière à l'améliorer
 
 **Résultat :** rapport à 5 pages : section M4 propre (formulations du *set cover*, des déclencheurs et du MILP caméras max-min), M3 µ = 3 / figure 5 (tableau et figure à deux panneaux, avec et sans jumeau), comparaison chiffrée des stratégies 1 et 2 (86 lignes divergentes), 4 outils imposés de M6 nommés, choix de modélisation défendu (distance réifiée), ASET/RSET. Angle du full-view et orientations des caméras rendus paramétrables (valeur en dur trouvée en relisant). PDF écrit via un fichier temporaire (rapport.pdf était ouvert).
+
+---
+
+## 32 — 2026-11-12 — Relecture de la reproductibilité
+
+> fais une relecture du code qui assure le fait que les jury retrouveront les mêmes résultats que moi en lançant les scriptes (un des requirements importants de l'exercice la reproductibilité des résultats) en attendant je fais des notes des éléments à améliorer sur le nouveau rapport pdf et je te les enverrai afin que tu corriges dans la limite des 6 pages
+
+**Résultat :** runs neufs (2 graines de hachage) identiques ou isomorphes aux sorties livrées ; un défaut corrigé (cache float16 de M3 : `pareto.json` différait au centième sans cache) ; rejeu de M6 identique ; limite des MILP paramétrable ; section README pour le jury.

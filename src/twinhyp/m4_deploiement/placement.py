@@ -32,6 +32,12 @@ INCLINAISONS_DEG = (20, 45)
 ANGLE_FULL_VIEW_DEG = 45.0       # Φ du PIMRC : la caméra fait face au marcheur à ±Φ près
 
 
+def limite_milp(params: dict) -> float:
+    """Limite de temps de chaque MILP (s). Atteinte, la solution n'est plus prouvée optimale ni reproductible
+    d'une machine à l'autre : le statut est écrit dans devices.json et un avertissement est journalisé."""
+    return float(params.get("milp_limite_s", 600.0))
+
+
 def _poly(e: dict) -> Polygon:
     return Polygon(e["polygone_xy"])
 
@@ -72,7 +78,7 @@ def detecteurs(geometrie: dict, params: dict, origine_xy) -> tuple[list[dict], d
                 cellules_info.append(e["globalId"])
             else:
                 sans_candidat.append(e["nom"])
-    sol = couverture_ensemble(len(positions), couvrants)
+    sol = couverture_ensemble(len(positions), couvrants, limite_s=limite_milp(params))
     choisis = [j for j in np.flatnonzero(sol.x)]
     eqs = [{"type": type_, "espace_globalId": positions[j]["espace_globalId"],
             "x": positions[j]["xyz"][0], "y": positions[j]["xyz"][1], "z": positions[j]["xyz"][2]} for j in choisis]
@@ -144,7 +150,7 @@ def declencheurs(geometrie: dict, params: dict) -> tuple[list[dict], dict]:
         dist = np.where(np.eye(len(sorties), dtype=bool), dist, math.inf)
     couvrants = [list(np.flatnonzero(dist[:, k] <= dmax)) for k in range(len(sorties))]
     non_servies = [sorties[k]["globalId"] for k, N in enumerate(couvrants) if not N]  # F4 violée : signalé
-    sol = couverture_ensemble(len(candidats), [N for N in couvrants if N])
+    sol = couverture_ensemble(len(candidats), [N for N in couvrants if N], limite_s=limite_milp(params))
     eqs = []
     for i in np.flatnonzero(sol.x):
         servies = [(sorties[k]["globalId"], round(float(dist[i, k]), 3)) for k in range(len(sorties)) if dist[i, k] <= dmax]
@@ -290,7 +296,7 @@ def cameras(geometrie: dict, params: dict, env: Environnement, chem: list[dict])
         idx = sorted({index[k] for k in c["cellules"]})
         exige = min(math.ceil(cmin * len(idx) - 1e-9), sum(1 for i in idx if voyeurs[i]))
         lignes.append(([n_cand + i for i in idx], [1.0] * len(idx), exige, None))
-    s1 = resoudre(couts, lignes)
+    s1 = resoudre(couts, lignes, limite_s=limite_milp(params))
     n_star = int(round(s1.objectif))
     # Phase 2 : à nombre de caméras ≤ N*, maximiser les cellules vues de face (full-view)
     fv_voyeurs = [[] for _ in range(n_cell)]
@@ -312,11 +318,11 @@ def cameras(geometrie: dict, params: dict, env: Environnement, chem: list[dict])
             continue
         lignes2.append(([n_cand + n_cell + i for i in idx] + [zt], [1.0] * len(idx) + [-float(len(idx))], 0, None))
     couts2a = np.r_[np.zeros(zt), 1.0]
-    s2a = resoudre(couts2a, lignes2, maximiser=True, continues=[zt])
+    s2a = resoudre(couts2a, lignes2, maximiser=True, continues=[zt], limite_s=limite_milp(params))
     t_star = float(s2a.brut[zt]) if s2a.statut == "Optimal" else 0.0
     couts2b = np.r_[np.zeros(n_cand + n_cell), np.ones(n_cell), 0.0]
     lignes2b = lignes2 + [([zt], [1.0], max(t_star - 1e-6, 0.0), None)]
-    s2 = resoudre(couts2b, lignes2b, maximiser=True, continues=[zt])
+    s2 = resoudre(couts2b, lignes2b, maximiser=True, continues=[zt], limite_s=limite_milp(params))
     s2.temps_s += s2a.temps_s
     x = s2.x[:n_cand] if s2.statut == "Optimal" else s1.x[:n_cand]
     choisis = list(np.flatnonzero(x))

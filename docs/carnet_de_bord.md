@@ -199,3 +199,11 @@ Scripts jetables (hors dépôt) : ifcopenshell 0.9, géométrie en coordonnées 
 - M1 → M5 : 655 s au premier essai ; mode rapide (grille 1 m, M3 40 positions, validation finale seule) ≈ 554 s.
 - **Impasse** : M6 avec le LLM arrêté par manque de mémoire pendant le chargement du modèle ; partie symbolique vérifiée avec le LLM scripté (20 outils, D1–D4, 345 s).
 - **Impasse** : D4 > 25 min (42 s par validation SHACL × ~80) → validation en lot (8 validations).
+
+## 2026-11-12 – Relecture de la reproductibilité
+
+- Deux runs neufs M1 → M5 (dossiers vides, `PYTHONHASHSEED` = 1 et 2) : `geometry.json`, `devices.json`, `evacuation_dynamique.jsonl` identiques aux sorties livrées ; `ontology.ttl` et `kg.ttl` isomorphes.
+- **Impasse / défaut trouvé** : `pareto.json` différait au centième (`f_obj`, qualité de lien) : les matrices de perte de M3 sont mises en cache en float16, mais un premier run (sans cache) utilisait la pleine précision. Les sorties livrées venaient d'un run avec cache, le jury (sans cache) aurait eu d'autres centièmes. Correction : les valeurs arrondies sont utilisées dans les deux cas ; M3 relancé sans cache → `pareto.json` et `pareto_facteur30.json` **identiques** aux sorties livrées.
+- Rejeu de M6 depuis `sorties/llm_journal.jsonl` : `answers.jsonl` et `audit_log.jsonl` identiques (hors horodatage), en 2 min sans Ollama.
+- Limite de temps des MILP rendue paramétrable (`milp_limite_s`, 600 s) avec avertissement si l'optimum n'est pas prouvé (les caméras des bureaux prenaient 116 s pour une limite de 120 s).
+- README : section « Retrouver nos résultats (jury) ».

@@ -62,7 +62,10 @@ def obstacles(env: Environnement, techno: str, dossier: Path) -> dict[str, np.nd
     res = {"voxel_avec": V[0], "voxel_sans": V[1], "metre_avec": M[0], "metre_sans": M[1],
            "AA_voxel_avec": VA[0], "AA_voxel_sans": VA[1], "AA_metre_avec": MA[0], "AA_metre_sans": MA[1]}
     dossier.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(cache, **{k: v.astype(np.float16) for k, v in res.items()})
+    # mêmes valeurs que celles relues du cache (float16) : un premier run et un run avec cache donnent des
+    # résultats IDENTIQUES (sinon f_obj et la qualité de lien diffèrent au centième selon l'état du cache)
+    res = {k: v.astype(np.float16) for k, v in res.items()}
+    np.savez_compressed(cache, **res)
     return res
 
 
