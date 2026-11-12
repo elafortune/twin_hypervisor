@@ -283,3 +283,21 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > fais une relecture du code qui assure le fait que les jury retrouveront les mêmes résultats que moi en lançant les scriptes (un des requirements importants de l'exercice la reproductibilité des résultats) en attendant je fais des notes des éléments à améliorer sur le nouveau rapport pdf et je te les enverrai afin que tu corriges dans la limite des 6 pages
 
 **Résultat :** runs neufs (2 graines de hachage) identiques ou isomorphes aux sorties livrées ; un défaut corrigé (cache float16 de M3 : `pareto.json` différait au centième sans cache) ; rejeu de M6 identique ; limite des MILP paramétrable ; section README pour le jury.
+
+---
+
+## 33 — 2026-11-12 — Retours sur le rapport (10 points)
+
+> une fois que tu as fini cette tache de vérification de reproductibilité prend en compte les feedbacks suivants pour améliorer le contenu du pdf en terme d'éléments essentiels, important à mentionner et formulation claire qui sera plus facile à comprendre et être concret pour le jury dans la limite des 6 pages demandées:
+> 1) Dans architecture de la chaine essaie d'ajouter une colonne utilité : qui décrit l'utilité du fichier de sortie ou de l'opération entrée vers sortie ex : M2 utilité : décrit l'ontologie globale basé sur des mesures précises provenant de geometry.json remplace "Outils, tous libres:" par "Outils/stack technique:"
+> 2) incohérences de la maquette en plus du constat des anomalies et de la manière dont elles sont traitées décrit comment les anomalies sont détectées dans l'architecture en particulier le fait qu'il y ait plusieurs modules indépendants pour la detection d'anomalie
+> 3) Dans la section Ecarts à l'article IWCMC 2024 décris le modèle reproduit par les paramètres et les formules utilisées concrètement ex : modèle voxel, formule utilisée, perte selon le matériau et dis à quoi on a comparé ce modèle puis indique précisément les différents scénarios de comparaison ainsi que les conclusions des comparaisons conclus à la toute fin sur les hypothèses de ce qui cause ces écarts
+> 4)Ontologie: comparaison avec celle de Pang outre le tableau de comparaison si c'est pertinent n'hésite pas à dire si il y a des avantages/incovénients à notre modèle vis à vis de celui de Pang
+> 5) Déploiement SSI explique brièvement pourquoi on a fait le choix de Highs (petits problèmes locaux si j'ai bien compris) plutôt que MILP global pour l'optimisation des placements des éléments
+> 6)Evacuation dynamique : pénalité ou contrainte dure : donne plus de structure au texte pour qu'on ait la comparaison des deux scénarios, des deux stratégies et conclus sur pénalité vs contraintes dures
+> 7) donne plus de structure a ce paragraphe aussi expliquant la structure de l'agent ses Tools, ses résultats, et son pipeline (que tu as a peu près expliqué dans ta phrase "Demandes…")
+> 8) Généricité :Assez bien garde le synthétique
+> 9) OK
+> 10) Limites soit plus précis sur ce que l'outil agentique ne fait pas ou pas correctement actuellement, ses sources d'erreurs et d'imprécisions actuelles et les améliorations qui amélioreront ses performances actuelles. n'hésite pas a prendre en compte le contexte (il faut qu'il soit assez rapide pour réellement être utile dans une situation de crise, rattache les limites a ce que devrait faire un produit final)
+
+**Résultat :** rapport à 6 pages : colonne « Utilité » et « Outils / stack technique » ; détection des anomalies en 5 couches indépendantes ; IWCMC structuré (modèle, comparé à quoi, scénarios, µ = 0, µ = 3, hypothèses en conclusion) ; avantages / inconvénients face à Pang ; pourquoi des MILP successifs (HiGHS = solveur) ; M5 en deux tableaux (stratégies, pénalité / contrainte dure) + conclusion ; agent : structure, outils, pipelines, résultats ; limites de l'agent rattachées à un produit de crise.
