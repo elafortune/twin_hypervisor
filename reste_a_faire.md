@@ -13,7 +13,7 @@ Livrables (`docs/feuille_de_route.md`) : dépôt Git avec historique et tests ·
 ## 2. Rapport (6 pages maximum) — obligatoire
 
 - [x] `rapport.md` : architecture ; écarts à l'IWCMC (figures, hypothèses) ; incohérences de la maquette ; comparaison à l'ontologie de Pang ; pénalité ou contrainte dure ; décisions de l'agent ; matériel et temps
-- [ ] Relecture (toi)
+- [x] Relecture (toi) : PDF validé le 12/11 (6 pages)
 - [x] Export PDF éventuel (`*.pdf` est dans `.gitignore` : `git add -f rapport.pdf`)
 
 ## 3. Déclaration IA — obligatoire
@@ -33,7 +33,7 @@ Livrables (`docs/feuille_de_route.md`) : dépôt Git avec historique et tests ·
 ## 5. Nettoyage — rapide
 
 - [x] Tableau « Points ouverts » de `choix.md` (périmé)
-- [ ] Relire `main.md` et le README
+- [x] Relire `main.md` et le README ; trace d'exécution complète (M1 → M6) ; reproductibilité vérifiée (README, « Retrouver nos résultats »)
 - [x] Test depuis un clone neuf : 99 tests rapides OK (environnement conda non recréé, commande complète non relancée depuis le clone)
 
 ## 6. Envoi (toi)

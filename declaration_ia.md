@@ -12,7 +12,7 @@ Aucune API de LLM propriétaire n'intervient dans la chaîne ni dans les résult
 ## Méthode de travail
 
 - **Je pilotais, l'assistant exécutait.** Chaque étape (0 à 10) a été proposée, exécutée, puis **validée par moi** avant de passer à la suivante ; plusieurs choix ont été corrigés à ma demande (un déclencheur par sortie, objectif max-min du *full-view*, comparaison fumée / chaleur sur toute la chaîne, étape 10 sur un bâtiment de bureaux…).
-- **Tous mes prompts sont recopiés mot pour mot** dans `docs/prompt.md` (28 entrées), chacun suivi du résultat obtenu.
+- **Tous mes prompts sont recopiés mot pour mot** dans `docs/prompt.md`, chacun suivi du résultat obtenu.
 - Chaque choix, avec les options écartées et le moment où y revenir, est dans `choix.md` ; les doutes de l'assistant, avec leur niveau de confiance, dans `doutes.md` ; le journal daté, **impasses comprises**, dans `docs/carnet_de_bord.md`.
 - L'assistant a été tenu de signaler ses erreurs : par exemple, son explication initiale du *full-view* nul (« aucune caméra ne peut faire face ») était **fausse**, ce qui est écrit dans `doutes.md` (S-4) et le carnet.
 

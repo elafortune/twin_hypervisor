@@ -301,3 +301,11 @@ Trace des prompts adressés à l'assistant IA (Claude Code, modèle Claude Opus 
 > 10) Limites soit plus précis sur ce que l'outil agentique ne fait pas ou pas correctement actuellement, ses sources d'erreurs et d'imprécisions actuelles et les améliorations qui amélioreront ses performances actuelles. n'hésite pas a prendre en compte le contexte (il faut qu'il soit assez rapide pour réellement être utile dans une situation de crise, rattache les limites a ce que devrait faire un produit final)
 
 **Résultat :** rapport à 6 pages : colonne « Utilité » et « Outils / stack technique » ; détection des anomalies en 5 couches indépendantes ; IWCMC structuré (modèle, comparé à quoi, scénarios, µ = 0, µ = 3, hypothèses en conclusion) ; avantages / inconvénients face à Pang ; pourquoi des MILP successifs (HiGHS = solveur) ; M5 en deux tableaux (stratégies, pénalité / contrainte dure) + conclusion ; agent : structure, outils, pipelines, résultats ; limites de l'agent rattachées à un produit de crise.
+
+---
+
+## 34 — 2026-11-12 — Nettoyage avant validation du dépôt
+
+> je valide ce pdf, maintenant regarde s'il y a des éléments à nettoyer ou d'autres éléments que je dois revoir avant de push sur github et valider le dépot de l'exercice
+
+**Résultat :** inventaire du dépôt (aucun fichier sensible, aucun article dans l'historique, seul PDF : `rapport.pdf`) ; `execution.json` ne gardait que M6 (chaque run écrasait la trace) → la trace fusionne désormais les étapes, celle livrée est complétée avec les durées du run final M1 → M5 ; temps des tests, doutes tranchés, déclaration IA et reste à faire mis à jour.

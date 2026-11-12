@@ -9,6 +9,7 @@ parlent que par ces fichiers, ce qui permet de relancer un module seul
 from __future__ import annotations
 
 import importlib
+import json
 import importlib.metadata as md
 import logging
 import os
@@ -94,5 +95,18 @@ def executer(ctx: Contexte, etapes: list[str] | None = None) -> dict:
         trace["etapes"][nom] = {"duree_s": round(duree, 3), "validation_s": round(duree_v, 3), "sorties": produites,
                                 "validees": a_valider}
 
+    # un run partiel (--etapes) ne doit pas effacer la trace des étapes qu'il ne relance pas
+    precedent = ctx.sortie / "execution.json"
+    if precedent.is_file():
+        try:
+            ancien = json.loads(precedent.read_text(encoding="utf-8"))
+            for nom, e in ancien.get("etapes", {}).items():
+                if nom not in trace["etapes"]:
+                    trace["etapes"][nom] = {**e, "run": e.get("run", ancien.get("debut"))}
+        except (ValueError, OSError):
+            pass
+    for nom in ordre:
+        trace["etapes"][nom]["run"] = trace["debut"]
+    trace["etapes"] = {k: trace["etapes"][k] for k in ETAPES if k in trace["etapes"]}
     ecrire_json(ctx.sortie / "execution.json", trace)
     return trace

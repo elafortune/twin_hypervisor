@@ -14,7 +14,7 @@ Depuis `C:\Users\emeri\twin_hypervisor`, après `conda activate twinhyp`.
 | `python -m twinhyp sensibilite --out sorties` | IWCMC : couverture selon un facteur sur L_obs (glouton), comparée à la figure 4 |
 | `python -m twinhyp campagne --out sorties` | IWCMC : toutes les expériences de `comparaison.md` (≈ 33 min) |
 | `python -m twinhyp questions --out sorties` | Affiche les réponses Q01–Q19 obtenues par SPARQL sur `kg.ttl` (`--sparql` : montre les requêtes) |
-| `pytest` | Lance tous les tests (~3 min) |
+| `pytest` | Lance les 133 tests (~10 min) |
 | `pytest -m "not integration"` | Tests rapides seulement |
 
 ## Résultats par phase

@@ -24,6 +24,72 @@
     }
   },
   "etapes": {
+    "m1": {
+      "duree_s": 10.03,
+      "validation_s": 0.0,
+      "sorties": [
+        "geometry"
+      ],
+      "validees": [
+        "geometry"
+      ],
+      "run": "2026-11-11T22:38:28+00:00",
+      "note": "durées reprises du journal du run M1 → M5 du 11/11 (trace écrasée par le run M6 suivant, défaut corrigé depuis)"
+    },
+    "m2": {
+      "duree_s": 0.24,
+      "validation_s": 4.1,
+      "sorties": [
+        "ontology",
+        "kg"
+      ],
+      "validees": [
+        "ontology",
+        "kg"
+      ],
+      "run": "2026-11-11T22:38:28+00:00",
+      "note": "durées reprises du journal du run M1 → M5 du 11/11 (trace écrasée par le run M6 suivant, défaut corrigé depuis)"
+    },
+    "m3": {
+      "duree_s": 176.03,
+      "validation_s": 0.0,
+      "sorties": [
+        "pareto"
+      ],
+      "validees": [
+        "pareto"
+      ],
+      "run": "2026-11-11T22:38:28+00:00",
+      "note": "durées reprises du journal du run M1 → M5 du 11/11 (trace écrasée par le run M6 suivant, défaut corrigé depuis)"
+    },
+    "m4": {
+      "duree_s": 19.49,
+      "validation_s": 4.1,
+      "sorties": [
+        "devices",
+        "kg"
+      ],
+      "validees": [
+        "devices",
+        "kg"
+      ],
+      "run": "2026-11-11T22:38:28+00:00",
+      "note": "durées reprises du journal du run M1 → M5 du 11/11 (trace écrasée par le run M6 suivant, défaut corrigé depuis)"
+    },
+    "m5": {
+      "duree_s": 19.59,
+      "validation_s": 20.9,
+      "sorties": [
+        "evacuation",
+        "kg"
+      ],
+      "validees": [
+        "evacuation",
+        "kg"
+      ],
+      "run": "2026-11-11T22:38:28+00:00",
+      "note": "durées reprises du journal du run M1 → M5 du 11/11 (trace écrasée par le run M6 suivant, défaut corrigé depuis)"
+    },
     "m6": {
       "duree_s": 1191.637,
       "validation_s": 20.367,
@@ -36,7 +102,8 @@
         "answers",
         "audit",
         "kg"
-      ]
+      ],
+      "run": "2026-11-11T22:43:23+00:00"
     }
   }
 }

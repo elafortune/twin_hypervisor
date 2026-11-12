@@ -74,7 +74,7 @@
 
 | # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |
 |---|---|---|---|---|---|
-| R-1 | 🔴 | **Q20** : avec les valeurs du tableau I (`pareto.json`), Q20 = **1** (100 % dès un équipement) ; avec L × 30, Q20 = 3 comme l'article. Laquelle donner ? | `pareto.json` (et donc Q20) suit le tableau I tel quel, comme décidé | Ton choix ; à expliquer au jury dans les deux cas | ☐ |
+| R-1 | 🔴 | **Q20** : avec les valeurs du tableau I (`pareto.json`), Q20 = **1** (100 % dès un équipement) ; avec L × 30, Q20 = 3 comme l'article. Laquelle donner ? | `pareto.json` (et donc Q20) suit le tableau I tel quel, comme décidé | Ton choix ; à expliquer au jury dans les deux cas | ✅ tranché le 12/11 : choix par défaut gardé |
 | R-2 | 🔴 | Facteur 30 : explication par un L_obs appliqué à chaque échantillon de raycast (hypothèse, non prouvée) | Présenté comme hypothèse | Question aux auteurs | ☐ |
 | R-3 | 🟠 | µ = 3 : l'optimisation « avec jumeau » fait moins bien que « sans jumeau » à 4–5 équipements (× 30) : convergence insuffisante | Signalé (E-14) | Relancer avec 5 graines / plus d'itérations | ☑ 10/11 : 5 graines et 100/300/1 000 itérations : optimum local de PREP-NSGA sous peine de mort, pas un manque d'itérations (comparaison.md, I) |
 | R-4 | 🟠 | Initialisation par « cellules d'intérêt » (référence [7] absente du kit) | Une cellule par espace (centre des positions A) | Lire MetaCom 2023 si accessible | ☐ |
@@ -87,14 +87,14 @@
 | S-1 | 🟢 | 2 déclencheurs pour 4 sorties : conforme à F4, mais l'usage met un DM par sortie | **Un par sortie** (décision de l'utilisateur) : 4 DM à 0,4 m ; option pour revenir au minimum | — | ✅ |
 | S-2 | 🟢 | `distanceToExit` : une seule valeur par déclencheur | Sans objet avec un DM par sortie (une sortie, une distance) ; en mode minimum, la plus défavorable | — | ✅ |
 | S-3 | 🟠 | Détecteur obligatoire dans chaque espace (même les petits : salles de bains, buanderies) | 20 détecteurs | EN 54 exclut parfois les salles d'eau ; sinon F3 échoue (espaces occupables) | ☐ |
-| S-4 | 🟡 | Full-view nul pour B102 et B103 (10 % pour A102). **Mon explication initiale (« aucune caméra ne peut faire face ») était fausse** : 88–93 % y sont atteignables ; c'est l'objectif « somme » qui sacrifiait les chemins courts | Phase 2 passée en max-min puis somme. À 18 caméras, le MILP prouve que min > 0 est impossible (déplacer une caméra ne suffit pas) : +1 caméra → min 10 %, +2 → 62,5 % (global 86 %), +3 → 79 % | Choisir k (`cameras_supplementaires_full_view`) : 0 par défaut (nombre minimal) | ☐ |
+| S-4 | 🟡 | Full-view nul pour B102 et B103 (10 % pour A102). **Mon explication initiale (« aucune caméra ne peut faire face ») était fausse** : 88–93 % y sont atteignables ; c'est l'objectif « somme » qui sacrifiait les chemins courts | Phase 2 passée en max-min puis somme. À 18 caméras, le MILP prouve que min > 0 est impossible (déplacer une caméra ne suffit pas) : +1 caméra → min 10 %, +2 → 62,5 % (global 86 %), +3 → 79 % | Choisir k (`cameras_supplementaires_full_view`) : 0 par défaut (nombre minimal) | ✅ tranché le 12/11 : choix par défaut gardé |
 | S-5 | 🟢 | Caméras du Level 2 posées à 5,49 m (sous le faux plafond) et non à 5,5 m (= 3,1 + 2,4, dans la couche du plafond) | Décalage de 1 cm | — | ☐ |
 
 ## Agent (étape 9)
 
 | # | Conf. | Doute | Ce que j'ai fait | Comment lever le doute | Statut |
 |---|---|---|---|---|---|
-| A-1 | 🟡 | D3 : détecteurs de chaleur temporaires au lieu du refus | Comparaison mesurée (`choix.md`, « Fumée ou chaleur ») : 1re alarme du bâtiment inchangée (70 s), alarme locale du Level 2 retardée de 20 s (A1R) ou 80 s (A1) ; le refus laisserait le Level 2 sans détection → adaptation maintenue, classe A1R recommandée | La classe A1R n'est pas représentée dans l'ontologie (seulement `HeatDetector`) ; l'indiquer dans la justification de l'audit (nécessite un nouveau run de M6) | ☐ |
+| A-1 | 🟡 | D3 : détecteurs de chaleur temporaires au lieu du refus | Comparaison mesurée (`choix.md`, « Fumée ou chaleur ») : 1re alarme du bâtiment inchangée (70 s), alarme locale du Level 2 retardée de 20 s (A1R) ou 80 s (A1) ; le refus laisserait le Level 2 sans détection → adaptation maintenue, classe A1R recommandée | La classe A1R n'est pas représentée dans l'ontologie (seulement `HeatDetector`) ; l'indiquer dans la justification de l'audit (nécessite un nouveau run de M6) | ✅ tranché le 12/11 : choix par défaut gardé |
 | A-2 | 🟡 | D4 : refus pour les 5 espaces et mise à l'abri sur place | À 200 s, A101, A102, A103 sont dangereux : les deux sorties du logement A sont perdues ; aucune route sûre | Vérifier qu'aucune sortie par le logement B n'est attendue (Q13 : aucun passage A ↔ B) | ☐ |
 | A-3 | 🟡 | D2 : « l'équipement qui couvre A201 » = le détecteur DF-14 | Seuls les détecteurs sont considérés (pas les caméras qui voient aussi A201) | Relire la demande ; sinon les caméras donneraient d'autres candidats | ☐ |
 | A-4 | 🟡 | `kg.ttl` modifié par D1 et D3, mais `devices.json` reste le déploiement de M4 | « Modifications appliquées » lues sur le graphe | Demander si `devices.json` doit refléter l'état après l'agent | ☐ |
